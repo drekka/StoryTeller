@@ -12,6 +12,7 @@
 
 @implementation StoryTeller {
     id<STScribe> _scribe;
+    NSMutableSet *_herosWithStories;
 }
 
 static StoryTeller *__narrator;
@@ -24,6 +25,7 @@ static StoryTeller *__narrator;
     self = [super init];
     if (self) {
         _scribeClass = [STConsoleScribe class];
+        _herosWithStories = [[NSMutableSet alloc] init];
     }
     return self;
 }
@@ -42,18 +44,33 @@ static StoryTeller *__narrator;
 }
 
 -(void) startStoryFor:(id __nonnull) hero {
+    [_herosWithStories addObject:hero];
+}
+
+-(void) finishStoryFor:(id __nonnull) hero {
+    [_herosWithStories removeObject:hero];
+}
+
+-(void) writeHero:(id __nonnull) hero
+           method:(const char __nonnull *) methodName
+       lineNumber:(int) lineNumber
+          message:(NSString __nonnull *) messageTemplate, ... {
+
+    // Only continue if the hero is being logged.
+    
+
     // Check for a scribe and create one if necessary.
     if (_scribe == nil) {
         _scribe = [[_scribeClass alloc] init];
     }
-}
 
--(void) stopStoryFor:(id __nonnull) hero {}
+    va_list args;
+    va_start(args, messageTemplate);
+    NSString *msg = [[NSString alloc] initWithFormat:messageTemplate arguments:args];
+    va_end(args);
 
--(void) writeMessage:(NSString __nonnull *) message
-          fromMethod:(const char __nonnull *) methodName
-          lineNumber:(int) lineNumber {
-    [self.scribe writeMessage:message
+
+    [self.scribe writeMessage:msg
                    fromMethod:methodName
                    lineNumber:lineNumber];
 }

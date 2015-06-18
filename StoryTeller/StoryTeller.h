@@ -9,10 +9,17 @@
 @import Foundation;
 #import "STScribe.h"
 
-#define narrate(hero, message) \
-[[StoryTeller narrator] writeMessage:(message) \
-fromMethod: __PRETTY_FUNCTION__ \
-lineNumber: __LINE__]
+#define startStory(hero) \
+[[StoryTeller narrator] startStoryFor:hero]
+
+#define finishStory(hero) \
+[[StoryTeller narrator] finishStoryFor:hero]
+
+#define narrate(hero, messageTemplate, ...) \
+[[StoryTeller narrator] writeHero:hero \
+method: __PRETTY_FUNCTION__ \
+lineNumber: __LINE__ \
+message:messageTemplate, ## __VA_ARGS__]
 
 @interface StoryTeller : NSObject
 
@@ -23,10 +30,11 @@ lineNumber: __LINE__]
 
 -(void) startStoryFor:(id __nonnull) hero;
 
--(void) stopStoryFor:(id __nonnull) hero;
+-(void) finishStoryFor:(id __nonnull) hero;
 
--(void) writeMessage:(NSString __nonnull *) message
-          fromMethod:(const char __nonnull *) methodName
-          lineNumber:(int) lineNumber;
+-(void) writeHero:(id __nonnull) hero
+           method:(const char __nonnull *) methodName
+       lineNumber:(int) lineNumber
+          message:(NSString __nonnull *) message, ...;
 
 @end

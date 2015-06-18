@@ -7,13 +7,12 @@
 //
 
 #import "STConsoleScribe.h"
+#import <pthread/pthread.h>
 
 @implementation STConsoleScribe
 
--(void) writeMessage:(id __nonnull)message
-          fromMethod:(const char __nonnull *)methodName
-          lineNumber:(int)lineNumber {
-    NSLog(@"%s %i %@", methodName, lineNumber, message);
+-(void) writeMessage:(id __nonnull) message {
+    printf("%s\n", [message UTF8String]);
 }
 
 @end

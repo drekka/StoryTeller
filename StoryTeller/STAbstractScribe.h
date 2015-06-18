@@ -1,5 +1,5 @@
 //
-//  InMemoryScribe.h
+//  STAbstractScribe.h
 //  StoryTeller
 //
 //  Created by Derek Clarkson on 18/06/2015.
@@ -7,10 +7,10 @@
 //
 
 @import Foundation;
-#import "STAbstractScribe.h"
+#import "STScribe.h"
 
-@interface InMemoryScribe : STAbstractScribe
+@interface STAbstractScribe : NSObject<STScribe>
 
-@property (nonatomic, strong, readonly, nonnull) NSArray *log;
+-(void) writeMessage:(NSString *) message;
 
 @end

@@ -13,6 +13,12 @@
  */
 @protocol STScribe <NSObject>
 
+@property (nonatomic, assign) BOOL showThreadId;
+@property (nonatomic, assign) BOOL showThreadName;
+@property (nonatomic, assign) BOOL showTime;
+@property (nonatomic, assign) BOOL showMethodName;
+@property (nonatomic, assign) BOOL showLineNumber;
+
 -(void) writeMessage:(NSString __nonnull *) message
           fromMethod:(const char __nonnull *) methodName
           lineNumber:(int) lineNumber;

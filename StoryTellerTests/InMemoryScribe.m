@@ -20,7 +20,7 @@
     return self;
 }
 
--(void)writeMessage:(NSString *)message fromMethod:(const char *)methodName lineNumber:(int)lineNumber {
+-(void)writeMessage:(NSString *)message {
     [_log addObject:message];
 }
 

@@ -7,8 +7,8 @@
 //
 
 @import Foundation;
-#import "STScribe.h"
+#import "STAbstractScribe.h"
 
-@interface STConsoleScribe : NSObject<STScribe>
+@interface STConsoleScribe : STAbstractScribe
 
 @end

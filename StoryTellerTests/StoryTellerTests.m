@@ -18,7 +18,12 @@
 -(void) testBasicLogging {
     [[StoryTeller narrator] startStoryFor:@"abc"];
     narrate(@"abc", @"hello world");
-    XCTAssertEqualObjects(self.inMemoryScribe.log[0], @"hello world");
+    XCTAssertEqualObjects([self.inMemoryScribe.log[0] substringFromIndex:13], @"a07 -[StoryTellerTests testBasicLogging] [20] hello world");
+}
+
+-(void) testLoggingIgnoredWhenHeroNotStarted {
+    narrate(@"abc", @"hello world");
+    XCTAssertEqual(0lu, [self.inMemoryScribe.log count]);
 }
 
 @end
