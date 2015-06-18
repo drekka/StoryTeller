@@ -50,4 +50,12 @@ static StoryTeller *__narrator;
 
 -(void) stopStoryFor:(id __nonnull) hero {}
 
+-(void) writeMessage:(NSString __nonnull *) message
+          fromMethod:(const char __nonnull *) methodName
+          lineNumber:(int) lineNumber {
+    [self.scribe writeMessage:message
+                   fromMethod:methodName
+                   lineNumber:lineNumber];
+}
+
 @end

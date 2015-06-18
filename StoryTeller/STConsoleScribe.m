@@ -10,7 +10,9 @@
 
 @implementation STConsoleScribe
 
--(void) writeMessage:(id)message fromMethod:(const char *)methodName lineNumber:(int)lineNumber {
+-(void) writeMessage:(id __nonnull)message
+          fromMethod:(const char __nonnull *)methodName
+          lineNumber:(int)lineNumber {
     NSLog(@"%s %i %@", methodName, lineNumber, message);
 }
 

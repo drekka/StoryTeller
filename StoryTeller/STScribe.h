@@ -13,8 +13,8 @@
  */
 @protocol STScribe <NSObject>
 
--(void) writeMessage:(NSString *) message
-          fromMethod:(const char *) methodName
+-(void) writeMessage:(NSString __nonnull *) message
+          fromMethod:(const char __nonnull *) methodName
           lineNumber:(int) lineNumber;
 
 @end
