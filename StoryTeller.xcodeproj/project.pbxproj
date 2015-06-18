@@ -1,0 +1,359 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6CE5C3E81B329BD100F0A470 /* StoryTeller.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6CE5C3E71B329BD100F0A470 /* StoryTeller.h */; };
+		6CE5C3EA1B329BD100F0A470 /* StoryTeller.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CE5C3E91B329BD100F0A470 /* StoryTeller.m */; };
+		6CE5C3F01B329BD100F0A470 /* libStoryTeller.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CE5C3E41B329BD100F0A470 /* libStoryTeller.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		6CE5C3F11B329BD100F0A470 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6CE5C3DC1B329BD100F0A470 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6CE5C3E31B329BD100F0A470;
+			remoteInfo = StoryTeller;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		6CE5C3E21B329BD100F0A470 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				6CE5C3E81B329BD100F0A470 /* StoryTeller.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		6CE5C3E41B329BD100F0A470 /* libStoryTeller.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libStoryTeller.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		6CE5C3E71B329BD100F0A470 /* StoryTeller.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StoryTeller.h; sourceTree = "<group>"; };
+		6CE5C3E91B329BD100F0A470 /* StoryTeller.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StoryTeller.m; sourceTree = "<group>"; };
+		6CE5C3EF1B329BD100F0A470 /* StoryTellerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StoryTellerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6CE5C3F41B329BD100F0A470 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6CE5C3E11B329BD100F0A470 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6CE5C3EC1B329BD100F0A470 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6CE5C3F01B329BD100F0A470 /* libStoryTeller.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6CE5C3DB1B329BD100F0A470 = {
+			isa = PBXGroup;
+			children = (
+				6CE5C3E61B329BD100F0A470 /* StoryTeller */,
+				6CE5C3F31B329BD100F0A470 /* StoryTellerTests */,
+				6CE5C3E51B329BD100F0A470 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		6CE5C3E51B329BD100F0A470 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6CE5C3E41B329BD100F0A470 /* libStoryTeller.a */,
+				6CE5C3EF1B329BD100F0A470 /* StoryTellerTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6CE5C3E61B329BD100F0A470 /* StoryTeller */ = {
+			isa = PBXGroup;
+			children = (
+				6CE5C3E71B329BD100F0A470 /* StoryTeller.h */,
+				6CE5C3E91B329BD100F0A470 /* StoryTeller.m */,
+			);
+			path = StoryTeller;
+			sourceTree = "<group>";
+		};
+		6CE5C3F31B329BD100F0A470 /* StoryTellerTests */ = {
+			isa = PBXGroup;
+			children = (
+				6CE5C3F41B329BD100F0A470 /* Info.plist */,
+			);
+			path = StoryTellerTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6CE5C3E31B329BD100F0A470 /* StoryTeller */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6CE5C3F71B329BD100F0A470 /* Build configuration list for PBXNativeTarget "StoryTeller" */;
+			buildPhases = (
+				6CE5C3E01B329BD100F0A470 /* Sources */,
+				6CE5C3E11B329BD100F0A470 /* Frameworks */,
+				6CE5C3E21B329BD100F0A470 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = StoryTeller;
+			productName = StoryTeller;
+			productReference = 6CE5C3E41B329BD100F0A470 /* libStoryTeller.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		6CE5C3EE1B329BD100F0A470 /* StoryTellerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6CE5C3FA1B329BD100F0A470 /* Build configuration list for PBXNativeTarget "StoryTellerTests" */;
+			buildPhases = (
+				6CE5C3EB1B329BD100F0A470 /* Sources */,
+				6CE5C3EC1B329BD100F0A470 /* Frameworks */,
+				6CE5C3ED1B329BD100F0A470 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6CE5C3F21B329BD100F0A470 /* PBXTargetDependency */,
+			);
+			name = StoryTellerTests;
+			productName = StoryTellerTests;
+			productReference = 6CE5C3EF1B329BD100F0A470 /* StoryTellerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6CE5C3DC1B329BD100F0A470 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0700;
+				ORGANIZATIONNAME = "Derek Clarkson";
+				TargetAttributes = {
+					6CE5C3E31B329BD100F0A470 = {
+						CreatedOnToolsVersion = 7.0;
+					};
+					6CE5C3EE1B329BD100F0A470 = {
+						CreatedOnToolsVersion = 7.0;
+					};
+				};
+			};
+			buildConfigurationList = 6CE5C3DF1B329BD100F0A470 /* Build configuration list for PBXProject "StoryTeller" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 6CE5C3DB1B329BD100F0A470;
+			productRefGroup = 6CE5C3E51B329BD100F0A470 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6CE5C3E31B329BD100F0A470 /* StoryTeller */,
+				6CE5C3EE1B329BD100F0A470 /* StoryTellerTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6CE5C3ED1B329BD100F0A470 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6CE5C3E01B329BD100F0A470 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6CE5C3EA1B329BD100F0A470 /* StoryTeller.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6CE5C3EB1B329BD100F0A470 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		6CE5C3F21B329BD100F0A470 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6CE5C3E31B329BD100F0A470 /* StoryTeller */;
+			targetProxy = 6CE5C3F11B329BD100F0A470 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		6CE5C3F51B329BD100F0A470 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		6CE5C3F61B329BD100F0A470 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		6CE5C3F81B329BD100F0A470 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		6CE5C3F91B329BD100F0A470 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		6CE5C3FB1B329BD100F0A470 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = StoryTellerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = au.com.derekclarkson.StoryTellerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		6CE5C3FC1B329BD100F0A470 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = StoryTellerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = au.com.derekclarkson.StoryTellerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6CE5C3DF1B329BD100F0A470 /* Build configuration list for PBXProject "StoryTeller" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6CE5C3F51B329BD100F0A470 /* Debug */,
+				6CE5C3F61B329BD100F0A470 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6CE5C3F71B329BD100F0A470 /* Build configuration list for PBXNativeTarget "StoryTeller" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6CE5C3F81B329BD100F0A470 /* Debug */,
+				6CE5C3F91B329BD100F0A470 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		6CE5C3FA1B329BD100F0A470 /* Build configuration list for PBXNativeTarget "StoryTellerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6CE5C3FB1B329BD100F0A470 /* Debug */,
+				6CE5C3FC1B329BD100F0A470 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 6CE5C3DC1B329BD100F0A470 /* Project object */;
+}
