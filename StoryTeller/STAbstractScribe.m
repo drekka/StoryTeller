@@ -13,8 +13,7 @@
     NSDateFormatter *_dateFormatter;
 }
 
-@synthesize showLineNumber = _showLineNumber;
-@synthesize showMethodName = _showMethodName;
+@synthesize showMethodDetails = _showMethodDetails;
 @synthesize showThreadName = _showThreadName;
 @synthesize showThreadId = _showThreadId;
 @synthesize showTime = _showTime;
@@ -22,8 +21,7 @@
 -(instancetype) init {
     self = [super init];
     if (self) {
-        self.showLineNumber = YES;
-        self.showMethodName = YES;
+        self.showMethodDetails = YES;
         self.showThreadId = YES;
         self.showThreadName = YES;
         self.showTime = YES;
@@ -45,26 +43,26 @@
     }
 
     if (_showThreadId) {
-        [finalMessage appendFormat:@"%x ", pthread_mach_thread_np(pthread_self())];
+        [finalMessage appendFormat:@"<%x> ", pthread_mach_thread_np(pthread_self())];
     }
 
     if (_showThreadName) {
-        NSString *threadName = [NSThread currentThread].name;
-        [finalMessage appendFormat:@"%@ ", threadName];
+        NSThread *currentThread = [NSThread currentThread];
+        NSString *threadName = currentThread.name;
+        if ([threadName length] > 0) {
+            [finalMessage appendFormat:@"%@ ", threadName];
+        }
     }
 
-    if (_showMethodName) {
-        [finalMessage appendFormat:@"%s ", methodName];
+    if (_showMethodDetails) {
+        [finalMessage appendFormat:@"%s(%i) ", methodName, lineNumber];
     }
 
-    if (_showLineNumber) {
-        [finalMessage appendFormat:@"[%i] ", lineNumber];
-    }
-
+    [finalMessage appendString:message];
     [self writeMessage:finalMessage];
 }
 
--(void) writeMessage:(NSString *) message {
+-(void) writeMessage:(NSString __nonnull *) message {
     [self doesNotRecognizeSelector:_cmd];
 }
 

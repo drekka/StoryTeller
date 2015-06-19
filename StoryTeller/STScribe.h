@@ -16,8 +16,7 @@
 @property (nonatomic, assign) BOOL showThreadId;
 @property (nonatomic, assign) BOOL showThreadName;
 @property (nonatomic, assign) BOOL showTime;
-@property (nonatomic, assign) BOOL showMethodName;
-@property (nonatomic, assign) BOOL showLineNumber;
+@property (nonatomic, assign) BOOL showMethodDetails;
 
 -(void) writeMessage:(NSString __nonnull *) message
           fromMethod:(const char __nonnull *) methodName

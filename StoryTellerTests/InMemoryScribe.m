@@ -22,6 +22,7 @@
 
 -(void)writeMessage:(NSString *)message {
     [_log addObject:message];
+    printf("%s\n", [message UTF8String]);
 }
 
 -(NSArray *) log {

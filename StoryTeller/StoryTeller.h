@@ -8,18 +8,23 @@
 
 @import Foundation;
 #import "STScribe.h"
+#import "STDeallocHook.h"
+#import "STInternal.h"
 
-#define startStory(hero) \
-[[StoryTeller narrator] startStoryFor:hero]
+#define startChronicle(hero) \
+_Pragma ("clang diagnostic push") \
+_Pragma ("clang diagnostic ignored \"-Wunused-variable\"") \
+NS_VALID_UNTIL_END_OF_SCOPE STDeallocHook *ST_CONCATINATE(hook_, __LINE__) = [[STDeallocHook alloc] initWithBlock:^{ \
+[[StoryTeller narrator] finishChronicleFor:hero]; \
+}]; \
+_Pragma ("clang diagnostic pop") \
+[[StoryTeller narrator] startChronicleFor:hero]
 
-#define finishStory(hero) \
-[[StoryTeller narrator] finishStoryFor:hero]
+#define finishChronicle(hero) \
+[[StoryTeller narrator] finishChronicleFor:hero]
 
 #define narrate(hero, messageTemplate, ...) \
-[[StoryTeller narrator] writeHero:hero \
-method: __PRETTY_FUNCTION__ \
-lineNumber: __LINE__ \
-message:messageTemplate, ## __VA_ARGS__]
+[[StoryTeller narrator] addToChronicleFor:hero method: __PRETTY_FUNCTION__ lineNumber: __LINE__ message:messageTemplate, ## __VA_ARGS__]
 
 @interface StoryTeller : NSObject
 
@@ -27,14 +32,15 @@ message:messageTemplate, ## __VA_ARGS__]
 
 @property (nonatomic, assign, nonnull) Class scribeClass;
 @property (nonatomic, assign, nonnull, readonly) id<STScribe> scribe;
+@property (nonatomic, assign, readonly) int numberActiveChronicles;
 
--(void) startStoryFor:(id __nonnull) hero;
+-(void) startChronicleFor:(id __nonnull) hero;
 
--(void) finishStoryFor:(id __nonnull) hero;
+-(void) finishChronicleFor:(id __nonnull) hero;
 
--(void) writeHero:(id __nonnull) hero
-           method:(const char __nonnull *) methodName
-       lineNumber:(int) lineNumber
-          message:(NSString __nonnull *) message, ...;
+-(void) addToChronicleFor:(id __nonnull) hero
+                   method:(const char __nonnull *) methodName
+               lineNumber:(int) lineNumber
+                  message:(NSString __nonnull *) message, ...;
 
 @end

@@ -11,6 +11,6 @@
 
 @interface STAbstractScribe : NSObject<STScribe>
 
--(void) writeMessage:(NSString *) message;
+-(void) writeMessage:(NSString __nonnull *) message;
 
 @end

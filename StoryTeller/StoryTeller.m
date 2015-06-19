@@ -12,7 +12,7 @@
 
 @implementation StoryTeller {
     id<STScribe> _scribe;
-    NSMutableSet *_herosWithStories;
+    NSMutableSet *_chronicles;
 }
 
 static StoryTeller *__narrator;
@@ -25,7 +25,7 @@ static StoryTeller *__narrator;
     self = [super init];
     if (self) {
         _scribeClass = [STConsoleScribe class];
-        _herosWithStories = [[NSMutableSet alloc] init];
+        _chronicles = [[NSMutableSet alloc] init];
     }
     return self;
 }
@@ -43,33 +43,40 @@ static StoryTeller *__narrator;
     _scribe = nil;
 }
 
--(void) startStoryFor:(id __nonnull) hero {
-    [_herosWithStories addObject:hero];
+-(int) numberActiveChronicles {
+    return (int)[_chronicles count];
 }
 
--(void) finishStoryFor:(id __nonnull) hero {
-    [_herosWithStories removeObject:hero];
+-(void) startChronicleFor:(id __nonnull) hero {
+    [_chronicles addObject:hero];
 }
 
--(void) writeHero:(id __nonnull) hero
+-(void) finishChronicleFor:(id __nonnull) hero {
+    [_chronicles removeObject:hero];
+}
+
+-(void) addToChronicleFor:(id __nonnull) hero
            method:(const char __nonnull *) methodName
        lineNumber:(int) lineNumber
           message:(NSString __nonnull *) messageTemplate, ... {
 
     // Only continue if the hero is being logged.
-    
+    if ([_chronicles count] == 0 && ![_chronicles containsObject:hero]) {
+        return;
+    }
 
-    // Check for a scribe and create one if necessary.
+    // Lazy load a scribe bceause scribes are lazy by nature.
     if (_scribe == nil) {
         _scribe = [[_scribeClass alloc] init];
     }
 
+    // Assemble the main message.
     va_list args;
     va_start(args, messageTemplate);
     NSString *msg = [[NSString alloc] initWithFormat:messageTemplate arguments:args];
     va_end(args);
 
-
+    // And give it to the scribe.
     [self.scribe writeMessage:msg
                    fromMethod:methodName
                    lineNumber:lineNumber];
