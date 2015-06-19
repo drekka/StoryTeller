@@ -18,8 +18,13 @@
     const char * _helloAgainMethodName;
 }
 
--(void) testBasicLogging {
+-(void) testIsChronicleActive {
     startChronicle(@"abc");
+    XCTAssertTrue([storyteller isChronicleActiveFor:@"abc"]);
+    XCTAssertFalse([storyteller isChronicleActiveFor:@"def"]);
+}
+
+-(void) testBasicLogging {
     int logLine = __LINE__ + 1;
     narrate(@"abc", @"hello world");
     [self validateLogLineAtIndex:0 methodName:__PRETTY_FUNCTION__ lineNumber:logLine message:@"hello world"];
@@ -56,7 +61,7 @@
         startChronicle(hero);
         logLineNumbers[idx] = @(__LINE__ + 1);
         narrate(hero, [NSString stringWithFormat:@"hello world %@", hero]);
-        XCTAssertEqual(1, [StoryTeller narrator].numberActiveChronicles);
+        XCTAssertEqual(1, storyteller.numberActiveChronicles);
     }];
 
     XCTAssertEqual(02u, [self.inMemoryScribe.log count]);
@@ -75,6 +80,15 @@
 
     [self validateLogLineAtIndex:0 methodName:__PRETTY_FUNCTION__ lineNumber:logLine message:@"hello world"];
     [self validateLogLineAtIndex:1 methodName:_helloAgainMethodName lineNumber:_helloAgainLogLine message:@"hello world 2"];
+}
+
+-(void) testNarrateBlock {
+    startChronicle(@"abc");
+    __block BOOL blockCalled = NO;
+    narrateBlock(@"abc", ^(id hero) {
+        blockCalled = YES;
+    });
+    XCTAssertTrue(blockCalled);
 }
 
 -(void) validateLogLineAtIndex:(unsigned long) idx

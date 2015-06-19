@@ -21,5 +21,4 @@
 -(void) writeMessage:(NSString __nonnull *) message
           fromMethod:(const char __nonnull *) methodName
           lineNumber:(int) lineNumber;
-
 @end

@@ -12,10 +12,12 @@
 
 @implementation StoryTeller {
     id<STScribe> _scribe;
-    NSMutableSet *_chronicles;
+    NSMutableSet *_activeStories;
 }
 
 static StoryTeller *__narrator;
+
+#pragma mark - Lifecycle
 
 +(void) initialize {
     __narrator = [[StoryTeller alloc] init];
@@ -25,10 +27,12 @@ static StoryTeller *__narrator;
     self = [super init];
     if (self) {
         _scribeClass = [STConsoleScribe class];
-        _chronicles = [[NSMutableSet alloc] init];
+        _activeStories = [[NSMutableSet alloc] init];
     }
     return self;
 }
+
+#pragma mark - Story teller
 
 +(StoryTeller __nonnull *) narrator {
     return __narrator;
@@ -43,25 +47,30 @@ static StoryTeller *__narrator;
     _scribe = nil;
 }
 
+#pragma mark - Chronicles
+
 -(int) numberActiveChronicles {
-    return (int)[_chronicles count];
+    return (int)[_activeStories count];
 }
 
--(void) startChronicleFor:(id __nonnull) hero {
-    [_chronicles addObject:hero];
+-(void) activateStoryFor:(id __nonnull) hero {
+    [_activeStories addObject:hero];
 }
 
--(void) finishChronicleFor:(id __nonnull) hero {
-    [_chronicles removeObject:hero];
+-(void) deactivateStoryFor:(id __nonnull) hero {
+    [_activeStories removeObject:hero];
 }
 
--(void) addToChronicleFor:(id __nonnull) hero
-           method:(const char __nonnull *) methodName
-       lineNumber:(int) lineNumber
-          message:(NSString __nonnull *) messageTemplate, ... {
+-(BOOL) isStoryActiveFor:(id __nonnull) hero {
+    return [_activeStories containsObject:hero];
+}
+
+#pragma mark - Logging
+
+-(void) for:(id __nonnull) hero recordMethod:(const char __nonnull *) methodName lineNumber:(int) lineNumber message:(NSString __nonnull *) messageTemplate, ... {
 
     // Only continue if the hero is being logged.
-    if ([_chronicles count] == 0 && ![_chronicles containsObject:hero]) {
+    if (![self tellStoryFor:hero]) {
         return;
     }
 
@@ -80,6 +89,20 @@ static StoryTeller *__narrator;
     [self.scribe writeMessage:msg
                    fromMethod:methodName
                    lineNumber:lineNumber];
+}
+
+-(void) for:(id __nonnull) hero executeBlock:(__nonnull void (^)(id __nonnull hero)) recordBlock {
+
+    // Only continue if the hero is being logged.
+    if (![self tellStoryFor:hero]) {
+        return;
+    }
+
+    recordBlock(hero);
+}
+
+-(BOOL) tellStoryFor:(id) hero {
+    return [_activeStories count] > 0 || [_activeStories containsObject:hero];
 }
 
 @end

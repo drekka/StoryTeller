@@ -11,36 +11,53 @@
 #import "STDeallocHook.h"
 #import "STInternal.h"
 
-#define startChronicle(hero) \
+#pragma mark - Main macros
+
+#define storyteller [StoryTeller narrator]
+
+#define tellStory(hero)
+
+#define activate(hero) \
 _Pragma ("clang diagnostic push") \
 _Pragma ("clang diagnostic ignored \"-Wunused-variable\"") \
-NS_VALID_UNTIL_END_OF_SCOPE STDeallocHook *ST_CONCATINATE(hook_, __LINE__) = [[STDeallocHook alloc] initWithBlock:^{ \
-[[StoryTeller narrator] finishChronicleFor:hero]; \
+NS_VALID_UNTIL_END_OF_SCOPE STDeallocHook *ST_CONCATINATE(_stHook_, __LINE__) = [[STDeallocHook alloc] initWithBlock:^{ \
+deactivate(hero); \
 }]; \
 _Pragma ("clang diagnostic pop") \
-[[StoryTeller narrator] startChronicleFor:hero]
+[storyteller activateStoryFor:hero]
 
-#define finishChronicle(hero) \
-[[StoryTeller narrator] finishChronicleFor:hero]
+#define deactivate(hero) \
+[storyteller deactivateStoryFor:hero]
 
-#define narrate(hero, messageTemplate, ...) \
-[[StoryTeller narrator] addToChronicleFor:hero method: __PRETTY_FUNCTION__ lineNumber: __LINE__ message:messageTemplate, ## __VA_ARGS__]
+#define record(hero, messageTemplate, ...) \
+[storyteller recordFor:hero addMethod: __PRETTY_FUNCTION__ lineNumber: __LINE__ message:messageTemplate, ## __VA_ARGS__]
+
+#define executeBlockFor(hero, block) \
+[storyteller for:hero executeBlock:block]
 
 @interface StoryTeller : NSObject
+
+#pragma mark - Story teller
 
 +(StoryTeller __nonnull *) narrator;
 
 @property (nonatomic, assign, nonnull) Class scribeClass;
 @property (nonatomic, assign, nonnull, readonly) id<STScribe> scribe;
+
+#pragma mark - Chronicles
+
 @property (nonatomic, assign, readonly) int numberActiveChronicles;
 
--(void) startChronicleFor:(id __nonnull) hero;
+-(void) activateStoryFor:(id __nonnull) hero;
 
--(void) finishChronicleFor:(id __nonnull) hero;
+-(void) deactivateStoryFor:(id __nonnull) hero;
 
--(void) addToChronicleFor:(id __nonnull) hero
-                   method:(const char __nonnull *) methodName
-               lineNumber:(int) lineNumber
-                  message:(NSString __nonnull *) message, ...;
+-(BOOL) isStoryActiveFor:(id __nonnull) hero;
+
+#pragma mark - Logging
+
+-(void) for:(id __nonnull) hero recordMethod:(const char __nonnull *) methodName lineNumber:(int) lineNumber message:(NSString __nonnull *) messageTemplate, ...;
+
+-(void) for:(id __nonnull) hero executeBlock:(__nonnull void (^)(id __nonnull hero)) recordBlock;
 
 @end

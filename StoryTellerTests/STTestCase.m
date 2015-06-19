@@ -12,11 +12,11 @@
 @implementation STTestCase
 
 -(void) setUp {
-    [StoryTeller narrator].scribeClass = [InMemoryScribe class];
+    storyteller.scribeClass = [InMemoryScribe class];
 }
 
 -(InMemoryScribe *) inMemoryScribe {
-    return (InMemoryScribe *)[StoryTeller narrator].scribe;
+    return (InMemoryScribe *)storyteller.scribe;
 }
 
 @end
