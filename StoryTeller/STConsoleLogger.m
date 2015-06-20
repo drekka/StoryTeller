@@ -6,10 +6,10 @@
 //  Copyright © 2015 Derek Clarkson. All rights reserved.
 //
 
-#import "STConsoleScribe.h"
+#import "STConsoleLogger.h"
 #import <pthread/pthread.h>
 
-@implementation STConsoleScribe
+@implementation STConsoleLogger
 
 -(void) writeMessage:(id __nonnull) message {
     printf("%s\n", [message UTF8String]);

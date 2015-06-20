@@ -7,9 +7,9 @@
 //
 
 @import Foundation;
-#import "STScribe.h"
+#import "STLogger.h"
 
-@interface STAbstractScribe : NSObject<STScribe>
+@interface STAbstractLogger : NSObject<STLogger>
 
 -(void) writeMessage:(NSString __nonnull *) message;
 

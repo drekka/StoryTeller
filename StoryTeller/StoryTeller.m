@@ -7,76 +7,72 @@
 //
 
 #import "StoryTeller.h"
-#import "STScribe.h"
-#import "STConsoleScribe.h"
+#import "STLogger.h"
+#import "STConsoleLogger.h"
 
 @implementation StoryTeller {
-    id<STScribe> _scribe;
-    NSMutableSet *_activeStories;
+    NSMutableSet *_activeSubjects;
 }
 
-static StoryTeller *__narrator;
+static StoryTeller *__storyTeller;
 
 #pragma mark - Lifecycle
 
 +(void) initialize {
-    __narrator = [[StoryTeller alloc] init];
+    __storyTeller = [[StoryTeller alloc] init];
 }
 
 -(instancetype) init {
     self = [super init];
     if (self) {
-        _scribeClass = [STConsoleScribe class];
-        _activeStories = [[NSMutableSet alloc] init];
+        self.logger = [[STConsoleLogger alloc] init];
+        _activeSubjects = [[NSMutableSet alloc] init];
+        _logger = [[STConsoleLogger alloc] init];
     }
     return self;
 }
 
 #pragma mark - Story teller
 
-+(StoryTeller __nonnull *) narrator {
-    return __narrator;
++(StoryTeller __nonnull *) storyTeller {
+    return __storyTeller;
 }
 
--(id<STScribe> __nonnull) scribe {
-    return _scribe;
+#pragma mark - Activating logging
+
+-(void) startLoggingSubject:(id __nonnull) subject {
+
 }
 
--(void) setScribeClass:(Class __nonnull)scribeClass {
-    _scribeClass = scribeClass;
-    _scribe = nil;
+-(void) stopLoggingSubject:(id __nonnull) subject {
+
 }
 
-#pragma mark - Chronicles
+#pragma mark - Activating
 
--(int) numberActiveChronicles {
-    return (int)[_activeStories count];
+-(int) numberActiveSubjects {
+    return (int)[_activeSubjects count];
 }
 
--(void) activateStoryFor:(id __nonnull) hero {
-    [_activeStories addObject:hero];
+-(void) addSubjectToActiveList:(id __nonnull)subject {
+    [_activeSubjects addObject:subject];
 }
 
--(void) deactivateStoryFor:(id __nonnull) hero {
-    [_activeStories removeObject:hero];
+-(void) removeSubjectFromActiveList:(id __nonnull)subject {
+    [_activeSubjects removeObject:subject];
 }
 
--(BOOL) isStoryActiveFor:(id __nonnull) hero {
-    return [_activeStories containsObject:hero];
+-(BOOL) isSubjectActive:(id __nonnull) subject {
+    return [_activeSubjects containsObject:subject];
 }
 
 #pragma mark - Logging
 
--(void) for:(id __nonnull) hero recordMethod:(const char __nonnull *) methodName lineNumber:(int) lineNumber message:(NSString __nonnull *) messageTemplate, ... {
+-(void) subject:(id __nonnull) subject recordMethod:(const char __nonnull *) methodName lineNumber:(int) lineNumber message:(NSString __nonnull *) messageTemplate, ... {
 
     // Only continue if the hero is being logged.
-    if (![self tellStoryFor:hero]) {
+    if (![self loggingSubject:subject]) {
         return;
-    }
-
-    // Lazy load a scribe bceause scribes are lazy by nature.
-    if (_scribe == nil) {
-        _scribe = [[_scribeClass alloc] init];
     }
 
     // Assemble the main message.
@@ -86,23 +82,23 @@ static StoryTeller *__narrator;
     va_end(args);
 
     // And give it to the scribe.
-    [self.scribe writeMessage:msg
+    [self.logger writeMessage:msg
                    fromMethod:methodName
                    lineNumber:lineNumber];
 }
 
--(void) for:(id __nonnull) hero executeBlock:(__nonnull void (^)(id __nonnull hero)) recordBlock {
+-(void) subject:(id __nonnull) subject executeBlock:(__nonnull void (^)(id __nonnull hero)) recordBlock {
 
     // Only continue if the hero is being logged.
-    if (![self tellStoryFor:hero]) {
+    if (![self loggingSubject:subject]) {
         return;
     }
 
-    recordBlock(hero);
+    recordBlock(subject);
 }
 
--(BOOL) tellStoryFor:(id) hero {
-    return [_activeStories count] > 0 || [_activeStories containsObject:hero];
+-(BOOL) loggingSubject:(id) subject {
+    return [_activeSubjects count] > 0 || [_activeSubjects containsObject:subject];
 }
 
 @end

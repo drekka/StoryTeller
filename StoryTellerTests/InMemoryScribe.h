@@ -7,9 +7,9 @@
 //
 
 @import Foundation;
-#import "STAbstractScribe.h"
+#import "STAbstractLogger.h"
 
-@interface InMemoryScribe : STAbstractScribe
+@interface InMemoryScribe : STAbstractLogger
 
 @property (nonatomic, strong, readonly, nonnull) NSArray *log;
 

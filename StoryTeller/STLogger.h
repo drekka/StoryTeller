@@ -11,7 +11,7 @@
 /**
  A protocol that classes which produce output must implement.
  */
-@protocol STScribe <NSObject>
+@protocol STLogger <NSObject>
 
 @property (nonatomic, assign) BOOL showThreadId;
 @property (nonatomic, assign) BOOL showThreadName;

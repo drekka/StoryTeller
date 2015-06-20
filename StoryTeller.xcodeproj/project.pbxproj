@@ -8,12 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		6C6879961B32EB4400091F87 /* libStoryTeller.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CE5C3E41B329BD100F0A470 /* libStoryTeller.a */; };
-		6C6879991B32F49A00091F87 /* STAbstractScribe.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C6879981B32F49A00091F87 /* STAbstractScribe.m */; };
+		6C6879991B32F49A00091F87 /* STAbstractLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C6879981B32F49A00091F87 /* STAbstractLogger.m */; };
 		6C9B50F81B32AC770004E06D /* StoryTellerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50F71B32AC770004E06D /* StoryTellerTests.m */; };
 		6C9B50FB1B32ACB30004E06D /* InMemoryScribe.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50FA1B32ACB30004E06D /* InMemoryScribe.m */; };
 		6C9B50FE1B32ADD80004E06D /* STTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50FD1B32ADD80004E06D /* STTestCase.m */; };
 		6CCFFA7D1B33CB5F00D2F371 /* STDeallocHook.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CCFFA7C1B33CB5F00D2F371 /* STDeallocHook.m */; };
-		6CD18E021B32A5B8002C9806 /* STConsoleScribe.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CD18E011B32A5B8002C9806 /* STConsoleScribe.m */; };
+		6CD18E021B32A5B8002C9806 /* STConsoleLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CD18E011B32A5B8002C9806 /* STConsoleLogger.m */; };
 		6CE5C3E81B329BD100F0A470 /* StoryTeller.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6CE5C3E71B329BD100F0A470 /* StoryTeller.h */; };
 		6CE5C3EA1B329BD100F0A470 /* StoryTeller.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CE5C3E91B329BD100F0A470 /* StoryTeller.m */; };
 /* End PBXBuildFile section */
@@ -42,8 +42,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		6C6879971B32F49A00091F87 /* STAbstractScribe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STAbstractScribe.h; sourceTree = "<group>"; };
-		6C6879981B32F49A00091F87 /* STAbstractScribe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STAbstractScribe.m; sourceTree = "<group>"; };
+		6C6879971B32F49A00091F87 /* STAbstractLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STAbstractLogger.h; sourceTree = "<group>"; };
+		6C6879981B32F49A00091F87 /* STAbstractLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STAbstractLogger.m; sourceTree = "<group>"; };
 		6C9B50F71B32AC770004E06D /* StoryTellerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StoryTellerTests.m; sourceTree = "<group>"; };
 		6C9B50F91B32ACB30004E06D /* InMemoryScribe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InMemoryScribe.h; sourceTree = "<group>"; };
 		6C9B50FA1B32ACB30004E06D /* InMemoryScribe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InMemoryScribe.m; sourceTree = "<group>"; };
@@ -52,9 +52,9 @@
 		6CCFFA7B1B33CB5F00D2F371 /* STDeallocHook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDeallocHook.h; sourceTree = "<group>"; };
 		6CCFFA7C1B33CB5F00D2F371 /* STDeallocHook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDeallocHook.m; sourceTree = "<group>"; };
 		6CCFFA7E1B33D43B00D2F371 /* STInternal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STInternal.h; sourceTree = "<group>"; };
-		6CD18DFF1B32A4EF002C9806 /* STScribe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STScribe.h; sourceTree = "<group>"; };
-		6CD18E001B32A5B8002C9806 /* STConsoleScribe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STConsoleScribe.h; sourceTree = "<group>"; };
-		6CD18E011B32A5B8002C9806 /* STConsoleScribe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STConsoleScribe.m; sourceTree = "<group>"; };
+		6CD18DFF1B32A4EF002C9806 /* STLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STLogger.h; sourceTree = "<group>"; };
+		6CD18E001B32A5B8002C9806 /* STConsoleLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STConsoleLogger.h; sourceTree = "<group>"; };
+		6CD18E011B32A5B8002C9806 /* STConsoleLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STConsoleLogger.m; sourceTree = "<group>"; };
 		6CE5C3E41B329BD100F0A470 /* libStoryTeller.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libStoryTeller.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		6CE5C3E71B329BD100F0A470 /* StoryTeller.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StoryTeller.h; sourceTree = "<group>"; };
 		6CE5C3E91B329BD100F0A470 /* StoryTeller.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StoryTeller.m; sourceTree = "<group>"; };
@@ -84,11 +84,11 @@
 		6CCFFA7F1B33EC1F00D2F371 /* Scribes */ = {
 			isa = PBXGroup;
 			children = (
-				6CD18DFF1B32A4EF002C9806 /* STScribe.h */,
-				6CD18E001B32A5B8002C9806 /* STConsoleScribe.h */,
-				6CD18E011B32A5B8002C9806 /* STConsoleScribe.m */,
-				6C6879971B32F49A00091F87 /* STAbstractScribe.h */,
-				6C6879981B32F49A00091F87 /* STAbstractScribe.m */,
+				6CD18DFF1B32A4EF002C9806 /* STLogger.h */,
+				6CD18E001B32A5B8002C9806 /* STConsoleLogger.h */,
+				6CD18E011B32A5B8002C9806 /* STConsoleLogger.m */,
+				6C6879971B32F49A00091F87 /* STAbstractLogger.h */,
+				6C6879981B32F49A00091F87 /* STAbstractLogger.m */,
 			);
 			name = Scribes;
 			sourceTree = "<group>";
@@ -233,8 +233,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6C6879991B32F49A00091F87 /* STAbstractScribe.m in Sources */,
-				6CD18E021B32A5B8002C9806 /* STConsoleScribe.m in Sources */,
+				6C6879991B32F49A00091F87 /* STAbstractLogger.m in Sources */,
+				6CD18E021B32A5B8002C9806 /* STConsoleLogger.m in Sources */,
 				6CE5C3EA1B329BD100F0A470 /* StoryTeller.m in Sources */,
 				6CCFFA7D1B33CB5F00D2F371 /* STDeallocHook.m in Sources */,
 			);

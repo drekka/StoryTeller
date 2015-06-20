@@ -6,10 +6,10 @@
 //  Copyright © 2015 Derek Clarkson. All rights reserved.
 //
 
-#import "STAbstractScribe.h"
+#import "STAbstractLogger.h"
 #import <pthread/pthread.h>
 
-@implementation STAbstractScribe {
+@implementation STAbstractLogger {
     NSDateFormatter *_dateFormatter;
 }
 

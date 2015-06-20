@@ -7,8 +7,8 @@
 //
 
 @import Foundation;
-#import "STAbstractScribe.h"
+#import "STAbstractLogger.h"
 
-@interface STConsoleScribe : STAbstractScribe
+@interface STConsoleLogger : STAbstractLogger
 
 @end

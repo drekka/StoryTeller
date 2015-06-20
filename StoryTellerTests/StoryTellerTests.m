@@ -18,32 +18,30 @@
     const char * _helloAgainMethodName;
 }
 
--(void) testIsChronicleActive {
-    startChronicle(@"abc");
-    XCTAssertTrue([storyteller isChronicleActiveFor:@"abc"]);
-    XCTAssertFalse([storyteller isChronicleActiveFor:@"def"]);
+-(void) testActivate {
+    activate(@"abc");
+    XCTAssertTrue([storyteller isActive:@"abc"]);
+    XCTAssertFalse([storyteller isActive:@"def"]);
 }
 
 -(void) testBasicLogging {
     int logLine = __LINE__ + 1;
-    narrate(@"abc", @"hello world");
+    record(@"abc", @"hello world");
     [self validateLogLineAtIndex:0 methodName:__PRETTY_FUNCTION__ lineNumber:logLine message:@"hello world"];
 }
 
--(void) testLoggingIgnoredWhenHeroNotStarted {
-    narrate(@"abc", @"hello world");
+-(void) testLoggingIgnoredWhenHeroNotActive {
+    record(@"abc", @"hello world");
     XCTAssertEqual(0lu, [self.inMemoryScribe.log count]);
 }
 
 -(void) testMultipleChronicles {
 
-    startChronicle(@"abc");
     int abcLogLine = __LINE__ + 1;
-    narrate(@"abc", @"hello world");
+    record(@"abc", @"hello world");
 
-    startChronicle(@"def");
     int defLogLine = __LINE__ + 1;
-    narrate(@"def", @"hello world 2");
+    record(@"def", @"hello world 2");
 
     XCTAssertEqual(02u, [self.inMemoryScribe.log count]);
     [self validateLogLineAtIndex:0 methodName:__PRETTY_FUNCTION__ lineNumber:abcLogLine message:@"hello world"];
@@ -58,9 +56,9 @@
     __block const char *blockMethodName;
     [heros enumerateObjectsUsingBlock:^(NSString * __nonnull hero, NSUInteger idx, BOOL * __nonnull stop) {
         blockMethodName = __PRETTY_FUNCTION__;
-        startChronicle(hero);
+        activate(hero);
         logLineNumbers[idx] = @(__LINE__ + 1);
-        narrate(hero, [NSString stringWithFormat:@"hello world %@", hero]);
+        record(hero, [NSString stringWithFormat:@"hello world %@", hero]);
         XCTAssertEqual(1, storyteller.numberActiveChronicles);
     }];
 
@@ -71,9 +69,9 @@
 
 -(void) testLogAppearsFromNestedLogWhenDifferentHero {
 
-    startChronicle(@"abc");
+    activate(@"abc");
     int logLine = __LINE__ + 1;
-    narrate(@"abc", @"hello world");
+    record(@"abc", @"hello world");
     [self sayHelloAgain];
 
     XCTAssertEqual(2lu, [self.inMemoryScribe.log count]);
@@ -83,9 +81,9 @@
 }
 
 -(void) testNarrateBlock {
-    startChronicle(@"abc");
+    activate(@"abc");
     __block BOOL blockCalled = NO;
-    narrateBlock(@"abc", ^(id hero) {
+    executeBlockFor(@"abc", ^(id hero) {
         blockCalled = YES;
     });
     XCTAssertTrue(blockCalled);
@@ -102,7 +100,7 @@
 -(void) sayHelloAgain {
     _helloAgainMethodName = __PRETTY_FUNCTION__;
     _helloAgainLogLine = __LINE__ + 1;
-    narrate(@"def", @"hello world 2");
+    record(@"def", @"hello world 2");
 }
 
 @end
