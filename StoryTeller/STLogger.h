@@ -13,6 +13,7 @@
  */
 @protocol STLogger <NSObject>
 
+@property (nonatomic, assign) BOOL showKey;
 @property (nonatomic, assign) BOOL showThreadId;
 @property (nonatomic, assign) BOOL showThreadName;
 @property (nonatomic, assign) BOOL showTime;
@@ -20,5 +21,6 @@
 
 -(void) writeMessage:(NSString __nonnull *) message
           fromMethod:(const char __nonnull *) methodName
-          lineNumber:(int) lineNumber;
+          lineNumber:(int) lineNumber
+                 key:(id __nonnull) key;
 @end

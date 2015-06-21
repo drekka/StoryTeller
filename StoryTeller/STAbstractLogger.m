@@ -17,6 +17,7 @@
 @synthesize showThreadName = _showThreadName;
 @synthesize showThreadId = _showThreadId;
 @synthesize showTime = _showTime;
+@synthesize showKey = _showKey;
 
 -(instancetype) init {
     self = [super init];
@@ -25,13 +26,15 @@
         self.showThreadId = YES;
         self.showThreadName = YES;
         self.showTime = YES;
+        self.showKey = NO;
     }
     return self;
 }
 
--(void) writeMessage:(id __nonnull) message
+-(void) writeMessage:(NSString __nonnull *) message
           fromMethod:(const char __nonnull *) methodName
-          lineNumber:(int) lineNumber {
+          lineNumber:(int) lineNumber
+                 key:(nonnull id) key {
 
     NSMutableString *finalMessage = [[NSMutableString alloc] init];
     if (_showTime) {
@@ -52,6 +55,10 @@
         if ([threadName length] > 0) {
             [finalMessage appendFormat:@"%@ ", threadName];
         }
+    }
+
+    if (_showKey) {
+        [finalMessage appendFormat:@"[%@] ", [key description]];
     }
 
     if (_showMethodDetails) {

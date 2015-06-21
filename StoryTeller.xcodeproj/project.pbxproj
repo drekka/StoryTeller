@@ -9,12 +9,17 @@
 /* Begin PBXBuildFile section */
 		6C6879961B32EB4400091F87 /* libStoryTeller.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CE5C3E41B329BD100F0A470 /* libStoryTeller.a */; };
 		6C6879991B32F49A00091F87 /* STAbstractLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C6879981B32F49A00091F87 /* STAbstractLogger.m */; };
+		6C8A96F71B36E62100066A0C /* STLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CD18DFF1B32A4EF002C9806 /* STLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6C8A96F81B36E62100066A0C /* STConsoleLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CD18E001B32A5B8002C9806 /* STConsoleLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6C8A96F91B36E62100066A0C /* STAbstractLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C6879971B32F49A00091F87 /* STAbstractLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6C8A96FA1B36E62100066A0C /* STDeallocHook.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CCFFA7B1B33CB5F00D2F371 /* STDeallocHook.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6C8A96FB1B36E62100066A0C /* STInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CCFFA7E1B33D43B00D2F371 /* STInternal.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6C8A96FC1B36E62100066A0C /* StoryTeller.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CE5C3E71B329BD100F0A470 /* StoryTeller.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6C9B50F81B32AC770004E06D /* StoryTellerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50F71B32AC770004E06D /* StoryTellerTests.m */; };
 		6C9B50FB1B32ACB30004E06D /* InMemoryLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50FA1B32ACB30004E06D /* InMemoryLogger.m */; };
 		6C9B50FE1B32ADD80004E06D /* STTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50FD1B32ADD80004E06D /* STTestCase.m */; };
 		6CCFFA7D1B33CB5F00D2F371 /* STDeallocHook.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CCFFA7C1B33CB5F00D2F371 /* STDeallocHook.m */; };
 		6CD18E021B32A5B8002C9806 /* STConsoleLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CD18E011B32A5B8002C9806 /* STConsoleLogger.m */; };
-		6CE5C3E81B329BD100F0A470 /* StoryTeller.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6CE5C3E71B329BD100F0A470 /* StoryTeller.h */; };
 		6CE5C3EA1B329BD100F0A470 /* StoryTeller.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CE5C3E91B329BD100F0A470 /* StoryTeller.m */; };
 /* End PBXBuildFile section */
 
@@ -27,19 +32,6 @@
 			remoteInfo = StoryTeller;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		6CE5C3E21B329BD100F0A470 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "include/$(PRODUCT_NAME)";
-			dstSubfolderSpec = 16;
-			files = (
-				6CE5C3E81B329BD100F0A470 /* StoryTeller.h in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		6C6879971B32F49A00091F87 /* STAbstractLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STAbstractLogger.h; sourceTree = "<group>"; };
@@ -147,6 +139,22 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		6C8A96F61B36E60700066A0C /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6C8A96F71B36E62100066A0C /* STLogger.h in Headers */,
+				6C8A96F81B36E62100066A0C /* STConsoleLogger.h in Headers */,
+				6C8A96F91B36E62100066A0C /* STAbstractLogger.h in Headers */,
+				6C8A96FA1B36E62100066A0C /* STDeallocHook.h in Headers */,
+				6C8A96FB1B36E62100066A0C /* STInternal.h in Headers */,
+				6C8A96FC1B36E62100066A0C /* StoryTeller.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
 		6CE5C3E31B329BD100F0A470 /* StoryTeller */ = {
 			isa = PBXNativeTarget;
@@ -154,7 +162,7 @@
 			buildPhases = (
 				6CE5C3E01B329BD100F0A470 /* Sources */,
 				6CE5C3E11B329BD100F0A470 /* Frameworks */,
-				6CE5C3E21B329BD100F0A470 /* CopyFiles */,
+				6C8A96F61B36E60700066A0C /* Headers */,
 			);
 			buildRules = (
 			);
@@ -390,6 +398,7 @@
 			buildSettings = {
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = /include/$PROJECT_NAME;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -399,6 +408,7 @@
 			buildSettings = {
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = /include/$PROJECT_NAME;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
