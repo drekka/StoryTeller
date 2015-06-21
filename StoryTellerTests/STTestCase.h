@@ -8,10 +8,10 @@
 
 @import Foundation;
 @import XCTest;
-#import "InMemoryScribe.h"
+#import "InMemoryLogger.h"
 
 @interface STTestCase : XCTestCase
 
-@property (nonatomic, strong, nonnull, readonly) InMemoryScribe *inMemoryScribe;
+@property (nonatomic, strong, nonnull, readonly) InMemoryLogger *inMemoryLogger;
 
 @end

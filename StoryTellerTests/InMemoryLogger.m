@@ -6,9 +6,9 @@
 //  Copyright © 2015 Derek Clarkson. All rights reserved.
 //
 
-#import "InMemoryScribe.h"
+#import "InMemoryLogger.h"
 
-@implementation InMemoryScribe {
+@implementation InMemoryLogger {
     NSMutableArray<NSString *> *_log;
 }
 

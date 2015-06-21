@@ -13,56 +13,60 @@
 
 #pragma mark - Main macros
 
-#define storyteller [StoryTeller storyTeller]
+#define startLogging(key) \
+[[StoryTeller storyTeller] startLogging:key]
 
-#define logSubject(subject)
-
-#define addActiveSubject(subject) \
+#define startScope(key) \
 _Pragma ("clang diagnostic push") \
 _Pragma ("clang diagnostic ignored \"-Wunused-variable\"") \
 NS_VALID_UNTIL_END_OF_SCOPE STDeallocHook *ST_CONCATINATE(_stHook_, __LINE__) = [[STDeallocHook alloc] initWithBlock:^{ \
-removeActiveSubject(subject); \
+endScope(key); \
 }]; \
 _Pragma ("clang diagnostic pop") \
-[storyteller addSubjectToActiveList:subject]
+[[StoryTeller storyTeller] startScope:key]
 
-#define removeActiveSubject(subject) \
-[storyteller removeSubjectFromActiveList:subject]
+#define endScope(key) \
+[[StoryTeller storyTeller] endScope:key]
 
-#define record(hero, messageTemplate, ...) \
-[storyteller for:hero recordMethod: __PRETTY_FUNCTION__ lineNumber: __LINE__ message:messageTemplate, ## __VA_ARGS__]
+#define log(key, messageTemplate, ...) \
+[[StoryTeller storyTeller] record:key method: __PRETTY_FUNCTION__ lineNumber: __LINE__ message:messageTemplate, ## __VA_ARGS__]
 
-#define executeBlockFor(hero, block) \
-[storyteller for:hero executeBlock:block]
+#define executeBlock(key, codeBlock) \
+[[StoryTeller storyTeller] execute:key block:codeBlock]
+
+#pragma mark - Main class
 
 @interface StoryTeller : NSObject
 
-#pragma mark - Story teller
-
 +(StoryTeller __nonnull *) storyTeller;
+
+/**
+ Used mostly for debugging.
+ */
+-(void) reset;
 
 @property (nonatomic, strong, nonnull) id<STLogger> logger;
 
 #pragma mark - Activating logging
 
--(void) startLoggingSubject:(id __nonnull) subject;
+-(void) startLogging:(id __nonnull) key;
 
--(void) stopLoggingSubject:(id __nonnull) subject;
+-(void) stopLogging:(id __nonnull) key;
 
 #pragma mark - Stories
 
-@property (nonatomic, assign, readonly) int numberActiveSubjects;
+@property (nonatomic, assign, readonly) int numberActiveScopes;
 
--(void) addSubjectToActiveList:(id __nonnull) subject;
+-(void) startScope:(id __nonnull) key;
 
--(void) removeSubjectFromActiveList:(id __nonnull) subject;
+-(void) endScope:(id __nonnull) key;
 
--(BOOL) isSubjectActive:(id __nonnull) subject;
+-(BOOL) isScopeActive:(id __nonnull) key;
 
 #pragma mark - Logging
 
--(void) subject:(id __nonnull) subject recordMethod:(const char __nonnull *) methodName lineNumber:(int) lineNumber message:(NSString __nonnull *) messageTemplate, ...;
+-(void) record:(id __nonnull) key method:(const char __nonnull *) methodName lineNumber:(int) lineNumber message:(NSString __nonnull *) messageTemplate, ...;
 
--(void) subject:(id __nonnull) subject executeBlock:(__nonnull void (^)(id __nonnull hero)) recordBlock;
+-(void) execute:(id __nonnull) key block:(__nonnull void (^)(id __nonnull key)) block;
 
 @end

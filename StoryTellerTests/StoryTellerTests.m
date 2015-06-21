@@ -18,37 +18,32 @@
     const char * _helloAgainMethodName;
 }
 
--(void) testActivate {
-    activate(@"abc");
-    XCTAssertTrue([storyteller isActive:@"abc"]);
-    XCTAssertFalse([storyteller isActive:@"def"]);
+-(void) setUp {
+    [super setUp];
+    startLogging(@"abc");
 }
 
--(void) testBasicLogging {
+-(void) testActivatingKeyScope {
+    startScope(@"abc");
+    XCTAssertTrue([[StoryTeller storyTeller] isScopeActive:@"abc"]);
+    XCTAssertFalse([[StoryTeller storyTeller] isScopeActive:@"def"]);
+}
+
+-(void) testMessageRecordedWhenKeyLogging {
     int logLine = __LINE__ + 1;
-    record(@"abc", @"hello world");
+    log(@"abc", @"hello world");
     [self validateLogLineAtIndex:0 methodName:__PRETTY_FUNCTION__ lineNumber:logLine message:@"hello world"];
 }
 
--(void) testLoggingIgnoredWhenHeroNotActive {
-    record(@"abc", @"hello world");
-    XCTAssertEqual(0lu, [self.inMemoryScribe.log count]);
+-(void) testMessageRecordedWhenKeyNotLogging {
+    [[StoryTeller storyTeller] stopLogging:@"abc"];
+    log(@"abc", @"hello world");
+    XCTAssertEqual(0lu, [self.inMemoryLogger.log count]);
 }
 
--(void) testMultipleChronicles {
+-(void) testScopesInLoops {
 
-    int abcLogLine = __LINE__ + 1;
-    record(@"abc", @"hello world");
-
-    int defLogLine = __LINE__ + 1;
-    record(@"def", @"hello world 2");
-
-    XCTAssertEqual(02u, [self.inMemoryScribe.log count]);
-    [self validateLogLineAtIndex:0 methodName:__PRETTY_FUNCTION__ lineNumber:abcLogLine message:@"hello world"];
-    [self validateLogLineAtIndex:1 methodName:__PRETTY_FUNCTION__ lineNumber:defLogLine message:@"hello world 2"];
-}
-
--(void) testChroniclesInLoop {
+    startLogging(@"def");
 
     NSArray<NSString *> *heros = @[@"abc", @"def"];
     NSMutableArray<NSNumber *> *logLineNumbers = [@[] mutableCopy];
@@ -56,34 +51,35 @@
     __block const char *blockMethodName;
     [heros enumerateObjectsUsingBlock:^(NSString * __nonnull hero, NSUInteger idx, BOOL * __nonnull stop) {
         blockMethodName = __PRETTY_FUNCTION__;
-        activate(hero);
+        startScope(hero);
         logLineNumbers[idx] = @(__LINE__ + 1);
-        record(hero, [NSString stringWithFormat:@"hello world %@", hero]);
-        XCTAssertEqual(1, storyteller.numberActiveChronicles);
+        log(hero, [NSString stringWithFormat:@"hello world %@", hero]);
+        XCTAssertEqual(1, [StoryTeller storyTeller].numberActiveScopes);
     }];
 
-    XCTAssertEqual(02u, [self.inMemoryScribe.log count]);
+    XCTAssertEqual(02u, [self.inMemoryLogger.log count]);
     [self validateLogLineAtIndex:0 methodName:blockMethodName lineNumber:logLineNumbers[0].intValue message:@"hello world abc"];
     [self validateLogLineAtIndex:1 methodName:blockMethodName lineNumber:logLineNumbers[1].intValue message:@"hello world def"];
 }
 
--(void) testLogAppearsFromNestedLogWhenDifferentHero {
+-(void) testScopeEnablesLoggingFromNestedCalls {
 
-    activate(@"abc");
+    startScope(@"abc");
+
     int logLine = __LINE__ + 1;
-    record(@"abc", @"hello world");
+    log(@"abc", @"hello world");
     [self sayHelloAgain];
 
-    XCTAssertEqual(2lu, [self.inMemoryScribe.log count]);
+    XCTAssertEqual(2lu, [self.inMemoryLogger.log count]);
 
     [self validateLogLineAtIndex:0 methodName:__PRETTY_FUNCTION__ lineNumber:logLine message:@"hello world"];
     [self validateLogLineAtIndex:1 methodName:_helloAgainMethodName lineNumber:_helloAgainLogLine message:@"hello world 2"];
 }
 
--(void) testNarrateBlock {
-    activate(@"abc");
+-(void) testExecuteBlock {
+    startScope(@"abc");
     __block BOOL blockCalled = NO;
-    executeBlockFor(@"abc", ^(id hero) {
+    executeBlock(@"abc", ^(id key) {
         blockCalled = YES;
     });
     XCTAssertTrue(blockCalled);
@@ -94,13 +90,13 @@
                     lineNumber:(int) lineNumber
                        message:(NSString __nonnull *) message {
     NSString *expected = [NSString stringWithFormat:@"<a07> %s(%i) %@", methodName, lineNumber, message];
-    XCTAssertEqualObjects(expected, [self.inMemoryScribe.log[idx] substringFromIndex:13]);
+    XCTAssertEqualObjects(expected, [self.inMemoryLogger.log[idx] substringFromIndex:13]);
 }
 
 -(void) sayHelloAgain {
     _helloAgainMethodName = __PRETTY_FUNCTION__;
     _helloAgainLogLine = __LINE__ + 1;
-    record(@"def", @"hello world 2");
+    log(@"def", @"hello world 2");
 }
 
 @end

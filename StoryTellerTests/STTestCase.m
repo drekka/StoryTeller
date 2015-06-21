@@ -8,15 +8,17 @@
 
 #import "STTestCase.h"
 #import "StoryTeller.h"
+#import "InMemoryLogger.h"
 
 @implementation STTestCase
 
 -(void) setUp {
-    storyteller.scribeClass = [InMemoryScribe class];
+    [[StoryTeller storyTeller] reset];
+    [StoryTeller storyTeller].logger = [[InMemoryLogger alloc] init];
 }
 
--(InMemoryScribe *) inMemoryScribe {
-    return (InMemoryScribe *)storyteller.scribe;
+-(InMemoryLogger *) inMemoryLogger {
+    return (InMemoryLogger *) [StoryTeller storyTeller].logger;
 }
 
 @end

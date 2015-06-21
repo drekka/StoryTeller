@@ -11,7 +11,8 @@
 #import "STConsoleLogger.h"
 
 @implementation StoryTeller {
-    NSMutableSet *_activeSubjects;
+    NSMutableSet *_activeKeys;
+    NSMutableSet *_activeLogs;
 }
 
 static StoryTeller *__storyTeller;
@@ -25,9 +26,7 @@ static StoryTeller *__storyTeller;
 -(instancetype) init {
     self = [super init];
     if (self) {
-        self.logger = [[STConsoleLogger alloc] init];
-        _activeSubjects = [[NSMutableSet alloc] init];
-        _logger = [[STConsoleLogger alloc] init];
+        [self reset];
     }
     return self;
 }
@@ -38,40 +37,47 @@ static StoryTeller *__storyTeller;
     return __storyTeller;
 }
 
-#pragma mark - Activating logging
-
--(void) startLoggingSubject:(id __nonnull) subject {
-
+-(void) reset {
+    self.logger = [[STConsoleLogger alloc] init];
+    _activeKeys = [[NSMutableSet alloc] init];
+    _logger = [[STConsoleLogger alloc] init];
+    _activeLogs = [[NSMutableSet alloc] init];
 }
 
--(void) stopLoggingSubject:(id __nonnull) subject {
+#pragma mark - Activating logging
 
+-(void) startLogging:(id __nonnull) key {
+    [_activeLogs addObject:key];
+}
+
+-(void) stopLogging:(id __nonnull) key {
+    [_activeLogs removeObject:key];
 }
 
 #pragma mark - Activating
 
--(int) numberActiveSubjects {
-    return (int)[_activeSubjects count];
+-(int) numberActiveScopes {
+    return (int)[_activeKeys count];
 }
 
--(void) addSubjectToActiveList:(id __nonnull)subject {
-    [_activeSubjects addObject:subject];
+-(void) startScope:(id __nonnull) key {
+    [_activeKeys addObject:key];
 }
 
--(void) removeSubjectFromActiveList:(id __nonnull)subject {
-    [_activeSubjects removeObject:subject];
+-(void) endScope:(id __nonnull) key {
+    [_activeKeys removeObject:key];
 }
 
--(BOOL) isSubjectActive:(id __nonnull) subject {
-    return [_activeSubjects containsObject:subject];
+-(BOOL) isScopeActive:(id __nonnull) key {
+    return [_activeKeys containsObject:key];
 }
 
 #pragma mark - Logging
 
--(void) subject:(id __nonnull) subject recordMethod:(const char __nonnull *) methodName lineNumber:(int) lineNumber message:(NSString __nonnull *) messageTemplate, ... {
+-(void) record:(id __nonnull) key method:(const char __nonnull *) methodName lineNumber:(int) lineNumber message:(NSString __nonnull *) messageTemplate, ... {
 
     // Only continue if the hero is being logged.
-    if (![self loggingSubject:subject]) {
+    if (![self isLogging:key]) {
         return;
     }
 
@@ -87,18 +93,31 @@ static StoryTeller *__storyTeller;
                    lineNumber:lineNumber];
 }
 
--(void) subject:(id __nonnull) subject executeBlock:(__nonnull void (^)(id __nonnull hero)) recordBlock {
+-(void) execute:(id __nonnull) key block:(void (^ __nonnull)(id __nonnull)) block {
 
     // Only continue if the hero is being logged.
-    if (![self loggingSubject:subject]) {
+    if (![self isLogging:key]) {
         return;
     }
 
-    recordBlock(subject);
+    block(key);
 }
 
--(BOOL) loggingSubject:(id) subject {
-    return [_activeSubjects count] > 0 || [_activeSubjects containsObject:subject];
+-(BOOL) isLogging:(id) key {
+
+    // if the key is active.
+    if ([_activeLogs containsObject:key]) {
+        return YES;
+    }
+
+    // If any of the active keys are logging then we also fire.
+    for (id scopeKey in _activeKeys) {
+        if ([_activeLogs containsObject:scopeKey]) {
+            return YES;
+        }
+    }
+
+    return NO;
 }
 
 @end
