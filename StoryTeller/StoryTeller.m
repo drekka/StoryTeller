@@ -76,7 +76,7 @@ static StoryTeller *__storyTeller;
 
 -(void) record:(id __nonnull) key method:(const char __nonnull *) methodName lineNumber:(int) lineNumber message:(NSString __nonnull *) messageTemplate, ... {
 
-    // Only continue if the hero is being logged.
+    // Only continue if the key is being logged.
     if (![self isLogging:key]) {
         return;
     }
@@ -95,7 +95,7 @@ static StoryTeller *__storyTeller;
 
 -(void) execute:(id __nonnull) key block:(void (^ __nonnull)(id __nonnull)) block {
 
-    // Only continue if the hero is being logged.
+    // Only continue if the key is being logged.
     if (![self isLogging:key]) {
         return;
     }

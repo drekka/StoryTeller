@@ -45,15 +45,15 @@
 
     startLogging(@"def");
 
-    NSArray<NSString *> *heros = @[@"abc", @"def"];
+    NSArray<NSString *> *keys = @[@"abc", @"def"];
     NSMutableArray<NSNumber *> *logLineNumbers = [@[] mutableCopy];
 
     __block const char *blockMethodName;
-    [heros enumerateObjectsUsingBlock:^(NSString * __nonnull hero, NSUInteger idx, BOOL * __nonnull stop) {
+    [keys enumerateObjectsUsingBlock:^(NSString * __nonnull key, NSUInteger idx, BOOL * __nonnull stop) {
         blockMethodName = __PRETTY_FUNCTION__;
-        startScope(hero);
+        startScope(key);
         logLineNumbers[idx] = @(__LINE__ + 1);
-        log(hero, [NSString stringWithFormat:@"hello world %@", hero]);
+        log(key, [NSString stringWithFormat:@"hello world %@", key]);
         XCTAssertEqual(1, [StoryTeller storyTeller].numberActiveScopes);
     }];
 
