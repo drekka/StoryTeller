@@ -47,6 +47,8 @@ _Pragma ("clang diagnostic pop") \
 
 @property (nonatomic, strong, nonnull) id<STLogger> logger;
 
+@property (nonatomic, assign) BOOL logAll;
+
 #pragma mark - Activating logging
 
 -(void) startLogging:(id __nonnull) key;

@@ -105,8 +105,8 @@ static StoryTeller *__storyTeller;
 
 -(BOOL) isLogging:(id) key {
 
-    // if the key is active.
-    if ([_activeLogs containsObject:key]) {
+    // Check the bypass and active keys.
+    if (_logAll || [_activeLogs containsObject:key]) {
         return YES;
     }
 
