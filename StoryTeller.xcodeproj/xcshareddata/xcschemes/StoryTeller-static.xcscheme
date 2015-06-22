@@ -14,8 +14,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6CE5C3E31B329BD100F0A470"
-               BuildableName = "libStoryTeller.a"
+               BlueprintIdentifier = "6C158E131B38269D00119725"
+               BuildableName = "StoryTeller.framework"
                BlueprintName = "StoryTeller"
                ReferencedContainer = "container:StoryTeller.xcodeproj">
             </BuildableReference>
@@ -32,8 +32,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6CE5C3E31B329BD100F0A470"
-            BuildableName = "libStoryTeller.a"
+            BlueprintIdentifier = "6C158E131B38269D00119725"
+            BuildableName = "StoryTeller.framework"
             BlueprintName = "StoryTeller"
             ReferencedContainer = "container:StoryTeller.xcodeproj">
          </BuildableReference>
@@ -54,8 +54,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6CE5C3E31B329BD100F0A470"
-            BuildableName = "libStoryTeller.a"
+            BlueprintIdentifier = "6C158E131B38269D00119725"
+            BuildableName = "StoryTeller.framework"
             BlueprintName = "StoryTeller"
             ReferencedContainer = "container:StoryTeller.xcodeproj">
          </BuildableReference>
@@ -72,8 +72,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6CE5C3E31B329BD100F0A470"
-            BuildableName = "libStoryTeller.a"
+            BlueprintIdentifier = "6C158E131B38269D00119725"
+            BuildableName = "StoryTeller.framework"
             BlueprintName = "StoryTeller"
             ReferencedContainer = "container:StoryTeller.xcodeproj">
          </BuildableReference>

@@ -14,6 +14,11 @@
 @protocol STLogger <NSObject>
 
 /**
+ If @c YES, prints the log key on each line.
+ */
+@property (nonatomic, assign) BOOL showKey;
+
+/**
  If @c YES, prints the thread id on each line.
  */
 @property (nonatomic, assign) BOOL showThreadId;

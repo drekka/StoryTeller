@@ -9,6 +9,7 @@
 @import Foundation;
 
 #import <StoryTeller/STInternal.h>
+#import <StoryTeller/STConfig.h>
 #import <StoryTeller/STDeallocHook.h>
 #import <StoryTeller/STLogger.h>
 #import <StoryTeller/STConsoleLogger.h>
