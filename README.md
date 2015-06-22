@@ -17,11 +17,17 @@ Story Teller bases it's logging around a simpler and more important question: **
 
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
-This project can be dynamically included using Carthage. This is recommended if you are using iOS8+.
+This project can be dynamically included using [Carthage](https://github.com/Carthage/Carthage). This is recommended if you are using iOS8+.
 
 ### Cocoapods
 
-You can use cocoapods to include this project.
+At the moment I don't support [Cocoapods](https://cocoapods.org) because I regard it as as hacky poor quality solution. And I don't use it on my personal projects. I have created a posspec in the root of Story Teller, but so far it doesn't pass the pod lint tests and typically with any Ruby hack projects, is giving errors that make no sense. I'll get around to supporting it one day. But it's not something I use. Feel free to figure it out if you want.
+
+### Submodules or Manual includes
+
+Another fine way to include Story Teller is to use [Git Submodules](https://chrisjean.com/git-submodules-adding-using-removing-and-updating/). Whilst more technical in nature, it gves you the best control of the software. Use the following URL for your submodule or if you want to manually check Story Teller out:
+
+[https://github.com/drekka/StoryTeller.git]()
 
 ## Adding Story Teller logging
 
