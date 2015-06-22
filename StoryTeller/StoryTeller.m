@@ -36,9 +36,10 @@ static StoryTeller *__storyTeller;
 }
 
 -(void) reset {
-    self.logger = [[STConsoleLogger alloc] init];
-    _activeKeys = [[NSMutableSet alloc] init];
+    _logAll = NO;
+    _logRoot = NO;
     _logger = [[STConsoleLogger alloc] init];
+    _activeKeys = [[NSMutableSet alloc] init];
     _activeLogs = [[NSMutableSet alloc] init];
 }
 
@@ -105,6 +106,11 @@ static StoryTeller *__storyTeller;
 
     // Check the bypass and active keys.
     if (_logAll || [_activeLogs containsObject:key]) {
+        return YES;
+    }
+
+    // If logRoot is in effect we need to log as long as there are no scopes.
+    if (_logRoot && [_activeKeys count] == 0) {
         return YES;
     }
 

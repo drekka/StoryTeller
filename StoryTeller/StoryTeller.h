@@ -56,7 +56,17 @@ _Pragma ("clang diagnostic pop") \
 
 @property (nonatomic, strong, nonnull) id<STLogger> logger;
 
+/**
+ Logs everything regardless of log settings.
+ */
 @property (nonatomic, assign) BOOL logAll;
+
+/**
+ Logs all top level log statements.
+ 
+ @discussion Similar to logAll except that it only logs the top level log statements. Any statement which is inside an active Key Scope will be ignored. The main goal of this is to enable a semi-quick high level report of the data going through the app.
+ */
+@property (nonatomic, assign) BOOL logRoot;
 
 #pragma mark - Activating logging
 

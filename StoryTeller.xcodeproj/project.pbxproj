@@ -23,6 +23,7 @@
 		6C217EF51B379770000F3ABF /* STDeallocHook.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CCFFA7B1B33CB5F00D2F371 /* STDeallocHook.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6C217EF61B379770000F3ABF /* STInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CCFFA7E1B33D43B00D2F371 /* STInternal.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6C217EF71B379D45000F3ABF /* StoryTellerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50F71B32AC770004E06D /* StoryTellerTests.m */; };
+		6C217EFD1B37CBF5000F3ABF /* StoryTeller.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CE5C3E71B329BD100F0A470 /* StoryTeller.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6C6879991B32F49A00091F87 /* STAbstractLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C6879981B32F49A00091F87 /* STAbstractLogger.m */; };
 		6C9B50FB1B32ACB30004E06D /* InMemoryLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50FA1B32ACB30004E06D /* InMemoryLogger.m */; };
 		6C9B50FE1B32ADD80004E06D /* STTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50FD1B32ADD80004E06D /* STTestCase.m */; };
@@ -117,7 +118,7 @@
 			children = (
 				6CE5C3E61B329BD100F0A470 /* StoryTeller */,
 				6CE5C3F31B329BD100F0A470 /* StoryTellerTests */,
-				6CFB32241B379624004309EF /* StoryTeller */,
+				6CFB32241B379624004309EF /* Resources */,
 				6CE5C3E51B329BD100F0A470 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -157,11 +158,12 @@
 			path = StoryTellerTests;
 			sourceTree = "<group>";
 		};
-		6CFB32241B379624004309EF /* StoryTeller */ = {
+		6CFB32241B379624004309EF /* Resources */ = {
 			isa = PBXGroup;
 			children = (
 				6CFB32271B379624004309EF /* Info.plist */,
 			);
+			name = Resources;
 			path = StoryTeller;
 			sourceTree = "<group>";
 		};
@@ -185,6 +187,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C217EFD1B37CBF5000F3ABF /* StoryTeller.h in Headers */,
 				6C217EF21B379770000F3ABF /* STLogger.h in Headers */,
 				6C217EF31B379770000F3ABF /* STConsoleLogger.h in Headers */,
 				6C217EF41B379770000F3ABF /* STAbstractLogger.h in Headers */,
@@ -405,7 +408,7 @@
 				GCC_WARN_UNKNOWN_PRAGMAS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				RUN_CLANG_STATIC_ANALYZER = YES;
@@ -464,7 +467,7 @@
 				GCC_WARN_UNKNOWN_PRAGMAS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
