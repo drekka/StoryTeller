@@ -13,8 +13,6 @@
  */
 @protocol STLogger <NSObject>
 
-@property (nonatomic, assign) BOOL showKey;
-
 /**
  If @c YES, prints the thread id on each line.
  */
