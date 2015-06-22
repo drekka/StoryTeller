@@ -34,7 +34,7 @@ This looks very similar to other logging frameworks. Except that they would eith
 
 Story Teller's ***Key*** is the important differentiator. ***It can be anything you want!*** 
 
-The idea though, *is that it is an identifier that you can later use to trace data through the system.* This is where Story Teller strength is. The key might be an account number, a user id, a class, or any object you want to be able to search on when debugging. It could be relevant to the application's config, a users account, the graphics subsystem. Whatever makes sense in your app. Here's an example:
+The idea though, *is that it is an identifier that you can later use to trace data through the system.* This is where Story Teller's strength is. The key might be an account number, a user id, a class, or any object you want to be able to search on when debugging. It could be relevant to the application's config, a users account, the graphics subsystem. Whatever makes sense in your app. Here's an example:
 ```objectivec
 log(user.id, "User %@ is logging", user.id);
 ```
@@ -43,7 +43,7 @@ This statement will log based on the user's ID. Which means that we can target s
 
 ### What if I don't have an accessible key?
 
-Often in the code base you might want to be logging based on somelike like an account number, but be in some method that doesn't have that account number accessible. So how do you log it?
+Often you might want to be logging based on something like an account number, but be in some method that doesn't have that account number accessible. So how do you log it?
 
 Story Teller has the concept of **Key Scopes**. This is where you can tell it that any logging statements for a particular range of code are regarded as being under a specific key, even if the log statements do not use that key. Here's an example:
 
