@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "6CFB32221B379624004309EF"
-               BuildableName = "StoryTeller-framework.framework"
+               BuildableName = "StoryTeller.framework"
                BlueprintName = "StoryTeller-framework"
                ReferencedContainer = "container:StoryTeller.xcodeproj">
             </BuildableReference>
@@ -57,7 +57,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6CFB32221B379624004309EF"
-            BuildableName = "StoryTeller-framework.framework"
+            BuildableName = "StoryTeller.framework"
             BlueprintName = "StoryTeller-framework"
             ReferencedContainer = "container:StoryTeller.xcodeproj">
          </BuildableReference>
@@ -75,7 +75,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6CFB32221B379624004309EF"
-            BuildableName = "StoryTeller-framework.framework"
+            BuildableName = "StoryTeller.framework"
             BlueprintName = "StoryTeller-framework"
             ReferencedContainer = "container:StoryTeller.xcodeproj">
          </BuildableReference>
