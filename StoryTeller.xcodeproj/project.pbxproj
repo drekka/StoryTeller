@@ -7,51 +7,33 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6C0A55F61B37F578006E0A4A /* STConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C217F001B37DBF4000F3ABF /* STConfig.m */; };
-		6C0A55F71B37F585006E0A4A /* STConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C217EFF1B37DBF4000F3ABF /* STConfig.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6C0A55FA1B37F801006E0A4A /* StoryTellerConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 6C217EFE1B37CE5C000F3ABF /* StoryTellerConfig.json */; };
-		6C217EE81B379730000F3ABF /* STLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CD18DFF1B32A4EF002C9806 /* STLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6C217EE91B379730000F3ABF /* STConsoleLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CD18E001B32A5B8002C9806 /* STConsoleLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6C217EEA1B379730000F3ABF /* STAbstractLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C6879971B32F49A00091F87 /* STAbstractLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6C217EEB1B379730000F3ABF /* STDeallocHook.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CCFFA7B1B33CB5F00D2F371 /* STDeallocHook.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6C217EEC1B379730000F3ABF /* STInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CCFFA7E1B33D43B00D2F371 /* STInternal.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6C217EED1B379730000F3ABF /* StoryTeller.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CE5C3E71B329BD100F0A470 /* StoryTeller.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6C217EEE1B379767000F3ABF /* STConsoleLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CD18E011B32A5B8002C9806 /* STConsoleLogger.m */; };
-		6C217EEF1B379767000F3ABF /* STAbstractLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C6879981B32F49A00091F87 /* STAbstractLogger.m */; };
-		6C217EF01B379767000F3ABF /* STDeallocHook.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CCFFA7C1B33CB5F00D2F371 /* STDeallocHook.m */; };
-		6C217EF11B379767000F3ABF /* StoryTeller.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CE5C3E91B329BD100F0A470 /* StoryTeller.m */; };
-		6C217EF21B379770000F3ABF /* STLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CD18DFF1B32A4EF002C9806 /* STLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6C217EF31B379770000F3ABF /* STConsoleLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CD18E001B32A5B8002C9806 /* STConsoleLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6C217EF41B379770000F3ABF /* STAbstractLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C6879971B32F49A00091F87 /* STAbstractLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6C217EF51B379770000F3ABF /* STDeallocHook.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CCFFA7B1B33CB5F00D2F371 /* STDeallocHook.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6C217EF61B379770000F3ABF /* STInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CCFFA7E1B33D43B00D2F371 /* STInternal.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6C217EF71B379D45000F3ABF /* StoryTellerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50F71B32AC770004E06D /* StoryTellerTests.m */; };
-		6C217EFD1B37CBF5000F3ABF /* StoryTeller.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CE5C3E71B329BD100F0A470 /* StoryTeller.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6C217F011B37DBF4000F3ABF /* STConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C217EFF1B37DBF4000F3ABF /* STConfig.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6C217F021B37DBF4000F3ABF /* STConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C217F001B37DBF4000F3ABF /* STConfig.m */; };
+		6C6879961B32EB4400091F87 /* libStoryTeller.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CE5C3E41B329BD100F0A470 /* libStoryTeller.a */; };
 		6C6879991B32F49A00091F87 /* STAbstractLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C6879981B32F49A00091F87 /* STAbstractLogger.m */; };
+		6C8A96F71B36E62100066A0C /* STLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CD18DFF1B32A4EF002C9806 /* STLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6C8A96F81B36E62100066A0C /* STConsoleLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CD18E001B32A5B8002C9806 /* STConsoleLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6C8A96F91B36E62100066A0C /* STAbstractLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C6879971B32F49A00091F87 /* STAbstractLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6C8A96FA1B36E62100066A0C /* STDeallocHook.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CCFFA7B1B33CB5F00D2F371 /* STDeallocHook.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6C8A96FB1B36E62100066A0C /* STInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CCFFA7E1B33D43B00D2F371 /* STInternal.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6C8A96FC1B36E62100066A0C /* StoryTeller.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CE5C3E71B329BD100F0A470 /* StoryTeller.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6C9B50F81B32AC770004E06D /* StoryTellerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50F71B32AC770004E06D /* StoryTellerTests.m */; };
 		6C9B50FB1B32ACB30004E06D /* InMemoryLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50FA1B32ACB30004E06D /* InMemoryLogger.m */; };
 		6C9B50FE1B32ADD80004E06D /* STTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50FD1B32ADD80004E06D /* STTestCase.m */; };
 		6CCFFA7D1B33CB5F00D2F371 /* STDeallocHook.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CCFFA7C1B33CB5F00D2F371 /* STDeallocHook.m */; };
 		6CD18E021B32A5B8002C9806 /* STConsoleLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CD18E011B32A5B8002C9806 /* STConsoleLogger.m */; };
 		6CE5C3EA1B329BD100F0A470 /* StoryTeller.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CE5C3E91B329BD100F0A470 /* StoryTeller.m */; };
-		6CFB323C1B379668004309EF /* StoryTeller.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CFB32231B379624004309EF /* StoryTeller.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		6CFB323A1B37965F004309EF /* PBXContainerItemProxy */ = {
+		6C6879941B32EB3D00091F87 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6CE5C3DC1B329BD100F0A470 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 6CFB32221B379624004309EF;
+			remoteGlobalIDString = 6CE5C3E31B329BD100F0A470;
 			remoteInfo = StoryTeller;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		6C217EFE1B37CE5C000F3ABF /* StoryTellerConfig.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = StoryTellerConfig.json; sourceTree = "<group>"; };
-		6C217EFF1B37DBF4000F3ABF /* STConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STConfig.h; sourceTree = "<group>"; };
-		6C217F001B37DBF4000F3ABF /* STConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STConfig.m; sourceTree = "<group>"; };
 		6C6879971B32F49A00091F87 /* STAbstractLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STAbstractLogger.h; sourceTree = "<group>"; };
 		6C6879981B32F49A00091F87 /* STAbstractLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STAbstractLogger.m; sourceTree = "<group>"; };
 		6C9B50F71B32AC770004E06D /* StoryTellerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StoryTellerTests.m; sourceTree = "<group>"; };
@@ -65,13 +47,11 @@
 		6CD18DFF1B32A4EF002C9806 /* STLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STLogger.h; sourceTree = "<group>"; };
 		6CD18E001B32A5B8002C9806 /* STConsoleLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STConsoleLogger.h; sourceTree = "<group>"; };
 		6CD18E011B32A5B8002C9806 /* STConsoleLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STConsoleLogger.m; sourceTree = "<group>"; };
-		6CE5C3E41B329BD100F0A470 /* libStoryTeller-static.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libStoryTeller-static.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6CE5C3E41B329BD100F0A470 /* libStoryTeller.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libStoryTeller.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		6CE5C3E71B329BD100F0A470 /* StoryTeller.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StoryTeller.h; sourceTree = "<group>"; };
 		6CE5C3E91B329BD100F0A470 /* StoryTeller.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StoryTeller.m; sourceTree = "<group>"; };
 		6CE5C3EF1B329BD100F0A470 /* StoryTellerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StoryTellerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6CE5C3F41B329BD100F0A470 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		6CFB32231B379624004309EF /* StoryTeller.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StoryTeller.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		6CFB32271B379624004309EF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,32 +66,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6CFB323C1B379668004309EF /* StoryTeller.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		6CFB321F1B379624004309EF /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				6C6879961B32EB4400091F87 /* libStoryTeller.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		6C0A55F51B37DFDC006E0A4A /* Internal */ = {
-			isa = PBXGroup;
-			children = (
-				6CCFFA7B1B33CB5F00D2F371 /* STDeallocHook.h */,
-				6CCFFA7C1B33CB5F00D2F371 /* STDeallocHook.m */,
-				6CCFFA7E1B33D43B00D2F371 /* STInternal.h */,
-				6C217EFF1B37DBF4000F3ABF /* STConfig.h */,
-				6C217F001B37DBF4000F3ABF /* STConfig.m */,
-			);
-			name = Internal;
-			sourceTree = "<group>";
-		};
 		6CCFFA7F1B33EC1F00D2F371 /* Loggers */ = {
 			isa = PBXGroup;
 			children = (
@@ -138,7 +99,6 @@
 			children = (
 				6CE5C3E61B329BD100F0A470 /* StoryTeller */,
 				6CE5C3F31B329BD100F0A470 /* StoryTellerTests */,
-				6CFB32241B379624004309EF /* Resources */,
 				6CE5C3E51B329BD100F0A470 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -146,9 +106,8 @@
 		6CE5C3E51B329BD100F0A470 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6CE5C3E41B329BD100F0A470 /* libStoryTeller-static.a */,
+				6CE5C3E41B329BD100F0A470 /* libStoryTeller.a */,
 				6CE5C3EF1B329BD100F0A470 /* StoryTellerTests.xctest */,
-				6CFB32231B379624004309EF /* StoryTeller.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -156,8 +115,10 @@
 		6CE5C3E61B329BD100F0A470 /* StoryTeller */ = {
 			isa = PBXGroup;
 			children = (
-				6C0A55F51B37DFDC006E0A4A /* Internal */,
 				6CCFFA7F1B33EC1F00D2F371 /* Loggers */,
+				6CCFFA7B1B33CB5F00D2F371 /* STDeallocHook.h */,
+				6CCFFA7C1B33CB5F00D2F371 /* STDeallocHook.m */,
+				6CCFFA7E1B33D43B00D2F371 /* STInternal.h */,
 				6CE5C3E71B329BD100F0A470 /* StoryTeller.h */,
 				6CE5C3E91B329BD100F0A470 /* StoryTeller.m */,
 			);
@@ -176,65 +137,40 @@
 			path = StoryTellerTests;
 			sourceTree = "<group>";
 		};
-		6CFB32241B379624004309EF /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				6CFB32271B379624004309EF /* Info.plist */,
-				6C217EFE1B37CE5C000F3ABF /* StoryTellerConfig.json */,
-			);
-			name = Resources;
-			path = StoryTeller;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		6C217EE71B379723000F3ABF /* Headers */ = {
+		6C8A96F61B36E60700066A0C /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6C217EE81B379730000F3ABF /* STLogger.h in Headers */,
-				6C217EE91B379730000F3ABF /* STConsoleLogger.h in Headers */,
-				6C217EEA1B379730000F3ABF /* STAbstractLogger.h in Headers */,
-				6C217EEB1B379730000F3ABF /* STDeallocHook.h in Headers */,
-				6C217F011B37DBF4000F3ABF /* STConfig.h in Headers */,
-				6C217EEC1B379730000F3ABF /* STInternal.h in Headers */,
-				6C217EED1B379730000F3ABF /* StoryTeller.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		6CFB32201B379624004309EF /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				6C217EFD1B37CBF5000F3ABF /* StoryTeller.h in Headers */,
-				6C217EF21B379770000F3ABF /* STLogger.h in Headers */,
-				6C217EF31B379770000F3ABF /* STConsoleLogger.h in Headers */,
-				6C217EF41B379770000F3ABF /* STAbstractLogger.h in Headers */,
-				6C217EF51B379770000F3ABF /* STDeallocHook.h in Headers */,
-				6C0A55F71B37F585006E0A4A /* STConfig.h in Headers */,
-				6C217EF61B379770000F3ABF /* STInternal.h in Headers */,
+				6C8A96F71B36E62100066A0C /* STLogger.h in Headers */,
+				6C8A96F81B36E62100066A0C /* STConsoleLogger.h in Headers */,
+				6C8A96F91B36E62100066A0C /* STAbstractLogger.h in Headers */,
+				6C8A96FA1B36E62100066A0C /* STDeallocHook.h in Headers */,
+				6C8A96FB1B36E62100066A0C /* STInternal.h in Headers */,
+				6C8A96FC1B36E62100066A0C /* StoryTeller.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		6CE5C3E31B329BD100F0A470 /* StoryTeller-static */ = {
+		6CE5C3E31B329BD100F0A470 /* StoryTeller */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6CE5C3F71B329BD100F0A470 /* Build configuration list for PBXNativeTarget "StoryTeller-static" */;
+			buildConfigurationList = 6CE5C3F71B329BD100F0A470 /* Build configuration list for PBXNativeTarget "StoryTeller" */;
 			buildPhases = (
 				6CE5C3E01B329BD100F0A470 /* Sources */,
 				6CE5C3E11B329BD100F0A470 /* Frameworks */,
-				6C217EE71B379723000F3ABF /* Headers */,
+				6C8A96F61B36E60700066A0C /* Headers */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = "StoryTeller-static";
+			name = StoryTeller;
 			productName = StoryTeller;
-			productReference = 6CE5C3E41B329BD100F0A470 /* libStoryTeller-static.a */;
+			productReference = 6CE5C3E41B329BD100F0A470 /* libStoryTeller.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		6CE5C3EE1B329BD100F0A470 /* StoryTellerTests */ = {
@@ -248,30 +184,12 @@
 			buildRules = (
 			);
 			dependencies = (
-				6CFB323B1B37965F004309EF /* PBXTargetDependency */,
+				6C6879951B32EB3D00091F87 /* PBXTargetDependency */,
 			);
 			name = StoryTellerTests;
 			productName = StoryTellerTests;
 			productReference = 6CE5C3EF1B329BD100F0A470 /* StoryTellerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		6CFB32221B379624004309EF /* StoryTeller-framework */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 6CFB32341B379624004309EF /* Build configuration list for PBXNativeTarget "StoryTeller-framework" */;
-			buildPhases = (
-				6CFB321E1B379624004309EF /* Sources */,
-				6CFB321F1B379624004309EF /* Frameworks */,
-				6CFB32201B379624004309EF /* Headers */,
-				6CFB32211B379624004309EF /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "StoryTeller-framework";
-			productName = StoryTeller;
-			productReference = 6CFB32231B379624004309EF /* StoryTeller.framework */;
-			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
 
@@ -288,9 +206,6 @@
 					6CE5C3EE1B329BD100F0A470 = {
 						CreatedOnToolsVersion = 7.0;
 					};
-					6CFB32221B379624004309EF = {
-						CreatedOnToolsVersion = 7.0;
-					};
 				};
 			};
 			buildConfigurationList = 6CE5C3DF1B329BD100F0A470 /* Build configuration list for PBXProject "StoryTeller" */;
@@ -305,23 +220,14 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				6CE5C3E31B329BD100F0A470 /* StoryTeller-static */,
+				6CE5C3E31B329BD100F0A470 /* StoryTeller */,
 				6CE5C3EE1B329BD100F0A470 /* StoryTellerTests */,
-				6CFB32221B379624004309EF /* StoryTeller-framework */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		6CE5C3ED1B329BD100F0A470 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				6C0A55FA1B37F801006E0A4A /* StoryTellerConfig.json in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		6CFB32211B379624004309EF /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -338,7 +244,6 @@
 				6C6879991B32F49A00091F87 /* STAbstractLogger.m in Sources */,
 				6CD18E021B32A5B8002C9806 /* STConsoleLogger.m in Sources */,
 				6CE5C3EA1B329BD100F0A470 /* StoryTeller.m in Sources */,
-				6C217F021B37DBF4000F3ABF /* STConfig.m in Sources */,
 				6CCFFA7D1B33CB5F00D2F371 /* STDeallocHook.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -348,30 +253,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				6C9B50FE1B32ADD80004E06D /* STTestCase.m in Sources */,
+				6C9B50F81B32AC770004E06D /* StoryTellerTests.m in Sources */,
 				6C9B50FB1B32ACB30004E06D /* InMemoryLogger.m in Sources */,
-				6C217EF71B379D45000F3ABF /* StoryTellerTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		6CFB321E1B379624004309EF /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				6C217EEE1B379767000F3ABF /* STConsoleLogger.m in Sources */,
-				6C217EEF1B379767000F3ABF /* STAbstractLogger.m in Sources */,
-				6C217EF01B379767000F3ABF /* STDeallocHook.m in Sources */,
-				6C0A55F61B37F578006E0A4A /* STConfig.m in Sources */,
-				6C217EF11B379767000F3ABF /* StoryTeller.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		6CFB323B1B37965F004309EF /* PBXTargetDependency */ = {
+		6C6879951B32EB3D00091F87 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 6CFB32221B379624004309EF /* StoryTeller-framework */;
-			targetProxy = 6CFB323A1B37965F004309EF /* PBXContainerItemProxy */;
+			target = 6CE5C3E31B329BD100F0A470 /* StoryTeller */;
+			targetProxy = 6C6879941B32EB3D00091F87 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -432,7 +325,7 @@
 				GCC_WARN_UNKNOWN_PRAGMAS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				RUN_CLANG_STATIC_ANALYZER = YES;
@@ -491,7 +384,7 @@
 				GCC_WARN_UNKNOWN_PRAGMAS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
@@ -505,7 +398,7 @@
 			buildSettings = {
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PUBLIC_HEADERS_FOLDER_PATH = /include/$PROJECT;
+				PUBLIC_HEADERS_FOLDER_PATH = /include/$PROJECT_NAME;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -515,7 +408,7 @@
 			buildSettings = {
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PUBLIC_HEADERS_FOLDER_PATH = /include/$PROJECT;
+				PUBLIC_HEADERS_FOLDER_PATH = /include/$PROJECT_NAME;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -542,50 +435,6 @@
 			};
 			name = Release;
 		};
-		6CFB32351B379624004309EF /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = StoryTeller/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = au.com.derekclarkson.StoryTeller;
-				PRODUCT_NAME = "$(PROJECT)";
-				SKIP_INSTALL = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		6CFB32361B379624004309EF /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = StoryTeller/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = au.com.derekclarkson.StoryTeller;
-				PRODUCT_NAME = "$(PROJECT)";
-				SKIP_INSTALL = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -598,7 +447,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6CE5C3F71B329BD100F0A470 /* Build configuration list for PBXNativeTarget "StoryTeller-static" */ = {
+		6CE5C3F71B329BD100F0A470 /* Build configuration list for PBXNativeTarget "StoryTeller" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6CE5C3F81B329BD100F0A470 /* Debug */,
@@ -612,15 +461,6 @@
 			buildConfigurations = (
 				6CE5C3FB1B329BD100F0A470 /* Debug */,
 				6CE5C3FC1B329BD100F0A470 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		6CFB32341B379624004309EF /* Build configuration list for PBXNativeTarget "StoryTeller-framework" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				6CFB32351B379624004309EF /* Debug */,
-				6CFB32361B379624004309EF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

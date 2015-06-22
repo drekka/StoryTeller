@@ -42,5 +42,6 @@
  */
 -(void) writeMessage:(NSString __nonnull *) message
           fromMethod:(const char __nonnull *) methodName
-          lineNumber:(int) lineNumber;
+          lineNumber:(int) lineNumber
+                 key:(id __nonnull) key;
 @end

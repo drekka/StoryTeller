@@ -92,7 +92,8 @@ static StoryTeller *__storyTeller;
     // And give it to the scribe.
     [self.logger writeMessage:msg
                    fromMethod:methodName
-                   lineNumber:lineNumber];
+                   lineNumber:lineNumber
+                          key:key];
 }
 
 -(void) execute:(id __nonnull) key block:(void (^ __nonnull)(id __nonnull)) block {
