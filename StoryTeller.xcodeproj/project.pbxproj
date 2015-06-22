@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6C158DE21B38206600119725 /* STConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C158DE01B38206600119725 /* STConfig.h */; };
+		6C158DE31B38206600119725 /* STConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C158DE11B38206600119725 /* STConfig.m */; };
 		6C6879961B32EB4400091F87 /* libStoryTeller.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CE5C3E41B329BD100F0A470 /* libStoryTeller.a */; };
 		6C6879991B32F49A00091F87 /* STAbstractLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C6879981B32F49A00091F87 /* STAbstractLogger.m */; };
 		6C8A96F71B36E62100066A0C /* STLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CD18DFF1B32A4EF002C9806 /* STLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -34,6 +36,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6C158DE01B38206600119725 /* STConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STConfig.h; sourceTree = "<group>"; };
+		6C158DE11B38206600119725 /* STConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STConfig.m; sourceTree = "<group>"; };
+		6C158DE51B3820F100119725 /* StoryTellerConfig.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = StoryTellerConfig.json; path = StoryTeller/StoryTellerConfig.json; sourceTree = "<group>"; };
 		6C6879971B32F49A00091F87 /* STAbstractLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STAbstractLogger.h; sourceTree = "<group>"; };
 		6C6879981B32F49A00091F87 /* STAbstractLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STAbstractLogger.m; sourceTree = "<group>"; };
 		6C9B50F71B32AC770004E06D /* StoryTellerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StoryTellerTests.m; sourceTree = "<group>"; };
@@ -73,6 +78,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6C158DE41B38207100119725 /* Internal */ = {
+			isa = PBXGroup;
+			children = (
+				6C158DE01B38206600119725 /* STConfig.h */,
+				6C158DE11B38206600119725 /* STConfig.m */,
+				6CCFFA7B1B33CB5F00D2F371 /* STDeallocHook.h */,
+				6CCFFA7C1B33CB5F00D2F371 /* STDeallocHook.m */,
+				6CCFFA7E1B33D43B00D2F371 /* STInternal.h */,
+			);
+			name = Internal;
+			sourceTree = "<group>";
+		};
 		6CCFFA7F1B33EC1F00D2F371 /* Loggers */ = {
 			isa = PBXGroup;
 			children = (
@@ -97,9 +114,10 @@
 		6CE5C3DB1B329BD100F0A470 = {
 			isa = PBXGroup;
 			children = (
-				6CE5C3E61B329BD100F0A470 /* StoryTeller */,
-				6CE5C3F31B329BD100F0A470 /* StoryTellerTests */,
 				6CE5C3E51B329BD100F0A470 /* Products */,
+				6CE5C3E61B329BD100F0A470 /* StoryTeller */,
+				6C158DE51B3820F100119725 /* StoryTellerConfig.json */,
+				6CE5C3F31B329BD100F0A470 /* StoryTellerTests */,
 			);
 			sourceTree = "<group>";
 		};
@@ -115,10 +133,8 @@
 		6CE5C3E61B329BD100F0A470 /* StoryTeller */ = {
 			isa = PBXGroup;
 			children = (
+				6C158DE41B38207100119725 /* Internal */,
 				6CCFFA7F1B33EC1F00D2F371 /* Loggers */,
-				6CCFFA7B1B33CB5F00D2F371 /* STDeallocHook.h */,
-				6CCFFA7C1B33CB5F00D2F371 /* STDeallocHook.m */,
-				6CCFFA7E1B33D43B00D2F371 /* STInternal.h */,
 				6CE5C3E71B329BD100F0A470 /* StoryTeller.h */,
 				6CE5C3E91B329BD100F0A470 /* StoryTeller.m */,
 			);
@@ -147,6 +163,7 @@
 				6C8A96F71B36E62100066A0C /* STLogger.h in Headers */,
 				6C8A96F81B36E62100066A0C /* STConsoleLogger.h in Headers */,
 				6C8A96F91B36E62100066A0C /* STAbstractLogger.h in Headers */,
+				6C158DE21B38206600119725 /* STConfig.h in Headers */,
 				6C8A96FA1B36E62100066A0C /* STDeallocHook.h in Headers */,
 				6C8A96FB1B36E62100066A0C /* STInternal.h in Headers */,
 				6C8A96FC1B36E62100066A0C /* StoryTeller.h in Headers */,
@@ -244,6 +261,7 @@
 				6C6879991B32F49A00091F87 /* STAbstractLogger.m in Sources */,
 				6CD18E021B32A5B8002C9806 /* STConsoleLogger.m in Sources */,
 				6CE5C3EA1B329BD100F0A470 /* StoryTeller.m in Sources */,
+				6C158DE31B38206600119725 /* STConfig.m in Sources */,
 				6CCFFA7D1B33CB5F00D2F371 /* STDeallocHook.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
