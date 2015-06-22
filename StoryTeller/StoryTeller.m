@@ -7,6 +7,7 @@
 //
 
 #import "StoryTeller.h"
+#import "STConfig.h"
 
 @implementation StoryTeller {
     NSMutableSet *_activeKeys;
@@ -19,6 +20,8 @@ static StoryTeller *__storyTeller;
 
 +(void) initialize {
     __storyTeller = [[StoryTeller alloc] init];
+    STConfig *config = [[STConfig alloc] init];
+    [config configure:__storyTeller];
 }
 
 -(instancetype) init {

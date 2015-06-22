@@ -9,6 +9,9 @@
 @import Foundation;
 #import "STAbstractLogger.h"
 
+/**
+ A simple class that logs all message to the XCode console.
+ */
 @interface STConsoleLogger : STAbstractLogger
 
 @end

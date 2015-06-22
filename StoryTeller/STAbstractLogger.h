@@ -9,8 +9,15 @@
 @import Foundation;
 #import "STLogger.h"
 
+/**
+ An abstract class that implements the core logic for formatting and writing text to output destinations.
+ */
 @interface STAbstractLogger : NSObject<STLogger>
 
+/**
+ Writes the passed text to the output.
+ @discussion This method @b MUST be overridden.
+ */
 -(void) writeMessage:(NSString __nonnull *) message;
 
 @end
