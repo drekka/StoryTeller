@@ -12,6 +12,7 @@
 @implementation StoryTeller {
     NSMutableSet *_activeKeys;
     NSMutableSet *_activeLogs;
+    STConfig *_config;
 }
 
 static StoryTeller *__storyTeller;
@@ -20,13 +21,16 @@ static StoryTeller *__storyTeller;
 
 +(void) initialize {
     __storyTeller = [[StoryTeller alloc] init];
-    STConfig *config = [[STConfig alloc] init];
-    [config configure:__storyTeller];
+}
+
++(StoryTeller __nonnull *) storyTeller {
+    return __storyTeller;
 }
 
 -(instancetype) init {
     self = [super init];
     if (self) {
+        _config = [[STConfig alloc] init];
         [self reset];
     }
     return self;
@@ -34,16 +38,10 @@ static StoryTeller *__storyTeller;
 
 #pragma mark - Story teller
 
-+(StoryTeller __nonnull *) storyTeller {
-    return __storyTeller;
-}
-
 -(void) reset {
-    _logAll = NO;
-    _logRoot = NO;
-    _logger = [[STConsoleLogger alloc] init];
     _activeKeys = [[NSMutableSet alloc] init];
     _activeLogs = [[NSMutableSet alloc] init];
+    [_config configure:__storyTeller];
 }
 
 #pragma mark - Activating logging
@@ -127,8 +125,5 @@ static StoryTeller *__storyTeller;
 
     return NO;
 }
-
-// DIsabled default so we can load settings without having to check the names of properties.
--(void) setValue:(nullable id)value forUndefinedKey:(nonnull NSString *)key {}
 
 @end

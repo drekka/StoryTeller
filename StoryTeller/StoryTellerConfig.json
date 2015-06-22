@@ -1,6 +1,6 @@
 {
 "logAll": "YES",
 "logRoot": "NO",
-"keys": ["abc", "def"],
+"activeLogs": ["abc", "def"],
 "loggerClass": "STConsoleLogger"
 }
