@@ -1,0 +1,6 @@
+{
+"logAll": "YES",
+"logRoot": "NO",
+"keys": ["abc", "def"],
+"loggerClass": "STConsoleLogger"
+}

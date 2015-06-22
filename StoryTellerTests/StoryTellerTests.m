@@ -7,7 +7,7 @@
 //
 
 #import "STTestCase.h"
-#import "StoryTeller.h"
+#import <StoryTeller/StoryTeller.h>
 
 @interface StoryTellerTests : STTestCase
 
@@ -92,6 +92,44 @@
     NSString *expected = [NSString stringWithFormat:@"<a07> %s(%i) %@", methodName, lineNumber, message];
     XCTAssertEqualObjects(expected, [self.inMemoryLogger.log[idx] substringFromIndex:13]);
 }
+
+-(void) testLogAll {
+
+    [[StoryTeller storyTeller] stopLogging:@"abc"];
+    [StoryTeller storyTeller].logAll = YES;
+
+    int logLine1 = __LINE__ + 1;
+    log(@"xyz", @"hello world 1");
+    startScope(@"abc");
+    int logLine2 = __LINE__ + 1;
+    log(@"xyz", @"hello world 2");
+    int logLine3 = __LINE__ + 1;
+    log(@"def", @"hello world 3");
+
+    XCTAssertEqual(3lu, [self.inMemoryLogger.log count]);
+
+    [self validateLogLineAtIndex:0 methodName:__PRETTY_FUNCTION__ lineNumber:logLine1 message:@"hello world 1"];
+    [self validateLogLineAtIndex:1 methodName:__PRETTY_FUNCTION__ lineNumber:logLine2 message:@"hello world 2"];
+    [self validateLogLineAtIndex:2 methodName:__PRETTY_FUNCTION__ lineNumber:logLine3 message:@"hello world 3"];
+}
+
+-(void) testLogRoot {
+
+    [[StoryTeller storyTeller] stopLogging:@"abc"];
+    [StoryTeller storyTeller].logRoot = YES;
+
+    int logLine1 = __LINE__ + 1;
+    log(@"xyz", @"hello world 1");
+    startScope(@"abc");
+    log(@"xyz", @"hello world 2");
+    log(@"def", @"hello world 3");
+
+    XCTAssertEqual(1lu, [self.inMemoryLogger.log count]);
+
+    [self validateLogLineAtIndex:0 methodName:__PRETTY_FUNCTION__ lineNumber:logLine1 message:@"hello world 1"];
+}
+
+#pragma mark - Internal
 
 -(void) sayHelloAgain {
     _helloAgainMethodName = __PRETTY_FUNCTION__;

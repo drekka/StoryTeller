@@ -7,8 +7,7 @@
 //
 
 #import "StoryTeller.h"
-#import "STLogger.h"
-#import "STConsoleLogger.h"
+#import "STConfig.h"
 
 @implementation StoryTeller {
     NSMutableSet *_activeKeys;
@@ -21,6 +20,8 @@ static StoryTeller *__storyTeller;
 
 +(void) initialize {
     __storyTeller = [[StoryTeller alloc] init];
+    STConfig *config = [[STConfig alloc] init];
+    [config configure:__storyTeller];
 }
 
 -(instancetype) init {
@@ -38,9 +39,10 @@ static StoryTeller *__storyTeller;
 }
 
 -(void) reset {
-    self.logger = [[STConsoleLogger alloc] init];
-    _activeKeys = [[NSMutableSet alloc] init];
+    _logAll = NO;
+    _logRoot = NO;
     _logger = [[STConsoleLogger alloc] init];
+    _activeKeys = [[NSMutableSet alloc] init];
     _activeLogs = [[NSMutableSet alloc] init];
 }
 
@@ -111,6 +113,11 @@ static StoryTeller *__storyTeller;
         return YES;
     }
 
+    // If logRoot is in effect we need to log as long as there are no scopes.
+    if (_logRoot && [_activeKeys count] == 0) {
+        return YES;
+    }
+
     // If any of the active keys are logging then we also fire.
     for (id scopeKey in _activeKeys) {
         if ([_activeLogs containsObject:scopeKey]) {
@@ -120,5 +127,8 @@ static StoryTeller *__storyTeller;
 
     return NO;
 }
+
+// DIsabled default so we can load settings without having to check the names of properties.
+-(void) setValue:(nullable id)value forUndefinedKey:(nonnull NSString *)key {}
 
 @end

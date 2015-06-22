@@ -13,3 +13,9 @@
 // means that macros such as __LINE__ can be concatinated.
 #define ST_CONCATINATE(prefix, suffix) _ST_CONCAT(prefix, suffix)
 
+//! Project version number for StoryTeller.
+FOUNDATION_EXPORT double StoryTellerVersionNumber;
+
+//! Project version string for StoryTeller.
+FOUNDATION_EXPORT const unsigned char StoryTellerVersionString[];
+
