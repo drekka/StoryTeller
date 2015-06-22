@@ -7,7 +7,6 @@
 //
 
 #import "STDeallocHook.h"
-#import "StoryTeller.h"
 
 @implementation STDeallocHook {
     __nonnull void (^_deallocBlock)(void);

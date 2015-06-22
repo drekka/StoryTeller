@@ -7,8 +7,6 @@
 //
 
 #import "StoryTeller.h"
-#import "STLogger.h"
-#import "STConsoleLogger.h"
 
 @implementation StoryTeller {
     NSMutableSet *_activeKeys;

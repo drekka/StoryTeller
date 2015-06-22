@@ -2,14 +2,23 @@
 //  StoryTeller.h
 //  StoryTeller
 //
-//  Created by Derek Clarkson on 18/06/2015.
+//  Created by Derek Clarkson on 22/06/2015.
 //  Copyright © 2015 Derek Clarkson. All rights reserved.
 //
 
 @import Foundation;
-#import "STLogger.h"
-#import "STDeallocHook.h"
-#import "STInternal.h"
+
+#import <StoryTeller/STInternal.h>
+#import <StoryTeller/STDeallocHook.h>
+#import <StoryTeller/STLogger.h>
+#import <StoryTeller/STConsoleLogger.h>
+#import <StoryTeller/STAbstractLogger.h>
+
+//! Project version number for StoryTeller.
+FOUNDATION_EXPORT double StoryTellerVersionNumber;
+
+//! Project version string for StoryTeller.
+FOUNDATION_EXPORT const unsigned char StoryTellerVersionString[];
 
 #pragma mark - Main macros
 
@@ -72,3 +81,4 @@ _Pragma ("clang diagnostic pop") \
 -(void) execute:(id __nonnull) key block:(__nonnull void (^)(id __nonnull key)) block;
 
 @end
+

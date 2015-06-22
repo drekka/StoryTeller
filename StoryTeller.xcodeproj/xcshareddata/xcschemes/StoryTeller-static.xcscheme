@@ -7,7 +7,7 @@
       buildImplicitDependencies = "YES">
       <BuildActionEntries>
          <BuildActionEntry
-            buildForTesting = "YES"
+            buildForTesting = "NO"
             buildForRunning = "YES"
             buildForProfiling = "YES"
             buildForArchiving = "YES"
@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "6CE5C3E31B329BD100F0A470"
-               BuildableName = "libStoryTeller.a"
-               BlueprintName = "StoryTeller"
+               BuildableName = "libStoryTeller-static.a"
+               BlueprintName = "StoryTeller-static"
                ReferencedContainer = "container:StoryTeller.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -28,23 +28,13 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6CE5C3EE1B329BD100F0A470"
-               BuildableName = "StoryTellerTests.xctest"
-               BlueprintName = "StoryTellerTests"
-               ReferencedContainer = "container:StoryTeller.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6CE5C3E31B329BD100F0A470"
-            BuildableName = "libStoryTeller.a"
-            BlueprintName = "StoryTeller"
+            BuildableName = "libStoryTeller-static.a"
+            BlueprintName = "StoryTeller-static"
             ReferencedContainer = "container:StoryTeller.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -65,8 +55,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6CE5C3E31B329BD100F0A470"
-            BuildableName = "libStoryTeller.a"
-            BlueprintName = "StoryTeller"
+            BuildableName = "libStoryTeller-static.a"
+            BlueprintName = "StoryTeller-static"
             ReferencedContainer = "container:StoryTeller.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -83,8 +73,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6CE5C3E31B329BD100F0A470"
-            BuildableName = "libStoryTeller.a"
-            BlueprintName = "StoryTeller"
+            BuildableName = "libStoryTeller-static.a"
+            BlueprintName = "StoryTeller-static"
             ReferencedContainer = "container:StoryTeller.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
