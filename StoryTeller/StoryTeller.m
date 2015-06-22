@@ -127,4 +127,7 @@ static StoryTeller *__storyTeller;
     return NO;
 }
 
+// DIsabled default so we can load settings without having to check the names of properties.
+-(void) setValue:(nullable id)value forUndefinedKey:(nonnull NSString *)key {}
+
 @end

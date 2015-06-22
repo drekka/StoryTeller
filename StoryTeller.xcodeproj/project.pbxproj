@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6C0A55F61B37F578006E0A4A /* STConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C217F001B37DBF4000F3ABF /* STConfig.m */; };
+		6C0A55F71B37F585006E0A4A /* STConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C217EFF1B37DBF4000F3ABF /* STConfig.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6C0A55FA1B37F801006E0A4A /* StoryTellerConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 6C217EFE1B37CE5C000F3ABF /* StoryTellerConfig.json */; };
 		6C217EE81B379730000F3ABF /* STLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CD18DFF1B32A4EF002C9806 /* STLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6C217EE91B379730000F3ABF /* STConsoleLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CD18E001B32A5B8002C9806 /* STConsoleLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6C217EEA1B379730000F3ABF /* STAbstractLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C6879971B32F49A00091F87 /* STAbstractLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -24,7 +27,7 @@
 		6C217EF61B379770000F3ABF /* STInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CCFFA7E1B33D43B00D2F371 /* STInternal.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6C217EF71B379D45000F3ABF /* StoryTellerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50F71B32AC770004E06D /* StoryTellerTests.m */; };
 		6C217EFD1B37CBF5000F3ABF /* StoryTeller.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CE5C3E71B329BD100F0A470 /* StoryTeller.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6C217F011B37DBF4000F3ABF /* STConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C217EFF1B37DBF4000F3ABF /* STConfig.h */; };
+		6C217F011B37DBF4000F3ABF /* STConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C217EFF1B37DBF4000F3ABF /* STConfig.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6C217F021B37DBF4000F3ABF /* STConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C217F001B37DBF4000F3ABF /* STConfig.m */; };
 		6C6879991B32F49A00091F87 /* STAbstractLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C6879981B32F49A00091F87 /* STAbstractLogger.m */; };
 		6C9B50FB1B32ACB30004E06D /* InMemoryLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50FA1B32ACB30004E06D /* InMemoryLogger.m */; };
@@ -193,8 +196,8 @@
 				6C217EE81B379730000F3ABF /* STLogger.h in Headers */,
 				6C217EE91B379730000F3ABF /* STConsoleLogger.h in Headers */,
 				6C217EEA1B379730000F3ABF /* STAbstractLogger.h in Headers */,
-				6C217F011B37DBF4000F3ABF /* STConfig.h in Headers */,
 				6C217EEB1B379730000F3ABF /* STDeallocHook.h in Headers */,
+				6C217F011B37DBF4000F3ABF /* STConfig.h in Headers */,
 				6C217EEC1B379730000F3ABF /* STInternal.h in Headers */,
 				6C217EED1B379730000F3ABF /* StoryTeller.h in Headers */,
 			);
@@ -209,6 +212,7 @@
 				6C217EF31B379770000F3ABF /* STConsoleLogger.h in Headers */,
 				6C217EF41B379770000F3ABF /* STAbstractLogger.h in Headers */,
 				6C217EF51B379770000F3ABF /* STDeallocHook.h in Headers */,
+				6C0A55F71B37F585006E0A4A /* STConfig.h in Headers */,
 				6C217EF61B379770000F3ABF /* STInternal.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -313,6 +317,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C0A55FA1B37F801006E0A4A /* StoryTellerConfig.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -355,6 +360,7 @@
 				6C217EEE1B379767000F3ABF /* STConsoleLogger.m in Sources */,
 				6C217EEF1B379767000F3ABF /* STAbstractLogger.m in Sources */,
 				6C217EF01B379767000F3ABF /* STDeallocHook.m in Sources */,
+				6C0A55F61B37F578006E0A4A /* STConfig.m in Sources */,
 				6C217EF11B379767000F3ABF /* StoryTeller.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
