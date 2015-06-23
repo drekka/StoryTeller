@@ -7,21 +7,70 @@
 //
 
 #import <XCTest/XCTest.h>
+#import <OCMock/OCMock.h>
 #import <StoryTeller/StoryTeller.h>
+#import "InMemoryLogger.h"
 
 @interface STConfigTests : XCTestCase
 @property (nonatomic, assign) BOOL booleanProperty;
 @end
 
-@implementation STConfigTests
+@implementation STConfigTests {
+    id _mockProcessInfo;
+}
 
--(void) testConfig {
+-(void) tearDown {
+    [_mockProcessInfo stopMocking];
+}
 
+-(void) testConfigWithDefault {
+
+    // Test
     STConfig *config = [[STConfig alloc] init];
-    NSProcessInfo *currentProcessInfo = [NSProcessInfo processInfo];
-    currentProcessInfo searguments = @[];
+    StoryTeller *mockStoryTeller = OCMClassMock([StoryTeller class]);
+    [config configure:mockStoryTeller];
 
+    // Verify
+    OCMVerify([mockStoryTeller setLogAll:NO]);
+    OCMVerify([mockStoryTeller setLogRoot:NO]);
+    OCMVerify([mockStoryTeller setLogger:[OCMArg isKindOfClass:[STConsoleLogger class]]]);
+}
 
+-(void) testConfigReadsCommandLineArgs {
+
+    [self stubProcessInfoArguments:@[@"logAll=YES", @"logRoots=YES", @"loggerClass=InMemoryLogger", @"activeLogs=abc,def"]];
+
+    // Test
+    STConfig *config = [[STConfig alloc] init];
+    StoryTeller *mockStoryTeller = OCMClassMock([StoryTeller class]);
+    [config configure:mockStoryTeller];
+
+    // Verify
+    OCMVerify([mockStoryTeller setLogAll:YES]);
+    OCMVerify([mockStoryTeller setLogRoot:YES]);
+    OCMVerify([mockStoryTeller setLogger:[OCMArg isKindOfClass:[InMemoryLogger class]]]);
+    OCMVerify([mockStoryTeller startLogging:@"abc"]);
+    OCMVerify([mockStoryTeller startLogging:@"def"]);
+}
+
+-(void) testConfigWithInvalidLoggerClass {
+
+    [self stubProcessInfoArguments:@[@"loggerClass=STConsoleLogger"]];
+
+    // Test
+    STConfig *config = [[STConfig alloc] init];
+    id mockStoryTeller = OCMClassMock([StoryTeller class]);
+    [config configure:mockStoryTeller];
+
+    // Verify
+    Class loggerClass = [STConsoleLogger class];
+    OCMVerify([(StoryTeller *)mockStoryTeller setLogger:[OCMArg isKindOfClass:loggerClass]]);
+}
+
+-(void) stubProcessInfoArguments:(NSArray<NSString *> *) args {
+    _mockProcessInfo = OCMClassMock([NSProcessInfo class]);
+    OCMStub(ClassMethod([_mockProcessInfo processInfo])).andReturn(_mockProcessInfo);
+    OCMStub([(NSProcessInfo *)_mockProcessInfo arguments]).andReturn(args);
 }
 
 -(void) testReadingYESNOStringsAsBooleans {

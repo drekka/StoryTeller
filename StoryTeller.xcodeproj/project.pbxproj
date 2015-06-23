@@ -19,11 +19,12 @@
 		6C158E341B38278500119725 /* STConsoleLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CD18E001B32A5B8002C9806 /* STConsoleLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6C158E351B38278500119725 /* STAbstractLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C6879971B32F49A00091F87 /* STAbstractLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6C158E361B38278500119725 /* StoryTeller.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CE5C3E71B329BD100F0A470 /* StoryTeller.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6C158E391B38282700119725 /* StoryTeller.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C158E141B38269D00119725 /* StoryTeller.framework */; };
 		6C9B50F81B32AC770004E06D /* StoryTellerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50F71B32AC770004E06D /* StoryTellerTests.m */; };
 		6C9B50FB1B32ACB30004E06D /* InMemoryLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50FA1B32ACB30004E06D /* InMemoryLogger.m */; };
 		6C9B50FE1B32ADD80004E06D /* STTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50FD1B32ADD80004E06D /* STTestCase.m */; };
 		6CD938411B384AB5005B0B5D /* STConfigTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CD938401B384AB5005B0B5D /* STConfigTests.m */; };
+		6CDCEB371B38EA34007DAF3D /* StoryTeller.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C158E141B38269D00119725 /* StoryTeller.framework */; };
+		6CDCEB971B38F07A007DAF3D /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CDCEB961B38F07A007DAF3D /* libOCMock.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,7 @@
 		6CD18E001B32A5B8002C9806 /* STConsoleLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STConsoleLogger.h; sourceTree = "<group>"; };
 		6CD18E011B32A5B8002C9806 /* STConsoleLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STConsoleLogger.m; sourceTree = "<group>"; };
 		6CD938401B384AB5005B0B5D /* STConfigTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STConfigTests.m; sourceTree = "<group>"; };
+		6CDCEB961B38F07A007DAF3D /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOCMock.a; path = "External/OCMock-3.1.2/iOS/libOCMock.a"; sourceTree = SOURCE_ROOT; };
 		6CE5C3E71B329BD100F0A470 /* StoryTeller.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StoryTeller.h; sourceTree = "<group>"; };
 		6CE5C3E91B329BD100F0A470 /* StoryTeller.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StoryTeller.m; sourceTree = "<group>"; };
 		6CE5C3EF1B329BD100F0A470 /* StoryTellerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StoryTellerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -74,13 +76,23 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6C158E391B38282700119725 /* StoryTeller.framework in Frameworks */,
+				6CDCEB971B38F07A007DAF3D /* libOCMock.a in Frameworks */,
+				6CDCEB371B38EA34007DAF3D /* StoryTeller.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6C0A55FF1B38DFB4006E0A4A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				6CDCEB961B38F07A007DAF3D /* libOCMock.a */,
+				6C158E181B38269D00119725 /* Info.plist */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		6C158DE41B38207100119725 /* Internal */ = {
 			isa = PBXGroup;
 			children = (
@@ -117,7 +129,7 @@
 		6CE5C3DB1B329BD100F0A470 = {
 			isa = PBXGroup;
 			children = (
-				6C158E181B38269D00119725 /* Info.plist */,
+				6C0A55FF1B38DFB4006E0A4A /* Resources */,
 				6CE5C3E51B329BD100F0A470 /* Products */,
 				6CE5C3E61B329BD100F0A470 /* StoryTeller */,
 				6C158DE51B3820F100119725 /* StoryTellerConfig.json */,
@@ -313,6 +325,7 @@
 				INFOPLIST_FILE = StoryTeller/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = au.com.derekclarkson.StoryTeller;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -333,6 +346,7 @@
 				INFOPLIST_FILE = StoryTeller/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = au.com.derekclarkson.StoryTeller;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -469,8 +483,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/External/OCMock-3.1.2/iOS";
 				INFOPLIST_FILE = StoryTellerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/External/OCMock-3.1.2/iOS";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = au.com.derekclarkson.StoryTellerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -480,8 +498,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/External/OCMock-3.1.2/iOS";
 				INFOPLIST_FILE = StoryTellerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/External/OCMock-3.1.2/iOS";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = au.com.derekclarkson.StoryTellerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

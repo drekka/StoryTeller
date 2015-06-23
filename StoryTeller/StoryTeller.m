@@ -41,7 +41,7 @@ static StoryTeller *__storyTeller;
 -(void) reset {
     _activeKeys = [[NSMutableSet alloc] init];
     _activeLogs = [[NSMutableSet alloc] init];
-    [_config configure:__storyTeller];
+    [_config configure:self];
 }
 
 #pragma mark - Activating logging

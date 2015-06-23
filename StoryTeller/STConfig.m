@@ -6,9 +6,10 @@
 //  Copyright © 2015 Derek Clarkson. All rights reserved.
 //
 
+@import ObjectiveC;
+
 #import "STConfig.h"
 #import "StoryTeller.h"
-@class STConsoleLogger;
 
 @interface STConfig ()
 @property (nonatomic, assign) BOOL logAll;
@@ -17,7 +18,11 @@
 @property (nonatomic, strong) NSString *loggerClass;
 @end
 
-@implementation STConfig
+@implementation STConfig {
+    // This is mainly used to stop EXC_BAD_ACCESS's occuring when verifying results in tests.
+    // Bug in OCMock: https://github.com/erikdoe/ocmock/issues/147
+    id<STLogger> _currentLogger;
+}
 
 -(instancetype) init {
     self = [super init];
@@ -53,30 +58,45 @@
             break;
         }
     }
-    if (configUrl == nil) {
-        return;
-    }
 
-    NSError *error = nil;
-    NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfURL:configUrl]
-                                                             options:NSJSONReadingAllowFragments
-                                                               error:&error];
-    if (error == nil) {
+    if (configUrl != nil) {
+        NSError *error = nil;
+        NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfURL:configUrl]
+                                                                 options:NSJSONReadingAllowFragments
+                                                                   error:&error];
+        if (error != nil) {
+            @throw [NSException exceptionWithName:@"StoryTeller" reason:[error localizedFailureReason] userInfo:nil];
+        }
+
         [self setValuesForKeysWithDictionary:jsonData];
-        return;
     }
-
-    @throw [NSException exceptionWithName:@"StoryTeller" reason:[error localizedFailureReason] userInfo:nil];
-
 }
 
 -(void) configure:(StoryTeller __nonnull *) storyTeller {
+
     storyTeller.logAll = _logAll;
     storyTeller.logRoot = _logRoots;
-    storyTeller.logger = [[NSClassFromString(_loggerClass) alloc] init];
+
+    Class loggerClass = objc_lookUpClass([_loggerClass UTF8String]);
+    id<STLogger> newLogger = [[loggerClass alloc] init];
+    if (newLogger == nil) {
+        @throw [NSException exceptionWithName:@"StoryTeller" reason:[NSString stringWithFormat:@"Unknown class '%@'", _loggerClass] userInfo:nil];
+    }
+    storyTeller.logger = newLogger;
+    _currentLogger = newLogger;
+
     [_activeLogs enumerateObjectsUsingBlock:^(NSString * __nonnull key, NSUInteger idx, BOOL * __nonnull stop) {
         [storyTeller startLogging:key];
     }];
+}
+
+// Override KVC method to handle arrays in active logs.
+-(void) setValue:(nullable id)value forKey:(nonnull NSString *)key {
+    if ([key isEqualToString:@"activeLogs"]) {
+        [super setValue:[value componentsSeparatedByString:@","] forKey:key];
+        return;
+    }
+    [super setValue:value forKey:key];
 }
 
 // DIsabled default so we can load settings without having to check the names of properties.
