@@ -19,6 +19,21 @@ Story Teller bases it's logging around a simpler and more important question: **
 
 This project can be dynamically included using [Carthage](https://github.com/Carthage/Carthage). This is recommended if you are using iOS8+.
 
+Simple create a  file called ***CartFile*** in the root of your project and add a line of text like this:
+
+```
+github "drekka/StoryTeller" >= 0.1
+```
+fire up a command line and execute from our projects root directory:
+
+```
+carthage bootstrap
+```
+
+This will download and compile Story Teller into a framework in *<project-root>/Carthage/Build/iOS/StoryTeller.framework*.
+
+Then simply add this framework as you would any other.
+
 ### Cocoapods
 
 At the moment I don't support [Cocoapods](https://cocoapods.org) because I regard it as as hacky poor quality solution. And I don't use it on my personal projects. I have created a posspec in the root of Story Teller, but so far it doesn't pass the pod lint tests and typically with any Ruby hack projects, is giving errors that make no sense. I'll get around to supporting it one day. But it's not something I use. Feel free to figure it out if you want.
@@ -28,6 +43,8 @@ At the moment I don't support [Cocoapods](https://cocoapods.org) because I regar
 Another fine way to include Story Teller is to use [Git Submodules](https://chrisjean.com/git-submodules-adding-using-removing-and-updating/). Whilst more technical in nature, it gves you the best control of the software. Use the following URL for your submodule or if you want to manually check Story Teller out:
 
 [https://github.com/drekka/StoryTeller.git]()
+
+Note: that you can also use the `--submodules` option of Carthage to create a dependency as a submodule.
 
 ## Adding logging to your code
 
@@ -100,9 +117,10 @@ The following is a list of config settings:
 
 Key  | Value
 ------------- | -------------
-Content Cell  | Content Cell
-Content Cell  | Content Cell
-
+logAll | Enables every log statement regardless of it's key. Useful for bugging but might produce a lot of output.
+LogRoots | Similar to *logAll* except that only top level log statements are activated. Useful for getting a high level view of whats occuring.
+activeLogs | A comma separated list of keys to activate. This is the main setting for turning on logging.
+loggerClass | If you want to set a different class for the, use this setting to specify the class. The class must implement `STLogger` and have a no-arg constructor. You only need to put the class name in this setting. Story Teller will handle the rest.
 
 ### Log matchers (Planned functionality!)
 
