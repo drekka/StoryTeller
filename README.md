@@ -29,7 +29,7 @@ Another fine way to include Story Teller is to use [Git Submodules](https://chri
 
 [https://github.com/drekka/StoryTeller.git]()
 
-## Adding Story Teller logging
+## Adding logging to your code
 
 Story Teller has one basic logging statement:
 
@@ -41,6 +41,7 @@ This looks very similar to other logging frameworks. Except that they would eith
 Story Teller's ***Key*** is the important differentiator. ***It can be anything you want!*** 
 
 The idea though, *is that it is an identifier that you can later use to trace data through the system.* This is where Story Teller's strength is. The key might be an account number, a user id, a class, or any object you want to be able to search on when debugging. It could be relevant to the application's config, a users account, the graphics subsystem. Whatever makes sense in your app. Here's an example:
+
 ```objectivec
 log(user.id, "User %@ is logging", user.id);
 ```
@@ -51,7 +52,7 @@ This statement will log based on the user's ID. Which means that we can target s
 
 Often you might want to be logging based on something like an account number, but be in some method that doesn't have that account number accessible. So how do you log it?
 
-Story Teller has the concept of **Key Scopes**. This is where you can tell it that any logging statements for a particular range of code are regarded as being under a specific key, even if the log statements do not use that key. Here's an example:
+Story Teller has the concept of **Key Scopes**. This is where you can tell it that any logging statements for a particular range of code are regarded as being also under a specific key, even if the log statements do not use that key. Here's an example:
 
 ```objectivec
 log(user.id, "User %@ is logging", user.id);
@@ -60,15 +61,28 @@ startScope(user.id);
 log(account.id, "User %@'s account: %@", user.id, account.id); 
 [self goDoSomethingWithAccount:account];
 ```
-So when reporting based on user 1, the second log statement will also be printed because it's within the scope of the logging of the user.
 
-Scopes follow the normal Objective-C rules for variable scopes. When enabled they will continue until the end of the current variable scope. Normally this is the end of the current method, loop or if statement. However Story Teller's scopes also include any code called. So any logging within a method or API is also included with the scope. This enables logging across a wide range of classes to be accessed using one key without having to specifically pass that key around.  So in the above example, any logging with in `goDoSomethingWithAccount:` will also be logged when logging for user 1.
+So when reporting based on user, the second log statement (account.id) will also be printed because it's within the scope of user.
+
+Scopes follow the normal Objective-C rules for variable scopes. When enabled they will continue until the end of the current variable scope. Normally this is the end of the current method, loop or if statement. However Story Teller's scopes also include any code called. So any logging within a method or API is also included with the scope. This enables logging across a wide range of classes to be accessed using one key without having to specifically pass that key around.  So in the above example, any logging with in `goDoSomethingWithAccount:` will also be logged when logging for the user.
 
 ## Turning on a log
 
 So when you want to then debug a problem, the first thing you need to do is establish what has the problem. Is it a specific account? user? etc.
 
-To programmatically enable logging, use this statement:
+### On startup
+
+Story Teller uses a set of options which it obtains via this process on startup:
+
+1. A default setup is first created with no logging active.
+2. Story Teller then searches all bundles in the app for a file called ***StoryTellerConfig.json***. If found this file is read and the base config is updated with any settings it contains.
+3. Finally the process is checked and if any of the arguments set on the process match known keys in the config, then those values are updated.
+
+The basic idea is that you can add a ***StoryTellerConfig.json*** file to your app to provide the general config you want to run with, and then during development you can override at will by setting arguments in XCode's scheme for your app.
+
+### Programmatically
+
+You can also programmically enable and disable logging as well. To enable logging, use this statement:
 
 ```objectivec
 startLogging(<key>);
@@ -80,7 +94,15 @@ and of course:
 stopLogging(<key>);
 ```
 
-You can have a many logs keys turned on as you like.
+### Config settings
+
+The following is a list of config settings:
+
+Key  | Value
+------------- | -------------
+Content Cell  | Content Cell
+Content Cell  | Content Cell
+
 
 ### Log matchers (Planned functionality!)
 
