@@ -25,13 +25,32 @@
 
 -(void) testClassPropertyEqualsString {
     NSError *error = nil;
-    PKAssembly __nonnull *result = [_parser parseString:@"[User].userId = \"Derekc\"" error:&error];
+    PKAssembly __nonnull *result = [_parser parseString:@"[STLogExpressionParserTests].userId = \"Derekc\"" error:&error];
     XCTAssertNotNil(result);
-    NSArray<PKToken *> __nonnull *stack = result.stack;
-    XCTAssertEqualObjects(@"User", stack[0].value);
-    XCTAssertEqualObjects(@".userId", stack[1].value);
-    XCTAssertEqualObjects(@"=", stack[2].value);
-    XCTAssertEqualObjects(@"Derekc", stack[3].value);
+    NSArray __nonnull *stack = result.stack;
+    XCTAssertEqual([STLogExpressionParserTests class], stack[0]);
+    XCTAssertEqualObjects(@"userId", stack[1]);
+    XCTAssertEqual(STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ, ((PKToken *)stack[2]).tokenKind);
+    XCTAssertEqualObjects(@"Derekc", stack[3]);
+}
+
+-(void) testClassKeyPathEqualsString {
+    NSError *error = nil;
+    PKAssembly __nonnull *result = [_parser parseString:@"[STLogExpressionParserTests].user.name = \"Derekc\"" error:&error];
+    XCTAssertNotNil(result);
+    NSArray __nonnull *stack = result.stack;
+    XCTAssertEqual([STLogExpressionParserTests class], stack[0]);
+    XCTAssertEqualObjects(@"user.name", stack[1]);
+    XCTAssertEqual(STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ, ((PKToken *)stack[2]).tokenKind);
+    XCTAssertEqualObjects(@"Derekc", stack[3]);
+}
+
+-(void) testUnknownClassReference {
+    NSError *error = nil;
+    PKAssembly __nonnull *result = [_parser parseString:@"[User].userId = \"Derekc\"" error:&error];
+    XCTAssertNotNil(error);
+    XCTAssertNil(result);
+    XCTAssertEqualObjects(@"Unknown class 'User'\nLine : 1\n", error.localizedFailureReason);
 }
 
 
