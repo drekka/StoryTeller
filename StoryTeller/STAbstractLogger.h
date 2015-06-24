@@ -7,7 +7,7 @@
 //
 
 @import Foundation;
-#import "STLogger.h"
+#import <StoryTeller/STLogger.h>
 
 /**
  An abstract class that implements the core logic for formatting and writing text to output destinations.

@@ -7,7 +7,7 @@
 //
 
 @import Foundation;
-@class StoryTeller;
+@class STStoryTeller;
 
 /**
  Reads and configures @c StoryTeller with config data from a variety of places.
@@ -19,6 +19,6 @@
  After loading, configures the passed instance of @c StoryTeller.
  @param storyTeller the instance to configure.
  */
--(void) configure:(StoryTeller __nonnull *) storyTeller;
+-(void) configure:(STStoryTeller __nonnull *) storyTeller;
 
 @end

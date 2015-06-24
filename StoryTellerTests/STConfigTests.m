@@ -9,6 +9,7 @@
 #import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
 #import <StoryTeller/StoryTeller.h>
+
 #import "InMemoryLogger.h"
 
 @interface STConfigTests : XCTestCase
@@ -27,7 +28,7 @@
 
     // Test
     STConfig *config = [[STConfig alloc] init];
-    StoryTeller *mockStoryTeller = OCMClassMock([StoryTeller class]);
+    STStoryTeller *mockStoryTeller = OCMClassMock([STStoryTeller class]);
     [config configure:mockStoryTeller];
 
     // Verify
@@ -42,7 +43,7 @@
 
     // Test
     STConfig *config = [[STConfig alloc] init];
-    StoryTeller *mockStoryTeller = OCMClassMock([StoryTeller class]);
+    STStoryTeller *mockStoryTeller = OCMClassMock([STStoryTeller class]);
     [config configure:mockStoryTeller];
 
     // Verify
@@ -59,12 +60,12 @@
 
     // Test
     STConfig *config = [[STConfig alloc] init];
-    id mockStoryTeller = OCMClassMock([StoryTeller class]);
+    id mockStoryTeller = OCMClassMock([STStoryTeller class]);
     [config configure:mockStoryTeller];
 
     // Verify
     Class loggerClass = [STConsoleLogger class];
-    OCMVerify([(StoryTeller *)mockStoryTeller setLogger:[OCMArg isKindOfClass:loggerClass]]);
+    OCMVerify([(STStoryTeller *)mockStoryTeller setLogger:[OCMArg isKindOfClass:loggerClass]]);
 }
 
 -(void) stubProcessInfoArguments:(NSArray<NSString *> *) args {

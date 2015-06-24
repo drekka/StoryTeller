@@ -6,8 +6,7 @@
 //  Copyright © 2015 Derek Clarkson. All rights reserved.
 //
 
-#import "STConsoleLogger.h"
-#import <pthread/pthread.h>
+#import <StoryTeller/STConsoleLogger.h>
 
 @implementation STConsoleLogger
 

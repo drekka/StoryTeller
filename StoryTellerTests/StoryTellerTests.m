@@ -6,8 +6,9 @@
 //  Copyright © 2015 Derek Clarkson. All rights reserved.
 //
 
-#import "STTestCase.h"
 #import <StoryTeller/StoryTeller.h>
+
+#import "STTestCase.h"
 
 @interface StoryTellerTests : STTestCase
 
@@ -25,8 +26,8 @@
 
 -(void) testActivatingKeyScope {
     startScope(@"abc");
-    XCTAssertTrue([[StoryTeller storyTeller] isScopeActive:@"abc"]);
-    XCTAssertFalse([[StoryTeller storyTeller] isScopeActive:@"def"]);
+    XCTAssertTrue([[STStoryTeller storyTeller] isScopeActive:@"abc"]);
+    XCTAssertFalse([[STStoryTeller storyTeller] isScopeActive:@"def"]);
 }
 
 -(void) testMessageRecordedWhenKeyLogging {
@@ -36,7 +37,7 @@
 }
 
 -(void) testMessageRecordedWhenKeyNotLogging {
-    [[StoryTeller storyTeller] stopLogging:@"abc"];
+    [[STStoryTeller storyTeller] stopLogging:@"abc"];
     log(@"abc", @"hello world");
     XCTAssertEqual(0lu, [self.inMemoryLogger.log count]);
 }
@@ -54,7 +55,7 @@
         startScope(key);
         logLineNumbers[idx] = @(__LINE__ + 1);
         log(key, [NSString stringWithFormat:@"hello world %@", key]);
-        XCTAssertEqual(1, [StoryTeller storyTeller].numberActiveScopes);
+        XCTAssertEqual(1, [STStoryTeller storyTeller].numberActiveScopes);
     }];
 
     XCTAssertEqual(02u, [self.inMemoryLogger.log count]);
@@ -95,8 +96,8 @@
 
 -(void) testLogAll {
 
-    [[StoryTeller storyTeller] stopLogging:@"abc"];
-    [StoryTeller storyTeller].logAll = YES;
+    [[STStoryTeller storyTeller] stopLogging:@"abc"];
+    [STStoryTeller storyTeller].logAll = YES;
 
     int logLine1 = __LINE__ + 1;
     log(@"xyz", @"hello world 1");
@@ -115,8 +116,8 @@
 
 -(void) testLogRoot {
 
-    [[StoryTeller storyTeller] stopLogging:@"abc"];
-    [StoryTeller storyTeller].logRoot = YES;
+    [[STStoryTeller storyTeller] stopLogging:@"abc"];
+    [STStoryTeller storyTeller].logRoot = YES;
 
     int logLine1 = __LINE__ + 1;
     log(@"xyz", @"hello world 1");

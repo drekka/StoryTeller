@@ -7,18 +7,18 @@
 //
 
 #import "STTestCase.h"
-#import <StoryTeller/StoryTeller.h>
+#import <StoryTeller/STStoryTeller.h>
 #import "InMemoryLogger.h"
 
 @implementation STTestCase
 
 -(void) setUp {
-    [[StoryTeller storyTeller] reset];
-    [StoryTeller storyTeller].logger = [[InMemoryLogger alloc] init];
+    [[STStoryTeller storyTeller] reset];
+    [STStoryTeller storyTeller].logger = [[InMemoryLogger alloc] init];
 }
 
 -(InMemoryLogger *) inMemoryLogger {
-    return (InMemoryLogger *) [StoryTeller storyTeller].logger;
+    return (InMemoryLogger *) [STStoryTeller storyTeller].logger;
 }
 
 @end

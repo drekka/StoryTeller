@@ -6,8 +6,7 @@
 //  Copyright © 2015 Derek Clarkson. All rights reserved.
 //
 
-@import Foundation;
-#import "STAbstractLogger.h"
+#import <StoryTeller/STAbstractLogger.h>
 
 /**
  A simple class that logs all message to the XCode console.

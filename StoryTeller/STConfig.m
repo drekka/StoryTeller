@@ -8,8 +8,11 @@
 
 @import ObjectiveC;
 
-#import "STConfig.h"
-#import "StoryTeller.h"
+#import <PEGKit/PEGKit.h>
+
+#import <StoryTeller/STConfig.h>
+#import <StoryTeller/STStoryTeller.h>
+#import <StoryTeller/STConsoleLogger.h>
 
 @interface STConfig ()
 @property (nonatomic, assign) BOOL logAll;
@@ -22,6 +25,8 @@
     // This is mainly used to stop EXC_BAD_ACCESS's occuring when verifying results in tests.
     // Bug in OCMock: https://github.com/erikdoe/ocmock/issues/147
     id<STLogger> _currentLogger;
+
+    PKAssembly *result;
 }
 
 -(instancetype) init {
@@ -72,7 +77,7 @@
     }
 }
 
--(void) configure:(StoryTeller __nonnull *) storyTeller {
+-(void) configure:(STStoryTeller __nonnull *) storyTeller {
 
     storyTeller.logAll = _logAll;
     storyTeller.logRoot = _logRoots;

@@ -6,7 +6,7 @@
 //  Copyright © 2015 Derek Clarkson. All rights reserved.
 //
 
-#import "STAbstractLogger.h"
+#import <StoryTeller/STAbstractLogger.h>
 #import <pthread/pthread.h>
 
 @implementation STAbstractLogger {
