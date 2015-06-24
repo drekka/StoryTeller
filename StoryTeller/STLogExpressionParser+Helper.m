@@ -12,6 +12,15 @@
 
 @implementation STLogExpressionParser (Helper)
 
+-(void) processEOE {
+    // strip trailing fence object.
+    id topOfStack = POP();
+    if (topOfStack != [NSNull null]) {
+        PUSH(topOfStack);
+    }
+}
+
+
 -(void) processClassToken {
     const char *classStr = POP_STR().UTF8String;
     Class refClass = objc_lookUpClass(classStr);
@@ -40,6 +49,11 @@
 
 -(void) processPropertyToken {
     PUSH(POP_STR());
+}
+
+-(void) processOpToken {
+    NSInteger tokenKind = POP_TOK().tokenKind;
+    PUSH(@(tokenKind));
 }
 
 -(void) processValueToken {

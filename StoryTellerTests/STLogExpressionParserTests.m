@@ -23,6 +23,22 @@
     _parser = [[STLogExpressionParser alloc] init];
 }
 
+-(void) testClassOnly {
+    NSError *error = nil;
+    PKAssembly __nonnull *result = [_parser parseString:@"[STLogExpressionParserTests]" error:&error];
+    NSArray __nonnull *stack = result.stack;
+    XCTAssertEqual(1u, [stack count]);
+    XCTAssertEqual([STLogExpressionParserTests class], stack[0]);
+}
+
+-(void) testProtocolOnly {
+    NSError *error = nil;
+    PKAssembly __nonnull *result = [_parser parseString:@"<NSCopying>" error:&error];
+    NSArray __nonnull *stack = result.stack;
+    XCTAssertEqual(1u, [stack count]);
+    XCTAssertEqual(@protocol(NSCopying), stack[0]);
+}
+
 -(void) testClassPropertyEqualsString {
     NSError *error = nil;
     PKAssembly __nonnull *result = [_parser parseString:@"[STLogExpressionParserTests].userId = \"Derekc\"" error:&error];

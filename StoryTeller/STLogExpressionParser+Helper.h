@@ -15,5 +15,6 @@
 -(void) processKeyPathToken;
 -(void) processPropertyToken;
 -(void) processValueToken;
-
+-(void) processOpToken;
+-(void) processEOE;
 @end

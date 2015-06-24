@@ -73,9 +73,16 @@
 - (void)loggerExpr_ {
     
     [self classIdentifier_]; 
-    [self keyPath_]; 
-    [self op_]; 
-    [self value_]; 
+    if ([self speculate:^{ [self keyPath_]; [self op_]; [self value_]; }]) {
+        [self keyPath_]; 
+        [self op_]; 
+        [self value_]; 
+    }
+    [self execute:^{
+    
+	[self processEOE];
+
+    }];
 
     [self fireDelegateSelector:@selector(parser:didMatchLoggerExpr:)];
 }
@@ -96,8 +103,8 @@
 - (void)keyPath_ {
     
     do {
-        [self property_]; 
-    } while ([self speculate:^{ [self property_]; }]);
+        [self propertyPath_]; 
+    } while ([self speculate:^{ [self propertyPath_]; }]);
     [self execute:^{
     
 	[self processKeyPathToken];
@@ -107,23 +114,23 @@
     [self fireDelegateSelector:@selector(parser:didMatchKeyPath:)];
 }
 
-- (void)property_ {
+- (void)propertyPath_ {
     
     [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_DOT discard:YES]; 
-    [self id_]; 
+    [self propertyName_]; 
     [self execute:^{
     
 	[self processPropertyToken];
 
     }];
 
-    [self fireDelegateSelector:@selector(parser:didMatchProperty:)];
+    [self fireDelegateSelector:@selector(parser:didMatchPropertyPath:)];
 }
 
 - (void)protocol_ {
     
     [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_LT_SYM discard:YES]; 
-    [self id_]; 
+    [self objCId_]; 
     [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_GT_SYM discard:YES]; 
     [self execute:^{
     
@@ -137,7 +144,7 @@
 - (void)class_ {
     
     [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_OPEN_BRACKET discard:YES]; 
-    [self id_]; 
+    [self objCId_]; 
     [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_CLOSE_BRACKET discard:YES]; 
     [self execute:^{
     
@@ -148,11 +155,20 @@
     [self fireDelegateSelector:@selector(parser:didMatchClass:)];
 }
 
-- (void)id_ {
+- (void)objCId_ {
     
+    [self testAndThrow:(id)^{ return isupper([LS(1) characterAtIndex:0]); }]; 
     [self matchWord:NO]; 
 
-    [self fireDelegateSelector:@selector(parser:didMatchId:)];
+    [self fireDelegateSelector:@selector(parser:didMatchObjCId:)];
+}
+
+- (void)propertyName_ {
+    
+    [self testAndThrow:(id)^{ return islower([LS(1) characterAtIndex:0]); }]; 
+    [self matchWord:NO]; 
+
+    [self fireDelegateSelector:@selector(parser:didMatchPropertyName:)];
 }
 
 - (void)bool_ {
@@ -206,6 +222,11 @@
         [self le_]; 
     } else if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_GE, 0]) {
         [self ge_]; 
+        [self execute:^{
+        
+	[self processOpToken];
+
+        }];
     } else {
         [self raise:@"No viable alternative found in rule 'op'."];
     }
