@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6C1085C51B3A7354009C7AB8 /* PEGKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6C8AE1961B3A3BF300DF2B9F /* PEGKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6C1085C61B3A73F4009C7AB8 /* StoryTeller.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C158E141B38269D00119725 /* StoryTeller.framework */; };
 		6C158E2B1B38277200119725 /* STConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C158DE11B38206600119725 /* STConfig.m */; };
 		6C158E2C1B38277200119725 /* STDeallocHook.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CCFFA7C1B33CB5F00D2F371 /* STDeallocHook.m */; };
 		6C158E2D1B38277200119725 /* STConsoleLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CD18E011B32A5B8002C9806 /* STConsoleLogger.m */; };
@@ -23,6 +25,10 @@
 		6C9B50F81B32AC770004E06D /* StoryTellerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50F71B32AC770004E06D /* StoryTellerTests.m */; };
 		6C9B50FB1B32ACB30004E06D /* InMemoryLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50FA1B32ACB30004E06D /* InMemoryLogger.m */; };
 		6C9B50FE1B32ADD80004E06D /* STTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50FD1B32ADD80004E06D /* STTestCase.m */; };
+		6CA7DF051B3A61D7002491FF /* STLogExpressionParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CA7DF031B3A61D7002491FF /* STLogExpressionParser.h */; };
+		6CA7DF061B3A61D7002491FF /* STLogExpressionParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CA7DF041B3A61D7002491FF /* STLogExpressionParser.m */; };
+		6CA7DF071B3A64A3002491FF /* PEGKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C8AE1961B3A3BF300DF2B9F /* PEGKit.framework */; };
+		6CA7DF091B3A6584002491FF /* STLogExpressionParserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CA7DF081B3A6584002491FF /* STLogExpressionParserTests.m */; };
 		6CD938411B384AB5005B0B5D /* STConfigTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CD938401B384AB5005B0B5D /* STConfigTests.m */; };
 		6CDCEB971B38F07A007DAF3D /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CDCEB961B38F07A007DAF3D /* libOCMock.a */; };
 /* End PBXBuildFile section */
@@ -36,6 +42,19 @@
 			remoteInfo = StoryTeller;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		6C1085C41B3A7334009C7AB8 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				6C1085C51B3A7354009C7AB8 /* PEGKit.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		6C158DE01B38206600119725 /* STConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STConfig.h; sourceTree = "<group>"; };
@@ -53,6 +72,9 @@
 		6C9B50FA1B32ACB30004E06D /* InMemoryLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InMemoryLogger.m; sourceTree = "<group>"; };
 		6C9B50FC1B32ADD80004E06D /* STTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STTestCase.h; sourceTree = "<group>"; };
 		6C9B50FD1B32ADD80004E06D /* STTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STTestCase.m; sourceTree = "<group>"; };
+		6CA7DF031B3A61D7002491FF /* STLogExpressionParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STLogExpressionParser.h; sourceTree = "<group>"; };
+		6CA7DF041B3A61D7002491FF /* STLogExpressionParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STLogExpressionParser.m; sourceTree = "<group>"; };
+		6CA7DF081B3A6584002491FF /* STLogExpressionParserTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STLogExpressionParserTests.m; sourceTree = "<group>"; };
 		6CCFFA7B1B33CB5F00D2F371 /* STDeallocHook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDeallocHook.h; sourceTree = "<group>"; };
 		6CCFFA7C1B33CB5F00D2F371 /* STDeallocHook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDeallocHook.m; sourceTree = "<group>"; };
 		6CD18DFF1B32A4EF002C9806 /* STLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STLogger.h; sourceTree = "<group>"; };
@@ -71,6 +93,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6CA7DF071B3A64A3002491FF /* PEGKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +101,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C1085C61B3A73F4009C7AB8 /* StoryTeller.framework in Frameworks */,
 				6CDCEB971B38F07A007DAF3D /* libOCMock.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -97,6 +121,8 @@
 		6C158DE41B38207100119725 /* Internal */ = {
 			isa = PBXGroup;
 			children = (
+				6CA7DF031B3A61D7002491FF /* STLogExpressionParser.h */,
+				6CA7DF041B3A61D7002491FF /* STLogExpressionParser.m */,
 				6C158DE01B38206600119725 /* STConfig.h */,
 				6C158DE11B38206600119725 /* STConfig.m */,
 				6CCFFA7B1B33CB5F00D2F371 /* STDeallocHook.h */,
@@ -169,6 +195,7 @@
 				6C9B50F71B32AC770004E06D /* StoryTellerTests.m */,
 				6C9B50FC1B32ADD80004E06D /* STTestCase.h */,
 				6C9B50FD1B32ADD80004E06D /* STTestCase.m */,
+				6CA7DF081B3A6584002491FF /* STLogExpressionParserTests.m */,
 			);
 			path = StoryTellerTests;
 			sourceTree = "<group>";
@@ -184,6 +211,7 @@
 				6C158E311B38278500119725 /* STDeallocHook.h in Headers */,
 				6C158E331B38278500119725 /* STLogger.h in Headers */,
 				6C158E341B38278500119725 /* STConsoleLogger.h in Headers */,
+				6CA7DF051B3A61D7002491FF /* STLogExpressionParser.h in Headers */,
 				6C8AE19A1B3A47B600DF2B9F /* StoryTeller.h in Headers */,
 				6C158E351B38278500119725 /* STAbstractLogger.h in Headers */,
 				6C8AE19B1B3A481500DF2B9F /* STMacros.h in Headers */,
@@ -202,6 +230,7 @@
 				6C158E101B38269D00119725 /* Frameworks */,
 				6C158E111B38269D00119725 /* Headers */,
 				6C158E121B38269D00119725 /* Resources */,
+				6C1085C41B3A7334009C7AB8 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -291,6 +320,7 @@
 				6C158E2C1B38277200119725 /* STDeallocHook.m in Sources */,
 				6C158E2D1B38277200119725 /* STConsoleLogger.m in Sources */,
 				6C158E2E1B38277200119725 /* STAbstractLogger.m in Sources */,
+				6CA7DF061B3A61D7002491FF /* STLogExpressionParser.m in Sources */,
 				6C158E2F1B38277200119725 /* STStoryTeller.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -303,6 +333,7 @@
 				6C9B50F81B32AC770004E06D /* StoryTellerTests.m in Sources */,
 				6CD938411B384AB5005B0B5D /* STConfigTests.m in Sources */,
 				6C9B50FB1B32ACB30004E06D /* InMemoryLogger.m in Sources */,
+				6CA7DF091B3A6584002491FF /* STLogExpressionParserTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -493,7 +524,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = "";
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/Carthage/Build/iOS";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/External/OCMock-3.1.2/iOS";
 				INFOPLIST_FILE = StoryTellerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -508,7 +539,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = "";
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/Carthage/Build/iOS";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/External/OCMock-3.1.2/iOS";
 				INFOPLIST_FILE = StoryTellerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
