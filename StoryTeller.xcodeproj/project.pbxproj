@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		6C1085C51B3A7354009C7AB8 /* PEGKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6C8AE1961B3A3BF300DF2B9F /* PEGKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6C1085C61B3A73F4009C7AB8 /* StoryTeller.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C158E141B38269D00119725 /* StoryTeller.framework */; };
+		6C14E9561B3BEF8A005EBE15 /* STMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C14E9551B3BEF8A005EBE15 /* STMatcher.h */; };
+		6C14E9591B3BEFE1005EBE15 /* STClassMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C14E9571B3BEFE1005EBE15 /* STClassMatcher.h */; };
+		6C14E95A1B3BEFE1005EBE15 /* STClassMatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C14E9581B3BEFE1005EBE15 /* STClassMatcher.m */; };
 		6C158E2B1B38277200119725 /* STConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C158DE11B38206600119725 /* STConfig.m */; };
 		6C158E2C1B38277200119725 /* STDeallocHook.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CCFFA7C1B33CB5F00D2F371 /* STDeallocHook.m */; };
 		6C158E2D1B38277200119725 /* STConsoleLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CD18E011B32A5B8002C9806 /* STConsoleLogger.m */; };
@@ -62,6 +65,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6C14E9551B3BEF8A005EBE15 /* STMatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STMatcher.h; sourceTree = "<group>"; };
+		6C14E9571B3BEFE1005EBE15 /* STClassMatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STClassMatcher.h; sourceTree = "<group>"; };
+		6C14E9581B3BEFE1005EBE15 /* STClassMatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STClassMatcher.m; sourceTree = "<group>"; };
 		6C158DE01B38206600119725 /* STConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STConfig.h; sourceTree = "<group>"; };
 		6C158DE11B38206600119725 /* STConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STConfig.m; sourceTree = "<group>"; };
 		6C158DE51B3820F100119725 /* StoryTellerConfig.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = StoryTellerConfig.json; path = ../StoryTeller/StoryTellerConfig.json; sourceTree = "<group>"; };
@@ -131,6 +137,9 @@
 		6C14E9541B3BEF4B005EBE15 /* Matchers */ = {
 			isa = PBXGroup;
 			children = (
+				6C14E9551B3BEF8A005EBE15 /* STMatcher.h */,
+				6C14E9571B3BEFE1005EBE15 /* STClassMatcher.h */,
+				6C14E9581B3BEFE1005EBE15 /* STClassMatcher.m */,
 			);
 			name = Matchers;
 			sourceTree = "<group>";
@@ -236,6 +245,8 @@
 				6C8E922B1B3BC41C00E6B6C4 /* STExpressionMatcherFactory.h in Headers */,
 				6CE7CF381B3A8D800078A08D /* STLogExpressionParser+Helper.h in Headers */,
 				6C158E341B38278500119725 /* STConsoleLogger.h in Headers */,
+				6C14E9561B3BEF8A005EBE15 /* STMatcher.h in Headers */,
+				6C14E9591B3BEFE1005EBE15 /* STClassMatcher.h in Headers */,
 				6CA7DF051B3A61D7002491FF /* STLogExpressionParser.h in Headers */,
 				6C8AE19A1B3A47B600DF2B9F /* StoryTeller.h in Headers */,
 				6C158E351B38278500119725 /* STAbstractLogger.h in Headers */,
@@ -349,6 +360,7 @@
 				6C158E2D1B38277200119725 /* STConsoleLogger.m in Sources */,
 				6C158E2E1B38277200119725 /* STAbstractLogger.m in Sources */,
 				6CA7DF061B3A61D7002491FF /* STLogExpressionParser.m in Sources */,
+				6C14E95A1B3BEFE1005EBE15 /* STClassMatcher.m in Sources */,
 				6C158E2F1B38277200119725 /* STStoryTeller.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
