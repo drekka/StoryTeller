@@ -8,9 +8,7 @@
 
 #import "STProtocolMatcher.h"
 
-@implementation STProtocolMatcher {
-    Protocol *_protocol;
-}
+@implementation STProtocolMatcher
 
 @synthesize nextMatcher = _nextMatcher;
 

@@ -11,6 +11,8 @@
 
 @interface STClassMatcher : NSObject<STMatcher>
 
--(nonnull instancetype) initWithClass:(Class __nonnull) targetClass;
+@property (nonatomic, assign, nonnull, readonly) Class forClass;
+
+-(nonnull instancetype) initWithClass:(Class __nonnull) forClass;
 
 @end

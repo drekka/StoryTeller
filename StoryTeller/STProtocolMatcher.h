@@ -11,6 +11,8 @@
 
 @interface STProtocolMatcher : NSObject<STMatcher>
 
+@property (nonatomic, strong, nonnull, readonly) Protocol *protocol;
+
 -(nonnull instancetype) initWithProtocol:(Protocol __nonnull *) protocol;
 
 @end

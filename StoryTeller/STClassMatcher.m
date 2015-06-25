@@ -8,22 +8,20 @@
 
 #import "STClassMatcher.h"
 
-@implementation STClassMatcher {
-    Class _targetClass;
-}
+@implementation STClassMatcher
 
 @synthesize nextMatcher = _nextMatcher;
 
--(nonnull instancetype) initWithClass:(Class __nonnull) targetClass {
+-(nonnull instancetype) initWithClass:(Class __nonnull) forClass {
     self = [super init];
     if (self) {
-        _targetClass = targetClass;
+        _forClass = forClass;
     }
     return self;
 }
 
 -(BOOL) matches:(id __nonnull) key {
-    return [key isKindOfClass:_targetClass]
+    return [key isKindOfClass:_forClass]
     && (self.nextMatcher == nil ? YES : [self.nextMatcher matches:key]);
 }
 

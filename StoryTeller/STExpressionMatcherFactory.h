@@ -7,8 +7,13 @@
 //
 
 @import Foundation;
+
 #import "STLogExpressionParserDelegate.h"
+#import "STMatcher.h"
 
 @interface STExpressionMatcherFactory : NSObject<STLogExpressionParserDelegate>
--(id) parseExpression:(NSString *) expression;
+
+-(nullable id<STMatcher>) parseExpression:(NSString __nonnull *) expression
+                                    error:(NSError *__autoreleasing  __nullable * __nullable) error;
+
 @end
