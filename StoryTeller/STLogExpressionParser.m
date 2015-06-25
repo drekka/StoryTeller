@@ -2,7 +2,6 @@
 #import <PEGKit/PEGKit.h>
     
 #pragma GCC diagnostic ignored "-Wundeclared-selector"
-#import "STLogExpressionParser+Helper.h"
 
 
 @interface STLogExpressionParser ()
@@ -16,44 +15,39 @@
     if (self) {
         
         self.startRuleName = @"expr";
-        self.tokenKindTab[@">="] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_GE);
         self.tokenKindTab[@"false"] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_FALSE);
+        self.tokenKindTab[@">="] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_GE);
         self.tokenKindTab[@"<"] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_LT_SYM);
         self.tokenKindTab[@"<="] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_LE);
-        self.tokenKindTab[@"true"] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_TRUE);
         self.tokenKindTab[@"["] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_OPEN_BRACKET);
         self.tokenKindTab[@"="] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ);
+        self.tokenKindTab[@"true"] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_TRUE);
         self.tokenKindTab[@"."] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_DOT);
         self.tokenKindTab[@">"] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_GT_SYM);
         self.tokenKindTab[@"]"] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_CLOSE_BRACKET);
-        self.tokenKindTab[@"YES"] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_YES);
+        self.tokenKindTab[@"YES"] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_YES_UPPER);
         self.tokenKindTab[@"!="] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_NE);
-        self.tokenKindTab[@"NO"] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_NO);
+        self.tokenKindTab[@"NO"] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_NO_UPPER);
 
-        self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_GE] = @">=";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_FALSE] = @"false";
+        self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_GE] = @">=";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_LT_SYM] = @"<";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_LE] = @"<=";
-        self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_TRUE] = @"true";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_OPEN_BRACKET] = @"[";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ] = @"=";
+        self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_TRUE] = @"true";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_DOT] = @".";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_GT_SYM] = @">";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_CLOSE_BRACKET] = @"]";
-        self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_YES] = @"YES";
+        self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_YES_UPPER] = @"YES";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_NE] = @"!=";
-        self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_NO] = @"NO";
+        self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_NO_UPPER] = @"NO";
 
     }
     return self;
 }
 
 - (void)start {
-    [self execute:^{
-    
-	self.fenceToken = nil;
-
-    }];
 
     [self expr_]; 
     [self matchEOF:YES]; 
@@ -79,7 +73,7 @@
     
     if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_LT_SYM, STLOGEXPRESSIONPARSER_TOKEN_KIND_OPEN_BRACKET, 0]) {
         [self classExpr_]; 
-    } else if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_FALSE, STLOGEXPRESSIONPARSER_TOKEN_KIND_NO, STLOGEXPRESSIONPARSER_TOKEN_KIND_TRUE, STLOGEXPRESSIONPARSER_TOKEN_KIND_YES, TOKEN_KIND_BUILTIN_NUMBER, TOKEN_KIND_BUILTIN_QUOTEDSTRING, TOKEN_KIND_BUILTIN_WORD, 0]) {
+    } else if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_FALSE, STLOGEXPRESSIONPARSER_TOKEN_KIND_NO_UPPER, STLOGEXPRESSIONPARSER_TOKEN_KIND_TRUE, STLOGEXPRESSIONPARSER_TOKEN_KIND_YES_UPPER, TOKEN_KIND_BUILTIN_NUMBER, TOKEN_KIND_BUILTIN_QUOTEDSTRING, TOKEN_KIND_BUILTIN_WORD, 0]) {
         [self value_]; 
     } else {
         [self raise:@"No viable alternative found in rule 'loggerExpr'."];
@@ -118,11 +112,6 @@
     do {
         [self propertyPath_]; 
     } while ([self speculate:^{ [self propertyPath_]; }]);
-    [self execute:^{
-    
-	[self processKeyPathToken];
-
-    }];
 
     [self fireDelegateSelector:@selector(parser:didMatchKeyPath:)];
 }
@@ -131,11 +120,6 @@
     
     [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_DOT discard:YES]; 
     [self propertyName_]; 
-    [self execute:^{
-    
-	[self processPropertyToken];
-
-    }];
 
     [self fireDelegateSelector:@selector(parser:didMatchPropertyPath:)];
 }
@@ -145,11 +129,6 @@
     [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_LT_SYM discard:YES]; 
     [self objCId_]; 
     [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_GT_SYM discard:YES]; 
-    [self execute:^{
-    
-	[self processProtocolToken];
-
-    }];
 
     [self fireDelegateSelector:@selector(parser:didMatchProtocol:)];
 }
@@ -159,11 +138,6 @@
     [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_OPEN_BRACKET discard:YES]; 
     [self objCId_]; 
     [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_CLOSE_BRACKET discard:YES]; 
-    [self execute:^{
-    
-	[self processClassToken];
-
-    }];
 
     [self fireDelegateSelector:@selector(parser:didMatchClass:)];
 }
@@ -186,8 +160,10 @@
 
 - (void)value_ {
     
-    if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_FALSE, STLOGEXPRESSIONPARSER_TOKEN_KIND_NO, STLOGEXPRESSIONPARSER_TOKEN_KIND_TRUE, STLOGEXPRESSIONPARSER_TOKEN_KIND_YES, 0]) {
-        [self bool_]; 
+    if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_TRUE, STLOGEXPRESSIONPARSER_TOKEN_KIND_YES_UPPER, 0]) {
+        [self booleanTrue_]; 
+    } else if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_FALSE, STLOGEXPRESSIONPARSER_TOKEN_KIND_NO_UPPER, 0]) {
+        [self booleanFalse_]; 
     } else if ([self predicts:TOKEN_KIND_BUILTIN_NUMBER, 0]) {
         [self matchNumber:NO]; 
     } else if ([self predicts:TOKEN_KIND_BUILTIN_WORD, 0]) {
@@ -197,30 +173,34 @@
     } else {
         [self raise:@"No viable alternative found in rule 'value'."];
     }
-    [self execute:^{
-    
-	[self processValueToken];
-
-    }];
 
     [self fireDelegateSelector:@selector(parser:didMatchValue:)];
 }
 
-- (void)bool_ {
+- (void)booleanTrue_ {
     
-    if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_YES, 0]) {
-        [self yes_]; 
-    } else if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_NO, 0]) {
-        [self no_]; 
+    if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_YES_UPPER, 0]) {
+        [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_YES_UPPER discard:NO]; 
     } else if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_TRUE, 0]) {
-        [self true_]; 
-    } else if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_FALSE, 0]) {
-        [self false_]; 
+        [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_TRUE discard:NO]; 
     } else {
-        [self raise:@"No viable alternative found in rule 'bool'."];
+        [self raise:@"No viable alternative found in rule 'booleanTrue'."];
     }
 
-    [self fireDelegateSelector:@selector(parser:didMatchBool:)];
+    [self fireDelegateSelector:@selector(parser:didMatchBooleanTrue:)];
+}
+
+- (void)booleanFalse_ {
+    
+    if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_NO_UPPER, 0]) {
+        [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_NO_UPPER discard:NO]; 
+    } else if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_FALSE, 0]) {
+        [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_FALSE discard:NO]; 
+    } else {
+        [self raise:@"No viable alternative found in rule 'booleanFalse'."];
+    }
+
+    [self fireDelegateSelector:@selector(parser:didMatchBooleanFalse:)];
 }
 
 - (void)op_ {
@@ -240,11 +220,6 @@
     } else {
         [self raise:@"No viable alternative found in rule 'op'."];
     }
-    [self execute:^{
-    
-	[self processOpToken];
-
-    }];
 
     [self fireDelegateSelector:@selector(parser:didMatchOp:)];
 }
@@ -289,34 +264,6 @@
     [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_GE discard:NO]; 
 
     [self fireDelegateSelector:@selector(parser:didMatchGe:)];
-}
-
-- (void)yes_ {
-    
-    [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_YES discard:NO]; 
-
-    [self fireDelegateSelector:@selector(parser:didMatchYes:)];
-}
-
-- (void)no_ {
-    
-    [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_NO discard:NO]; 
-
-    [self fireDelegateSelector:@selector(parser:didMatchNo:)];
-}
-
-- (void)true_ {
-    
-    [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_TRUE discard:NO]; 
-
-    [self fireDelegateSelector:@selector(parser:didMatchTrue:)];
-}
-
-- (void)false_ {
-    
-    [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_FALSE discard:NO]; 
-
-    [self fireDelegateSelector:@selector(parser:didMatchFalse:)];
 }
 
 @end

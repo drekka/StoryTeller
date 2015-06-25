@@ -27,11 +27,11 @@
         [self raise:[NSString stringWithFormat:@"Unknown %@ '%s'", expectProtocol ? @"protocol" : @"class", tokenName]];
     }
     PUSH(ref);
-    self.fenceToken = ref;
+    //self.fenceToken = ref;
 }
 
 -(void) processKeyPathToken {
-    PUSH([REV(ABOVE(self.fenceToken)) componentsJoinedByString:@"."]);
+    //PUSH([REV(ABOVE(self.fenceToken)) componentsJoinedByString:@"."]);
 }
 
 -(void) processPropertyToken {
@@ -44,6 +44,7 @@
 }
 
 -(void) processValueToken {
+    /*
     PKToken *token = POP_TOK();
     id tokenValue;
     switch (token.tokenKind) {
@@ -63,6 +64,7 @@
     }
 
     PUSH(tokenValue);
+     */
 }
 
 @end

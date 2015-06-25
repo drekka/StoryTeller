@@ -22,6 +22,9 @@
 		6C158E361B38278500119725 /* STStoryTeller.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CE5C3E71B329BD100F0A470 /* STStoryTeller.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6C8AE19A1B3A47B600DF2B9F /* StoryTeller.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C8AE1991B3A466200DF2B9F /* StoryTeller.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6C8AE19B1B3A481500DF2B9F /* STMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C8AE1981B3A444F00DF2B9F /* STMacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6C8E922B1B3BC41C00E6B6C4 /* STExpressionMatcherFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C8E92291B3BC41C00E6B6C4 /* STExpressionMatcherFactory.h */; };
+		6C8E922C1B3BC41C00E6B6C4 /* STExpressionMatcherFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C8E922A1B3BC41C00E6B6C4 /* STExpressionMatcherFactory.m */; };
+		6C8E922E1B3BCF5200E6B6C4 /* STLogExpressionParserDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C8E922D1B3BCF5200E6B6C4 /* STLogExpressionParserDelegate.h */; };
 		6C9B50F81B32AC770004E06D /* StoryTellerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50F71B32AC770004E06D /* StoryTellerTests.m */; };
 		6C9B50FB1B32ACB30004E06D /* InMemoryLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50FA1B32ACB30004E06D /* InMemoryLogger.m */; };
 		6C9B50FE1B32ADD80004E06D /* STTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50FD1B32ADD80004E06D /* STTestCase.m */; };
@@ -69,6 +72,9 @@
 		6C8AE1961B3A3BF300DF2B9F /* PEGKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PEGKit.framework; path = Carthage/Build/iOS/PEGKit.framework; sourceTree = "<group>"; };
 		6C8AE1981B3A444F00DF2B9F /* STMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STMacros.h; sourceTree = "<group>"; };
 		6C8AE1991B3A466200DF2B9F /* StoryTeller.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StoryTeller.h; sourceTree = "<group>"; };
+		6C8E92291B3BC41C00E6B6C4 /* STExpressionMatcherFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STExpressionMatcherFactory.h; sourceTree = "<group>"; };
+		6C8E922A1B3BC41C00E6B6C4 /* STExpressionMatcherFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STExpressionMatcherFactory.m; sourceTree = "<group>"; };
+		6C8E922D1B3BCF5200E6B6C4 /* STLogExpressionParserDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STLogExpressionParserDelegate.h; sourceTree = "<group>"; };
 		6C9B50F71B32AC770004E06D /* StoryTellerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StoryTellerTests.m; sourceTree = "<group>"; };
 		6C9B50F91B32ACB30004E06D /* InMemoryLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InMemoryLogger.h; sourceTree = "<group>"; };
 		6C9B50FA1B32ACB30004E06D /* InMemoryLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InMemoryLogger.m; sourceTree = "<group>"; };
@@ -122,9 +128,17 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
+		6C14E9541B3BEF4B005EBE15 /* Matchers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Matchers;
+			sourceTree = "<group>";
+		};
 		6C158DE41B38207100119725 /* Internal */ = {
 			isa = PBXGroup;
 			children = (
+				6C14E9541B3BEF4B005EBE15 /* Matchers */,
 				6CA7DF031B3A61D7002491FF /* STLogExpressionParser.h */,
 				6CA7DF041B3A61D7002491FF /* STLogExpressionParser.m */,
 				6C158DE01B38206600119725 /* STConfig.h */,
@@ -133,6 +147,9 @@
 				6CCFFA7C1B33CB5F00D2F371 /* STDeallocHook.m */,
 				6CE7CF361B3A8D800078A08D /* STLogExpressionParser+Helper.h */,
 				6CE7CF371B3A8D800078A08D /* STLogExpressionParser+Helper.m */,
+				6C8E92291B3BC41C00E6B6C4 /* STExpressionMatcherFactory.h */,
+				6C8E922A1B3BC41C00E6B6C4 /* STExpressionMatcherFactory.m */,
+				6C8E922D1B3BCF5200E6B6C4 /* STLogExpressionParserDelegate.h */,
 			);
 			name = Internal;
 			sourceTree = "<group>";
@@ -216,12 +233,14 @@
 				6C158E301B38278500119725 /* STConfig.h in Headers */,
 				6C158E311B38278500119725 /* STDeallocHook.h in Headers */,
 				6C158E331B38278500119725 /* STLogger.h in Headers */,
+				6C8E922B1B3BC41C00E6B6C4 /* STExpressionMatcherFactory.h in Headers */,
 				6CE7CF381B3A8D800078A08D /* STLogExpressionParser+Helper.h in Headers */,
 				6C158E341B38278500119725 /* STConsoleLogger.h in Headers */,
 				6CA7DF051B3A61D7002491FF /* STLogExpressionParser.h in Headers */,
 				6C8AE19A1B3A47B600DF2B9F /* StoryTeller.h in Headers */,
 				6C158E351B38278500119725 /* STAbstractLogger.h in Headers */,
 				6C8AE19B1B3A481500DF2B9F /* STMacros.h in Headers */,
+				6C8E922E1B3BCF5200E6B6C4 /* STLogExpressionParserDelegate.h in Headers */,
 				6C158E361B38278500119725 /* STStoryTeller.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -325,6 +344,7 @@
 			files = (
 				6C158E2B1B38277200119725 /* STConfig.m in Sources */,
 				6C158E2C1B38277200119725 /* STDeallocHook.m in Sources */,
+				6C8E922C1B3BC41C00E6B6C4 /* STExpressionMatcherFactory.m in Sources */,
 				6CE7CF391B3A8D800078A08D /* STLogExpressionParser+Helper.m in Sources */,
 				6C158E2D1B38277200119725 /* STConsoleLogger.m in Sources */,
 				6C158E2E1B38277200119725 /* STAbstractLogger.m in Sources */,
