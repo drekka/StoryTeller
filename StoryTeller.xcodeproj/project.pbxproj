@@ -14,7 +14,7 @@
 		6C158E2D1B38277200119725 /* STConsoleLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CD18E011B32A5B8002C9806 /* STConsoleLogger.m */; };
 		6C158E2E1B38277200119725 /* STAbstractLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C6879981B32F49A00091F87 /* STAbstractLogger.m */; };
 		6C158E2F1B38277200119725 /* STStoryTeller.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CE5C3E91B329BD100F0A470 /* STStoryTeller.m */; };
-		6C158E301B38278500119725 /* STConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C158DE01B38206600119725 /* STConfig.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6C158E301B38278500119725 /* STConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C158DE01B38206600119725 /* STConfig.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6C158E311B38278500119725 /* STDeallocHook.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CCFFA7B1B33CB5F00D2F371 /* STDeallocHook.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6C158E331B38278500119725 /* STLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CD18DFF1B32A4EF002C9806 /* STLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6C158E341B38278500119725 /* STConsoleLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CD18E001B32A5B8002C9806 /* STConsoleLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -25,13 +25,13 @@
 		6C9B50F81B32AC770004E06D /* StoryTellerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50F71B32AC770004E06D /* StoryTellerTests.m */; };
 		6C9B50FB1B32ACB30004E06D /* InMemoryLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50FA1B32ACB30004E06D /* InMemoryLogger.m */; };
 		6C9B50FE1B32ADD80004E06D /* STTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50FD1B32ADD80004E06D /* STTestCase.m */; };
-		6CA7DF051B3A61D7002491FF /* STLogExpressionParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CA7DF031B3A61D7002491FF /* STLogExpressionParser.h */; };
+		6CA7DF051B3A61D7002491FF /* STLogExpressionParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CA7DF031B3A61D7002491FF /* STLogExpressionParser.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6CA7DF061B3A61D7002491FF /* STLogExpressionParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CA7DF041B3A61D7002491FF /* STLogExpressionParser.m */; };
 		6CA7DF071B3A64A3002491FF /* PEGKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C8AE1961B3A3BF300DF2B9F /* PEGKit.framework */; };
 		6CA7DF091B3A6584002491FF /* STLogExpressionParserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CA7DF081B3A6584002491FF /* STLogExpressionParserTests.m */; };
 		6CD938411B384AB5005B0B5D /* STConfigTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CD938401B384AB5005B0B5D /* STConfigTests.m */; };
 		6CDCEB971B38F07A007DAF3D /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CDCEB961B38F07A007DAF3D /* libOCMock.a */; };
-		6CE7CF381B3A8D800078A08D /* STLogExpressionParser+Helper.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CE7CF361B3A8D800078A08D /* STLogExpressionParser+Helper.h */; };
+		6CE7CF381B3A8D800078A08D /* STLogExpressionParser+Helper.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CE7CF361B3A8D800078A08D /* STLogExpressionParser+Helper.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6CE7CF391B3A8D800078A08D /* STLogExpressionParser+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CE7CF371B3A8D800078A08D /* STLogExpressionParser+Helper.m */; };
 /* End PBXBuildFile section */
 
@@ -533,7 +533,10 @@
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/Carthage/Build/iOS";
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/External/OCMock-3.1.2/iOS";
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/External/OCMock-3.1.2/iOS",
+					PrivateHeaders,
+				);
 				INFOPLIST_FILE = StoryTellerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/External/OCMock-3.1.2/iOS";
@@ -548,7 +551,10 @@
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/Carthage/Build/iOS";
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/External/OCMock-3.1.2/iOS";
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/External/OCMock-3.1.2/iOS",
+					PrivateHeaders,
+				);
 				INFOPLIST_FILE = StoryTellerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/External/OCMock-3.1.2/iOS";

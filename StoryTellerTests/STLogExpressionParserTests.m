@@ -15,59 +15,85 @@
 
 @end
 
-@implementation STLogExpressionParserTests {
-    STLogExpressionParser *_parser;
+@implementation STLogExpressionParserTests
+
+-(void) testString {
+    [self parse:@"abc" withResults:@[@"abc"]];
 }
 
--(void) setUp {
-    _parser = [[STLogExpressionParser alloc] init];
+-(void) testQuotedString {
+    [self parse:@"\"abc\"" withResults:@[@"abc"]];
+}
+
+-(void) testNumber {
+    [self parse:@"1.23" withResults:@[@(1.23)]];
+}
+
+-(void) testBoolean {
+    [self parse:@"true" withResults:@[@YES]];
+    [self parse:@"YES" withResults:@[@YES]];
+    [self parse:@"false" withResults:@[@NO]];
+    [self parse:@"NO" withResults:@[@NO]];
 }
 
 -(void) testClassOnly {
-    NSError *error = nil;
-    PKAssembly __nonnull *result = [_parser parseString:@"[STLogExpressionParserTests]" error:&error];
-    NSArray __nonnull *stack = result.stack;
-    XCTAssertEqual(1u, [stack count]);
-    XCTAssertEqual([STLogExpressionParserTests class], stack[0]);
+    [self parse:@"[STLogExpressionParserTests]" withResults:@[[STLogExpressionParserTests class]]];
 }
 
 -(void) testProtocolOnly {
-    NSError *error = nil;
-    PKAssembly __nonnull *result = [_parser parseString:@"<NSCopying>" error:&error];
-    NSArray __nonnull *stack = result.stack;
-    XCTAssertEqual(1u, [stack count]);
-    XCTAssertEqual(@protocol(NSCopying), stack[0]);
+    [self parse:@"<NSCopying>" withResults:@[@protocol(NSCopying)]];
 }
 
 -(void) testClassPropertyEqualsString {
-    NSError *error = nil;
-    PKAssembly __nonnull *result = [_parser parseString:@"[STLogExpressionParserTests].userId = \"Derekc\"" error:&error];
-    XCTAssertNotNil(result);
-    NSArray __nonnull *stack = result.stack;
-    XCTAssertEqual([STLogExpressionParserTests class], stack[0]);
-    XCTAssertEqualObjects(@"userId", stack[1]);
-    XCTAssertEqual(STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ, ((PKToken *)stack[2]).tokenKind);
-    XCTAssertEqualObjects(@"Derekc", stack[3]);
+    [self parse:@"[STLogExpressionParserTests].userId = \"Derekc\""
+    withResults:@[
+                  [STLogExpressionParserTests class],
+                  @"userId",
+                  @(STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ),
+                  @"Derekc"
+                  ]];
 }
 
 -(void) testClassKeyPathEqualsString {
-    NSError *error = nil;
-    PKAssembly __nonnull *result = [_parser parseString:@"[STLogExpressionParserTests].user.name = \"Derekc\"" error:&error];
-    XCTAssertNotNil(result);
-    NSArray __nonnull *stack = result.stack;
-    XCTAssertEqual([STLogExpressionParserTests class], stack[0]);
-    XCTAssertEqualObjects(@"user.name", stack[1]);
-    XCTAssertEqual(STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ, ((PKToken *)stack[2]).tokenKind);
-    XCTAssertEqualObjects(@"Derekc", stack[3]);
+    [self parse:@"[STLogExpressionParserTests].user.name = \"Derekc\""
+    withResults:@[
+                  [STLogExpressionParserTests class],
+                  @"user.name",
+                  @(STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ),
+                  @"Derekc"
+                  ]];
 }
 
 -(void) testUnknownClassReference {
-    NSError *error = nil;
-    PKAssembly __nonnull *result = [_parser parseString:@"[User].userId = \"Derekc\"" error:&error];
-    XCTAssertNotNil(error);
-    XCTAssertNil(result);
-    XCTAssertEqualObjects(@"Unknown class 'User'\nLine : 1\n", error.localizedFailureReason);
+    [self parse:@"[User].userId = \"Derekc\"" withError:@"Unknown class 'User'\nLine : 1\n"];
 }
 
+#pragma mark - Internal
+
+-(void) parse:(NSString __nonnull *) string withResults:(NSArray __nonnull *) expectedResults {
+    NSArray __nonnull *results = [self parse:string];
+    XCTAssertEqual([expectedResults count], [results count]);
+    [expectedResults enumerateObjectsUsingBlock:^(id  __nonnull expectedResult, NSUInteger idx, BOOL * __nonnull stop) {
+        XCTAssertEqualObjects(expectedResult, results[idx]);
+    }];
+}
+
+-(NSArray __nonnull *) parse:(NSString __nonnull *) string {
+    NSError *localError = nil;
+    STLogExpressionParser *parser = [[STLogExpressionParser alloc] init];
+    PKAssembly __nonnull *result = [parser parseString:string error:&localError];
+    XCTAssertNil(localError);
+    XCTAssertNotNil(result.stack);
+    return result.stack;
+}
+
+-(void) parse:(NSString __nonnull *) string withError:(NSString *) errorMessage {
+    NSError *localError = nil;
+    STLogExpressionParser *parser = [[STLogExpressionParser alloc] init];
+    PKAssembly __nonnull *result = [parser parseString:string error:&localError];
+    XCTAssertNotNil(localError);
+    XCTAssertNil(result);
+    XCTAssertEqualObjects(errorMessage, localError.localizedFailureReason);
+}
 
 @end

@@ -12,39 +12,26 @@
 
 @implementation STLogExpressionParser (Helper)
 
--(void) processEOE {
-    // strip trailing fence object.
-    id topOfStack = POP();
-    if (topOfStack != [NSNull null]) {
-        PUSH(topOfStack);
-    }
-}
-
-
 -(void) processClassToken {
-    const char *classStr = POP_STR().UTF8String;
-    Class refClass = objc_lookUpClass(classStr);
-    if (refClass == NULL) {
-        [self raise:[NSString stringWithFormat:@"Unknown class '%s'", classStr]];
-    }
-    PUSH(refClass);
-    PUSH([NSNull null]);
+    [self processRuntimeToken:NO];
 }
 
 -(void) processProtocolToken {
-    const char *protocolStr = POP_STR().UTF8String;
-    Protocol *refProtocol = objc_getProtocol(protocolStr);
-    if (refProtocol == NULL) {
-        [self raise:[NSString stringWithFormat:@"Unknown protocol '%s'", protocolStr]];
+    [self processRuntimeToken:YES];
+}
+
+-(void) processRuntimeToken:(BOOL) expectProtocol {
+    const char *tokenName = POP_STR().UTF8String;
+    id ref = expectProtocol ? objc_getProtocol(tokenName) : objc_lookUpClass(tokenName);
+    if (ref == NULL) {
+        [self raise:[NSString stringWithFormat:@"Unknown %@ '%s'", expectProtocol ? @"protocol" : @"class", tokenName]];
     }
-    PUSH(refProtocol);
-    PUSH([NSNull null]);
+    PUSH(ref);
+    self.fenceToken = ref;
 }
 
 -(void) processKeyPathToken {
-    NSArray *properties = ABOVE([NSNull null]);
-    POP(); // Pop the null.
-    PUSH([REV(properties) componentsJoinedByString:@"."]);
+    PUSH([REV(ABOVE(self.fenceToken)) componentsJoinedByString:@"."]);
 }
 
 -(void) processPropertyToken {
@@ -58,7 +45,24 @@
 
 -(void) processValueToken {
     PKToken *token = POP_TOK();
-    PUSH(token.tokenType == PKTokenTypeQuotedString ? token.quotedStringValue : token.value);
+    id tokenValue;
+    switch (token.tokenKind) {
+        case STLOGEXPRESSIONPARSER_TOKEN_KIND_TRUE:
+        case STLOGEXPRESSIONPARSER_TOKEN_KIND_YES:
+            tokenValue = @YES;
+            break;
+
+        case STLOGEXPRESSIONPARSER_TOKEN_KIND_FALSE:
+        case STLOGEXPRESSIONPARSER_TOKEN_KIND_NO:
+            tokenValue = @NO;
+            break;
+
+        default:
+            tokenValue = token.tokenType == PKTokenTypeQuotedString ? token.quotedStringValue : token.value;
+            break;
+    }
+
+    PUSH(tokenValue);
 }
 
 @end

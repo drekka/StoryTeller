@@ -7,7 +7,7 @@
 //
 
 #import <StoryTeller/STSToryTeller.h>
-
+#import <StoryTeller/STDeallocHook.h>
 
 // Internal macro - don't use publically.
 #define _ST_CONCAT(prefix, suffix) prefix ## suffix

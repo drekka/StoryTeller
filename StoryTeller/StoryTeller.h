@@ -8,7 +8,6 @@
 
 #import <StoryTeller/STStoryTeller.h>
 #import <StoryTeller/STMacros.h>
-#import <StoryTeller/STConfig.h>
 #import <StoryTeller/STLogger.h>
 #import <StoryTeller/STConsoleLogger.h>
 #import <StoryTeller/STAbstractLogger.h>
