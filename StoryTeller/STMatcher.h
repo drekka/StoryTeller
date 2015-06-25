@@ -10,8 +10,8 @@
 
 @protocol STMatcher <NSObject>
 
--(BOOL) matches:(id) key;
+-(BOOL) matches:(id __nonnull) key;
 
-@property (nonatomic, strong) id<STMatcher> nextMatcher;
+@property (nonatomic, strong) id<STMatcher> __nonnull nextMatcher;
 
 @end

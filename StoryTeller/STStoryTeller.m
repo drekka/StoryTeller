@@ -30,8 +30,10 @@ static STStoryTeller *__storyTeller;
 -(instancetype) init {
     self = [super init];
     if (self) {
+        _activeKeys = [[NSMutableSet alloc] init];
+        _activeLogs = [[NSMutableSet alloc] init];
         _config = [[STConfig alloc] init];
-        [self reset];
+        [_config configure:self];
     }
     return self;
 }
@@ -39,9 +41,7 @@ static STStoryTeller *__storyTeller;
 #pragma mark - Story teller
 
 -(void) reset {
-    _activeKeys = [[NSMutableSet alloc] init];
-    _activeLogs = [[NSMutableSet alloc] init];
-    [_config configure:self];
+    [STStoryTeller initialize];
 }
 
 #pragma mark - Activating logging

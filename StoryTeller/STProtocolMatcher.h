@@ -1,5 +1,5 @@
 //
-//  STClassMatcher.h
+//  STProtocolMatcher.h
 //  StoryTeller
 //
 //  Created by Derek Clarkson on 25/06/2015.
@@ -9,8 +9,8 @@
 @import Foundation;
 #import "STMatcher.h"
 
-@interface STClassMatcher : NSObject<STMatcher>
+@interface STProtocolMatcher : NSObject<STMatcher>
 
--(nonnull instancetype) initWithClass:(Class __nonnull) targetClass;
+-(nonnull instancetype) initWithProtocol:(Protocol __nonnull *) protocol;
 
 @end

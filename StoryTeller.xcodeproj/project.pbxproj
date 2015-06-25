@@ -35,6 +35,10 @@
 		6CA7DF061B3A61D7002491FF /* STLogExpressionParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CA7DF041B3A61D7002491FF /* STLogExpressionParser.m */; };
 		6CA7DF071B3A64A3002491FF /* PEGKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C8AE1961B3A3BF300DF2B9F /* PEGKit.framework */; };
 		6CA7DF091B3A6584002491FF /* STLogExpressionParserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CA7DF081B3A6584002491FF /* STLogExpressionParserTests.m */; };
+		6CC81B421B3C1C8800E890CE /* STClassMatcherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CC81B411B3C1C8800E890CE /* STClassMatcherTests.m */; };
+		6CC81B451B3C286600E890CE /* STProtocolMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CC81B431B3C286600E890CE /* STProtocolMatcher.h */; };
+		6CC81B461B3C286600E890CE /* STProtocolMatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CC81B441B3C286600E890CE /* STProtocolMatcher.m */; };
+		6CC81B481B3C29F700E890CE /* STProtocolMatcherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CC81B471B3C29F700E890CE /* STProtocolMatcherTests.m */; };
 		6CD938411B384AB5005B0B5D /* STConfigTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CD938401B384AB5005B0B5D /* STConfigTests.m */; };
 		6CDCEB971B38F07A007DAF3D /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CDCEB961B38F07A007DAF3D /* libOCMock.a */; };
 		6CE7CF381B3A8D800078A08D /* STLogExpressionParser+Helper.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CE7CF361B3A8D800078A08D /* STLogExpressionParser+Helper.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -89,6 +93,10 @@
 		6CA7DF031B3A61D7002491FF /* STLogExpressionParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STLogExpressionParser.h; sourceTree = "<group>"; };
 		6CA7DF041B3A61D7002491FF /* STLogExpressionParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STLogExpressionParser.m; sourceTree = "<group>"; };
 		6CA7DF081B3A6584002491FF /* STLogExpressionParserTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STLogExpressionParserTests.m; sourceTree = "<group>"; };
+		6CC81B411B3C1C8800E890CE /* STClassMatcherTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STClassMatcherTests.m; sourceTree = "<group>"; };
+		6CC81B431B3C286600E890CE /* STProtocolMatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STProtocolMatcher.h; sourceTree = "<group>"; };
+		6CC81B441B3C286600E890CE /* STProtocolMatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STProtocolMatcher.m; sourceTree = "<group>"; };
+		6CC81B471B3C29F700E890CE /* STProtocolMatcherTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STProtocolMatcherTests.m; sourceTree = "<group>"; };
 		6CCFFA7B1B33CB5F00D2F371 /* STDeallocHook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDeallocHook.h; sourceTree = "<group>"; };
 		6CCFFA7C1B33CB5F00D2F371 /* STDeallocHook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDeallocHook.m; sourceTree = "<group>"; };
 		6CD18DFF1B32A4EF002C9806 /* STLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STLogger.h; sourceTree = "<group>"; };
@@ -140,6 +148,8 @@
 				6C14E9551B3BEF8A005EBE15 /* STMatcher.h */,
 				6C14E9571B3BEFE1005EBE15 /* STClassMatcher.h */,
 				6C14E9581B3BEFE1005EBE15 /* STClassMatcher.m */,
+				6CC81B431B3C286600E890CE /* STProtocolMatcher.h */,
+				6CC81B441B3C286600E890CE /* STProtocolMatcher.m */,
 			);
 			name = Matchers;
 			sourceTree = "<group>";
@@ -161,6 +171,15 @@
 				6C8E922D1B3BCF5200E6B6C4 /* STLogExpressionParserDelegate.h */,
 			);
 			name = Internal;
+			sourceTree = "<group>";
+		};
+		6CC81B3F1B3C1C6F00E890CE /* Matchers */ = {
+			isa = PBXGroup;
+			children = (
+				6CC81B411B3C1C8800E890CE /* STClassMatcherTests.m */,
+				6CC81B471B3C29F700E890CE /* STProtocolMatcherTests.m */,
+			);
+			name = Matchers;
 			sourceTree = "<group>";
 		};
 		6CCFFA7F1B33EC1F00D2F371 /* Loggers */ = {
@@ -220,6 +239,7 @@
 		6CE5C3F31B329BD100F0A470 /* StoryTellerTests */ = {
 			isa = PBXGroup;
 			children = (
+				6CC81B3F1B3C1C6F00E890CE /* Matchers */,
 				6CE5C3F41B329BD100F0A470 /* Info.plist */,
 				6CCFFA801B33EC3600D2F371 /* Loggers */,
 				6CD938401B384AB5005B0B5D /* STConfigTests.m */,
@@ -244,6 +264,7 @@
 				6C158E331B38278500119725 /* STLogger.h in Headers */,
 				6C8E922B1B3BC41C00E6B6C4 /* STExpressionMatcherFactory.h in Headers */,
 				6CE7CF381B3A8D800078A08D /* STLogExpressionParser+Helper.h in Headers */,
+				6CC81B451B3C286600E890CE /* STProtocolMatcher.h in Headers */,
 				6C158E341B38278500119725 /* STConsoleLogger.h in Headers */,
 				6C14E9561B3BEF8A005EBE15 /* STMatcher.h in Headers */,
 				6C14E9591B3BEFE1005EBE15 /* STClassMatcher.h in Headers */,
@@ -358,6 +379,7 @@
 				6C8E922C1B3BC41C00E6B6C4 /* STExpressionMatcherFactory.m in Sources */,
 				6CE7CF391B3A8D800078A08D /* STLogExpressionParser+Helper.m in Sources */,
 				6C158E2D1B38277200119725 /* STConsoleLogger.m in Sources */,
+				6CC81B461B3C286600E890CE /* STProtocolMatcher.m in Sources */,
 				6C158E2E1B38277200119725 /* STAbstractLogger.m in Sources */,
 				6CA7DF061B3A61D7002491FF /* STLogExpressionParser.m in Sources */,
 				6C14E95A1B3BEFE1005EBE15 /* STClassMatcher.m in Sources */,
@@ -371,6 +393,8 @@
 			files = (
 				6C9B50FE1B32ADD80004E06D /* STTestCase.m in Sources */,
 				6C9B50F81B32AC770004E06D /* StoryTellerTests.m in Sources */,
+				6CC81B481B3C29F700E890CE /* STProtocolMatcherTests.m in Sources */,
+				6CC81B421B3C1C8800E890CE /* STClassMatcherTests.m in Sources */,
 				6CD938411B384AB5005B0B5D /* STConfigTests.m in Sources */,
 				6C9B50FB1B32ACB30004E06D /* InMemoryLogger.m in Sources */,
 				6CA7DF091B3A6584002491FF /* STLogExpressionParserTests.m in Sources */,

@@ -1,29 +1,29 @@
 //
-//  STClassMatcher.m
+//  STProtocolMatcher.m
 //  StoryTeller
 //
 //  Created by Derek Clarkson on 25/06/2015.
 //  Copyright © 2015 Derek Clarkson. All rights reserved.
 //
 
-#import "STClassMatcher.h"
+#import "STProtocolMatcher.h"
 
-@implementation STClassMatcher {
-    Class _targetClass;
+@implementation STProtocolMatcher {
+    Protocol *_protocol;
 }
 
 @synthesize nextMatcher = _nextMatcher;
 
--(nonnull instancetype) initWithClass:(Class __nonnull) targetClass {
+-(nonnull instancetype) initWithProtocol:(Protocol __nonnull *) protocol {
     self = [super init];
     if (self) {
-        _targetClass = targetClass;
+        _protocol = protocol;
     }
     return self;
 }
 
 -(BOOL) matches:(id __nonnull) key {
-    return [key isKindOfClass:_targetClass]
+    return [key conformsToProtocol:_protocol]
     && (self.nextMatcher == nil ? YES : [self.nextMatcher matches:key]);
 }
 

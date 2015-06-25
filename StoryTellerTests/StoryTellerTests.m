@@ -37,7 +37,10 @@
 }
 
 -(void) testMessageRecordedWhenKeyNotLogging {
+    XCTAssertEqual(0lu, [self.inMemoryLogger.log count]);
     [[STStoryTeller storyTeller] stopLogging:@"abc"];
+    STStoryTeller *teller = [STStoryTeller storyTeller];
+    NSLog(@"%@", teller);
     log(@"abc", @"hello world");
     XCTAssertEqual(0lu, [self.inMemoryLogger.log count]);
 }
