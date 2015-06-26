@@ -125,7 +125,8 @@
     [parser popToken];
     if (_op == STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ || _op == STLOGEXPRESSIONPARSER_TOKEN_KIND_NE) {
         _valueMatcher = [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
-            return expected == ((NSNumber *) key).boolValue;
+            return expected ==
+            (self->_op == STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ ? ((NSNumber *) key).boolValue : ! ((NSNumber *) key).boolValue);
         }];
     } else {
         [parser raise:@"Invalid operator. Booleans can only accept '==' or '!=' operators."];

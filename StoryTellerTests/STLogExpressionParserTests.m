@@ -33,53 +33,54 @@
 
 -(void) parser:(PKParser * __nonnull) parser didMatchClass:(PKAssembly * __nonnull) assembly {
     PKToken *token = [parser popToken];
-    NSLog(@"Token: %@", token.value);
+    NSLog(@"Token class: %@", token.value);
     _matchedTokens = [_matchedTokens arrayByAddingObject:token];
     _matchedClass = YES;
 }
 
 -(void) parser:(PKParser * __nonnull) parser didMatchProtocol:(PKAssembly * __nonnull) assembly {
     PKToken *token = [parser popToken];
-    NSLog(@"Token: %@", token.value);
+    NSLog(@"Token protocol: %@", token.value);
     _matchedTokens = [_matchedTokens arrayByAddingObject:token];
     _matchedProtocol = YES;
 }
 
 -(void) parser:(PKParser * __nonnull) parser didMatchString:(PKAssembly * __nonnull) assembly {
     PKToken *token = [parser popToken];
-    NSLog(@"Token: %@", token.value);
+    NSLog(@"Token string: %@", token.value);
     _matchedTokens = [_matchedTokens arrayByAddingObject:token];
 }
 
 -(void) parser:(PKParser * __nonnull) parser didMatchNumber:(PKAssembly * __nonnull) assembly {
     PKToken *token = [parser popToken];
-    NSLog(@"Token: %@", token.value);
+    NSLog(@"Token number: %@", token.value);
     _matchedTokens = [_matchedTokens arrayByAddingObject:token];
 }
 
 -(void) parser:(PKParser * __nonnull) parser didMatchBooleanTrue:(PKAssembly * __nonnull) assembly {
     PKToken *token = [parser popToken];
-    NSLog(@"Token: %@", token.value);
+    NSLog(@"Token boolean true: %@", token.value);
     _matchedTokens = [_matchedTokens arrayByAddingObject:token];
 }
 
 -(void) parser:(PKParser * __nonnull) parser didMatchBooleanFalse:(PKAssembly * __nonnull) assembly {
     PKToken *token = [parser popToken];
-    NSLog(@"Token: %@", token.value);
+    NSLog(@"Token boolean false: %@", token.value);
     _matchedTokens = [_matchedTokens arrayByAddingObject:token];
 }
 
--(void) parser:(PKParser * __nonnull) parser didMatchKeyPath:(PKAssembly * __nonnull) assembly {
+-(void) parser:(PKParser __nonnull *) parser didMatchKeyPath:(PKAssembly __nonnull *) assembly {
+    NSLog(@"Token key path ...");
     while (! [assembly isStackEmpty]) {
         PKToken *token = [parser popToken];
-        NSLog(@"Token: %@", token.value);
+        NSLog(@"Token key path: %@", token.value);
         _matchedTokens = [_matchedTokens arrayByAddingObject:token];
     }
 }
 
 -(void) parser:(PKParser * __nonnull) parser didMatchOp:(PKAssembly * __nonnull) assembly {
     PKToken *token = [parser popToken];
-    NSLog(@"Token: %@", token.value);
+    NSLog(@"Token op: %@", token.value);
     _matchedTokens = [_matchedTokens arrayByAddingObject:token];
 }
 
@@ -139,22 +140,22 @@
 
 -(void) testClassPropertyEqualsString {
 
-    [self parse:@"[Abc].userId = \"Derekc\""];
+    [self parse:@"[Abc].userId == \"Derekc\""];
 
-//    [self validateMatchedTokens:@[
-//                                  @(TOKEN_KIND_BUILTIN_WORD),
-//                                  @(TOKEN_KIND_BUILTIN_WORD),
-//                                  @(STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ),
-//                                  @(TOKEN_KIND_BUILTIN_QUOTEDSTRING)
-//                                  ]];
-//    XCTAssertEqualObjects(@"Abc", _matchedTokens[0].quotedStringValue);
-//    XCTAssertEqualObjects(@"userId", _matchedTokens[1].value);
-//    XCTAssertEqualObjects(@"=", _matchedTokens[2].value);
-//    XCTAssertEqualObjects(@"Derekc", _matchedTokens[3].quotedStringValue);
+    [self validateMatchedTokens:@[
+                                  @(TOKEN_KIND_BUILTIN_WORD),
+                                  @(TOKEN_KIND_BUILTIN_WORD),
+                                  @(STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ),
+                                  @(TOKEN_KIND_BUILTIN_QUOTEDSTRING)
+                                  ]];
+    XCTAssertEqualObjects(@"Abc", _matchedTokens[0].quotedStringValue);
+    XCTAssertEqualObjects(@"userId", _matchedTokens[1].value);
+    XCTAssertEqualObjects(@"==", _matchedTokens[2].value);
+    XCTAssertEqualObjects(@"Derekc", _matchedTokens[3].quotedStringValue);
 }
 
 -(void) testClassKeyPathEqualsString {
-    [self parse:@"[Abc].user.supervisor.name = \"Derekc\""];
+    [self parse:@"[Abc].user.supervisor.name == \"Derekc\""];
 
     [self validateMatchedTokens:@[
                                   @(TOKEN_KIND_BUILTIN_WORD),
@@ -168,7 +169,7 @@
     XCTAssertEqualObjects(@"name", _matchedTokens[1].value);
     XCTAssertEqualObjects(@"supervisor", _matchedTokens[2].value);
     XCTAssertEqualObjects(@"user", _matchedTokens[3].value);
-    XCTAssertEqualObjects(@"=", _matchedTokens[4].value);
+    XCTAssertEqualObjects(@"==", _matchedTokens[4].value);
     XCTAssertEqualObjects(@"Derekc", _matchedTokens[5].quotedStringValue);
 }
 
@@ -188,8 +189,12 @@
     [self parse:@"<Abc>.userId abc" withCode:1 error:@"Failed to match next input token"];
 }
 
--(void) testInvalidOp {
+-(void) testInvalidOp1 {
     [self parse:@"<Abc>.userId >=< abc" withCode:1 error:@"Failed to match next input token"];
+}
+
+-(void) testInvalidOp2 {
+    [self parse:@"[Abc].userId >=< abc" withCode:1 error:@"Failed to match next input token"];
 }
 
 #pragma mark - Internal
@@ -204,10 +209,12 @@
 }
 
 -(void) parse:(NSString __nonnull *) string {
-    NSError *localError = nil;
+
     STLogExpressionParser *parser = [[STLogExpressionParser alloc] initWithDelegate:self];
-    parser.enableVerboseErrorReporting = YES;
+    //parser.enableVerboseErrorReporting = YES;
+    NSError *localError = nil;
     PKAssembly __nonnull *result = [parser parseString:string error:&localError];
+
     XCTAssertNil(localError);
     XCTAssertNotNil(result.stack);
     NSArray __nonnull *results = result.stack;

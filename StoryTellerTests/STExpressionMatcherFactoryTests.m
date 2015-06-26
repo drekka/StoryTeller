@@ -10,14 +10,26 @@
 #import <OCMock/OCMock.h>
 
 #import "STExpressionMatcherFactory.h"
-
 #import "STMatcher.h"
 
-@interface A : NSObject
+@interface B : NSObject
+@property (nonatomic, assign) BOOL y;
+@end
+
+@implementation B
+@end
+
+@protocol C <NSObject>
+@property (nonatomic, assign) int x;
+@end
+
+@interface A : NSObject<C>
 @property (nonatomic, strong) NSString *string;
+@property (nonatomic, strong) B *b;
 @end
 
 @implementation A
+@synthesize x = _x;
 @end
 
 @interface STExpressionMatcherFactoryTests : XCTestCase
@@ -32,32 +44,27 @@
 }
 
 -(void) testStringMatches {
-    NSError *error = nil;
-    id<STMatcher> matcher = [_factory parseExpression:@"abc" error:&error];
+    id<STMatcher> matcher = [_factory parseExpression:@"abc" error:NULL];
     XCTAssertTrue([matcher matches:@"abc"]);
 }
 
 -(void) testStringFailsMatch {
-    NSError *error = nil;
-    id<STMatcher> matcher = [_factory parseExpression:@"abc" error:&error];
+    id<STMatcher> matcher = [_factory parseExpression:@"abc" error:NULL];
     XCTAssertFalse([matcher matches:@"def"]);
 }
 
 -(void) testNumberMatches {
-    NSError *error = nil;
-    id<STMatcher> matcher = [_factory parseExpression:@"12" error:&error];
+    id<STMatcher> matcher = [_factory parseExpression:@"12" error:NULL];
     XCTAssertTrue([matcher matches:@12]);
 }
 
 -(void) testNumberFailsMatch {
-    NSError *error = nil;
-    id<STMatcher> matcher = [_factory parseExpression:@"12.5" error:&error];
+    id<STMatcher> matcher = [_factory parseExpression:@"12.5" error:NULL];
     XCTAssertFalse([matcher matches:@12.678]);
 }
 
 -(void) testClassMatches {
-    NSError *error = nil;
-    id<STMatcher> matcher = [_factory parseExpression:@"[NSString]" error:&error];
+    id<STMatcher> matcher = [_factory parseExpression:@"[NSString]" error:NULL];
     XCTAssertTrue([matcher matches:@"abc"]);
 }
 
@@ -69,33 +76,26 @@
 }
 
 -(void) testClassFailsMatch {
-    NSError *error = nil;
-    id<STMatcher> matcher = [_factory parseExpression:@"[NSString]" error:&error];
+    id<STMatcher> matcher = [_factory parseExpression:@"[NSString]" error:NULL];
     XCTAssertFalse([matcher matches:@12]);
 }
 
 -(void) testClassStringPropertyQuotedMatches {
-    NSError *error = nil;
-    id<STMatcher> matcher = [_factory parseExpression:@"[A].string == \"abc\"" error:&error];
-
+    id<STMatcher> matcher = [_factory parseExpression:@"[A].string == \"abc\"" error:NULL];
     A *a = [[A alloc] init];
     a.string = @"abc";
     XCTAssertTrue([matcher matches:a]);
 }
 
 -(void) testClassStringPropertyUnQuotedMatches {
-    NSError *error = nil;
-    id<STMatcher> matcher = [_factory parseExpression:@"[A].string == abc" error:&error];
-
+    id<STMatcher> matcher = [_factory parseExpression:@"[A].string == abc" error:NULL];
     A *a = [[A alloc] init];
     a.string = @"abc";
     XCTAssertTrue([matcher matches:a]);
 }
 
 -(void) testClassStringPropertyUnQuotedFailsMatch {
-    NSError *error = nil;
-    id<STMatcher> matcher = [_factory parseExpression:@"[A].string == abc" error:&error];
-
+    id<STMatcher> matcher = [_factory parseExpression:@"[A].string == abc" error:NULL];
     A *a = [[A alloc] init];
     a.string = @"def";
     XCTAssertFalse([matcher matches:a]);
@@ -104,15 +104,47 @@
 -(void) testClassInvalidStringProperty {
     NSError *error = nil;
     id<STMatcher> matcher = [_factory parseExpression:@"[A].xxxx == abc" error:&error];
-
     A *a = [[A alloc] init];
     a.string = @"def";
     XCTAssertThrowsSpecificNamed([matcher matches:a], NSException, @"NSUnknownKeyException");
 }
 
--(void) testProtocolMatches {
+-(void) testClassBoolNestedPropertyTrueMatches {
+    id<STMatcher> matcher = [_factory parseExpression:@"[A].b.y == true" error:NULL];
+    A *a = [[A alloc] init];
+    B *b = [[B alloc] init];
+    a.b = b;
+    b.y = YES;
+    XCTAssertTrue([matcher matches:a]);
+}
+
+-(void) testClassBoolNestedPropertyNotFalseMatches {
+    id<STMatcher> matcher = [_factory parseExpression:@"[A].b.y != false" error:NULL];
+    A *a = [[A alloc] init];
+    B *b = [[B alloc] init];
+    a.b = b;
+    b.y = YES;
+    XCTAssertTrue([matcher matches:a]);
+}
+
+-(void) testClassBoolNestedPropertyYesMatches {
+    id<STMatcher> matcher = [_factory parseExpression:@"[A].b.y == YES" error:NULL];
+    A *a = [[A alloc] init];
+    B *b = [[B alloc] init];
+    a.b = b;
+    b.y = YES;
+    XCTAssertTrue([matcher matches:a]);
+}
+
+-(void) testClassBoolNestedPropertyInvalidOp {
     NSError *error = nil;
-    id<STMatcher> matcher = [_factory parseExpression:@"<NSCopying>" error:&error];
+    id<STMatcher> matcher = [_factory parseExpression:@"[A].b.y > YES" error:&error];
+    XCTAssertNil(matcher);
+    XCTAssertEqualObjects(@"Invalid operator. Booleans can only accept '==' or '!=' operators.\nLine : Unknown\n", error.localizedFailureReason);
+}
+
+-(void) testProtocolMatches {
+    id<STMatcher> matcher = [_factory parseExpression:@"<NSCopying>" error:NULL];
     XCTAssertTrue([matcher matches:@"abc"]);
 }
 
@@ -124,9 +156,16 @@
 }
 
 -(void) testProtocolFailsMatch {
-    NSError *error = nil;
-    id<STMatcher> matcher = [_factory parseExpression:@"<NSFastEnumeration>" error:&error];
+    id<STMatcher> matcher = [_factory parseExpression:@"<NSFastEnumeration>" error:NULL];
     XCTAssertFalse([matcher matches:@12]);
 }
+
+-(void) testProtocolIntPropertyMatches {
+    id<STMatcher> matcher = [_factory parseExpression:@"<C>.x == 5" error:NULL];
+    A *a = [[A alloc] init];
+    a.x = 5;
+    XCTAssertTrue([matcher matches:a]);
+}
+
 
 @end
