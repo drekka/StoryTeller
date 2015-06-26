@@ -32,39 +32,55 @@
 #pragma mark - Delegate methods
 
 -(void) parser:(PKParser * __nonnull) parser didMatchClass:(PKAssembly * __nonnull) assembly {
-    _matchedTokens = [_matchedTokens arrayByAddingObject:[parser popToken]];
+    PKToken *token = [parser popToken];
+    NSLog(@"Token: %@", token.value);
+    _matchedTokens = [_matchedTokens arrayByAddingObject:token];
     _matchedClass = YES;
 }
 
 -(void) parser:(PKParser * __nonnull) parser didMatchProtocol:(PKAssembly * __nonnull) assembly {
-    _matchedTokens = [_matchedTokens arrayByAddingObject:[parser popToken]];
+    PKToken *token = [parser popToken];
+    NSLog(@"Token: %@", token.value);
+    _matchedTokens = [_matchedTokens arrayByAddingObject:token];
     _matchedProtocol = YES;
 }
 
 -(void) parser:(PKParser * __nonnull) parser didMatchString:(PKAssembly * __nonnull) assembly {
-    _matchedTokens = [_matchedTokens arrayByAddingObject:[parser popToken]];
+    PKToken *token = [parser popToken];
+    NSLog(@"Token: %@", token.value);
+    _matchedTokens = [_matchedTokens arrayByAddingObject:token];
 }
 
 -(void) parser:(PKParser * __nonnull) parser didMatchNumber:(PKAssembly * __nonnull) assembly {
-    _matchedTokens = [_matchedTokens arrayByAddingObject:[parser popToken]];
+    PKToken *token = [parser popToken];
+    NSLog(@"Token: %@", token.value);
+    _matchedTokens = [_matchedTokens arrayByAddingObject:token];
 }
 
 -(void) parser:(PKParser * __nonnull) parser didMatchBooleanTrue:(PKAssembly * __nonnull) assembly {
-    _matchedTokens = [_matchedTokens arrayByAddingObject:[parser popToken]];
+    PKToken *token = [parser popToken];
+    NSLog(@"Token: %@", token.value);
+    _matchedTokens = [_matchedTokens arrayByAddingObject:token];
 }
 
 -(void) parser:(PKParser * __nonnull) parser didMatchBooleanFalse:(PKAssembly * __nonnull) assembly {
-    _matchedTokens = [_matchedTokens arrayByAddingObject:[parser popToken]];
+    PKToken *token = [parser popToken];
+    NSLog(@"Token: %@", token.value);
+    _matchedTokens = [_matchedTokens arrayByAddingObject:token];
 }
 
 -(void) parser:(PKParser * __nonnull) parser didMatchKeyPath:(PKAssembly * __nonnull) assembly {
     while (! [assembly isStackEmpty]) {
-        _matchedTokens = [_matchedTokens arrayByAddingObject:[parser popToken]];
+        PKToken *token = [parser popToken];
+        NSLog(@"Token: %@", token.value);
+        _matchedTokens = [_matchedTokens arrayByAddingObject:token];
     }
 }
 
 -(void) parser:(PKParser * __nonnull) parser didMatchOp:(PKAssembly * __nonnull) assembly {
-    _matchedTokens = [_matchedTokens arrayByAddingObject:[parser popToken]];
+    PKToken *token = [parser popToken];
+    NSLog(@"Token: %@", token.value);
+    _matchedTokens = [_matchedTokens arrayByAddingObject:token];
 }
 
 #pragma mark - Tests

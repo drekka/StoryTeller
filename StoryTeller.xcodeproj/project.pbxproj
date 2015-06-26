@@ -35,7 +35,7 @@
 		6C9B50F81B32AC770004E06D /* StoryTellerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50F71B32AC770004E06D /* StoryTellerTests.m */; };
 		6C9B50FB1B32ACB30004E06D /* InMemoryLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50FA1B32ACB30004E06D /* InMemoryLogger.m */; };
 		6C9B50FE1B32ADD80004E06D /* STTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50FD1B32ADD80004E06D /* STTestCase.m */; };
-		6CA7DF051B3A61D7002491FF /* STLogExpressionParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CA7DF031B3A61D7002491FF /* STLogExpressionParser.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		6CA7DF051B3A61D7002491FF /* STLogExpressionParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CA7DF031B3A61D7002491FF /* STLogExpressionParser.h */; };
 		6CA7DF061B3A61D7002491FF /* STLogExpressionParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CA7DF041B3A61D7002491FF /* STLogExpressionParser.m */; };
 		6CA7DF071B3A64A3002491FF /* PEGKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C8AE1961B3A3BF300DF2B9F /* PEGKit.framework */; };
 		6CA7DF091B3A6584002491FF /* STLogExpressionParserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CA7DF081B3A6584002491FF /* STLogExpressionParserTests.m */; };
