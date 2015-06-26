@@ -11,29 +11,36 @@
 
 #import "STExpressionMatcherFactory.h"
 
-#import "STClassMatcher.h"
-#import "STProtocolMatcher.h"
+#import "STMatcher.h"
 
 @interface STExpressionMatcherFactoryTests : XCTestCase
 
 @end
 
-@implementation STExpressionMatcherFactoryTests
+@implementation STExpressionMatcherFactoryTests {
+    STExpressionMatcherFactory *_factory;
+}
+
+-(void) setUp {
+    _factory = [[STExpressionMatcherFactory alloc] init];
+}
 
 -(void) testParseClass {
-    STExpressionMatcherFactory *factory = [[STExpressionMatcherFactory alloc] init];
     NSError *error = nil;
-    id<STMatcher> matcher = [factory parseExpression:@"[NSString]" error:&error];
-    XCTAssertTrue([matcher isKindOfClass:[STClassMatcher class]]);
-    XCTAssertEqual([NSString class], ((STClassMatcher *) matcher).forClass);
+    id<STMatcher> matcher = [_factory parseExpression:@"[NSString]" error:&error];
+    XCTAssertTrue([matcher matches:@"abc"]);
+}
+
+-(void) testParseUnknownClass {
+    NSError *error = nil;
+    id<STMatcher> matcher = [_factory parseExpression:@"[ABC]" error:&error];
+    XCTAssertTrue([matcher matches:@"abc"]);
 }
 
 -(void) testParseProtocol {
-    STExpressionMatcherFactory *factory = [[STExpressionMatcherFactory alloc] init];
     NSError *error = nil;
-    id<STMatcher> matcher = [factory parseExpression:@"<NSCopying>" error:&error];
-    XCTAssertTrue([matcher isKindOfClass:[STProtocolMatcher class]]);
-    XCTAssertEqual(@protocol(NSCopying), ((STProtocolMatcher *) matcher).protocol);
+    id<STMatcher> matcher = [_factory parseExpression:@"<NSCopying>" error:&error];
+    XCTAssertTrue([matcher matches:@"abc"]);
 }
 
 @end

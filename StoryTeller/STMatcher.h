@@ -12,6 +12,6 @@
 
 -(BOOL) matches:(id __nonnull) key;
 
-@property (nonatomic, strong) id<STMatcher> __nonnull nextMatcher;
+@property (nonatomic, strong, nullable) id<STMatcher> nextMatcher;
 
 @end

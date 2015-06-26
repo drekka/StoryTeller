@@ -17,10 +17,10 @@
         self.startRuleName = @"expr";
         self.tokenKindTab[@"false"] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_FALSE);
         self.tokenKindTab[@">="] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_GE);
+        self.tokenKindTab[@"=="] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ);
         self.tokenKindTab[@"<"] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_LT_SYM);
         self.tokenKindTab[@"<="] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_LE);
         self.tokenKindTab[@"["] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_OPEN_BRACKET);
-        self.tokenKindTab[@"="] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ);
         self.tokenKindTab[@"true"] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_TRUE);
         self.tokenKindTab[@"."] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_DOT);
         self.tokenKindTab[@">"] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_GT_SYM);
@@ -31,10 +31,10 @@
 
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_FALSE] = @"false";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_GE] = @">=";
+        self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ] = @"==";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_LT_SYM] = @"<";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_LE] = @"<=";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_OPEN_BRACKET] = @"[";
-        self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ] = @"=";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_TRUE] = @"true";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_DOT] = @".";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_GT_SYM] = @">";
@@ -56,30 +56,15 @@
 
 - (void)expr_ {
     
-    [self execute:^{
-    
-    PKTokenizer *t = self.tokenizer;
-    [t.symbolState add:@"!="];
-    [t.symbolState add:@"<="];
-    [t.symbolState add:@">="];
-
-    }];
-    [self loggerExpr_]; 
-
-    [self fireDelegateSelector:@selector(parser:didMatchExpr:)];
-}
-
-- (void)loggerExpr_ {
-    
     if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_LT_SYM, STLOGEXPRESSIONPARSER_TOKEN_KIND_OPEN_BRACKET, 0]) {
         [self classExpr_]; 
     } else if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_FALSE, STLOGEXPRESSIONPARSER_TOKEN_KIND_NO_UPPER, STLOGEXPRESSIONPARSER_TOKEN_KIND_TRUE, STLOGEXPRESSIONPARSER_TOKEN_KIND_YES_UPPER, TOKEN_KIND_BUILTIN_NUMBER, TOKEN_KIND_BUILTIN_QUOTEDSTRING, TOKEN_KIND_BUILTIN_WORD, 0]) {
         [self value_]; 
     } else {
-        [self raise:@"No viable alternative found in rule 'loggerExpr'."];
+        [self raise:@"No viable alternative found in rule 'expr'."];
     }
 
-    [self fireDelegateSelector:@selector(parser:didMatchLoggerExpr:)];
+    [self fireDelegateSelector:@selector(parser:didMatchExpr:)];
 }
 
 - (void)classExpr_ {
@@ -94,70 +79,6 @@
     [self fireDelegateSelector:@selector(parser:didMatchClassExpr:)];
 }
 
-- (void)classIdentifier_ {
-    
-    if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_OPEN_BRACKET, 0]) {
-        [self class_]; 
-    } else if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_LT_SYM, 0]) {
-        [self protocol_]; 
-    } else {
-        [self raise:@"No viable alternative found in rule 'classIdentifier'."];
-    }
-
-    [self fireDelegateSelector:@selector(parser:didMatchClassIdentifier:)];
-}
-
-- (void)keyPath_ {
-    
-    do {
-        [self propertyPath_]; 
-    } while ([self speculate:^{ [self propertyPath_]; }]);
-
-    [self fireDelegateSelector:@selector(parser:didMatchKeyPath:)];
-}
-
-- (void)propertyPath_ {
-    
-    [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_DOT discard:YES]; 
-    [self propertyName_]; 
-
-    [self fireDelegateSelector:@selector(parser:didMatchPropertyPath:)];
-}
-
-- (void)protocol_ {
-    
-    [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_LT_SYM discard:YES]; 
-    [self objCId_]; 
-    [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_GT_SYM discard:YES]; 
-
-    [self fireDelegateSelector:@selector(parser:didMatchProtocol:)];
-}
-
-- (void)class_ {
-    
-    [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_OPEN_BRACKET discard:YES]; 
-    [self objCId_]; 
-    [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_CLOSE_BRACKET discard:YES]; 
-
-    [self fireDelegateSelector:@selector(parser:didMatchClass:)];
-}
-
-- (void)objCId_ {
-    
-    [self testAndThrow:(id)^{ return isupper([LS(1) characterAtIndex:0]); }]; 
-    [self matchWord:NO]; 
-
-    [self fireDelegateSelector:@selector(parser:didMatchObjCId:)];
-}
-
-- (void)propertyName_ {
-    
-    [self testAndThrow:(id)^{ return islower([LS(1) characterAtIndex:0]); }]; 
-    [self matchWord:NO]; 
-
-    [self fireDelegateSelector:@selector(parser:didMatchPropertyName:)];
-}
-
 - (void)value_ {
     
     if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_TRUE, STLOGEXPRESSIONPARSER_TOKEN_KIND_YES_UPPER, 0]) {
@@ -165,16 +86,34 @@
     } else if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_FALSE, STLOGEXPRESSIONPARSER_TOKEN_KIND_NO_UPPER, 0]) {
         [self booleanFalse_]; 
     } else if ([self predicts:TOKEN_KIND_BUILTIN_NUMBER, 0]) {
-        [self matchNumber:NO]; 
-    } else if ([self predicts:TOKEN_KIND_BUILTIN_WORD, 0]) {
-        [self matchWord:NO]; 
-    } else if ([self predicts:TOKEN_KIND_BUILTIN_QUOTEDSTRING, 0]) {
-        [self matchQuotedString:NO]; 
+        [self number_]; 
+    } else if ([self predicts:TOKEN_KIND_BUILTIN_QUOTEDSTRING, TOKEN_KIND_BUILTIN_WORD, 0]) {
+        [self string_]; 
     } else {
         [self raise:@"No viable alternative found in rule 'value'."];
     }
 
     [self fireDelegateSelector:@selector(parser:didMatchValue:)];
+}
+
+- (void)string_ {
+    
+    if ([self predicts:TOKEN_KIND_BUILTIN_WORD, 0]) {
+        [self unQuotedString_]; 
+    } else if ([self predicts:TOKEN_KIND_BUILTIN_QUOTEDSTRING, 0]) {
+        [self matchQuotedString:NO]; 
+    } else {
+        [self raise:@"No viable alternative found in rule 'string'."];
+    }
+
+    [self fireDelegateSelector:@selector(parser:didMatchString:)];
+}
+
+- (void)number_ {
+    
+    [self matchNumber:NO]; 
+
+    [self fireDelegateSelector:@selector(parser:didMatchNumber:)];
 }
 
 - (void)booleanTrue_ {
@@ -201,6 +140,77 @@
     }
 
     [self fireDelegateSelector:@selector(parser:didMatchBooleanFalse:)];
+}
+
+- (void)classIdentifier_ {
+    
+    if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_OPEN_BRACKET, 0]) {
+        [self class_]; 
+    } else if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_LT_SYM, 0]) {
+        [self protocol_]; 
+    } else {
+        [self raise:@"No viable alternative found in rule 'classIdentifier'."];
+    }
+
+    [self fireDelegateSelector:@selector(parser:didMatchClassIdentifier:)];
+}
+
+- (void)protocol_ {
+    
+    [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_LT_SYM discard:YES]; 
+    [self objCId_]; 
+    [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_GT_SYM discard:YES]; 
+
+    [self fireDelegateSelector:@selector(parser:didMatchProtocol:)];
+}
+
+- (void)class_ {
+    
+    [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_OPEN_BRACKET discard:YES]; 
+    [self objCId_]; 
+    [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_CLOSE_BRACKET discard:YES]; 
+
+    [self fireDelegateSelector:@selector(parser:didMatchClass:)];
+}
+
+- (void)objCId_ {
+    
+    [self testAndThrow:(id)^{ return isupper([LS(1) characterAtIndex:0]); }]; 
+    [self unQuotedString_]; 
+
+    [self fireDelegateSelector:@selector(parser:didMatchObjCId:)];
+}
+
+- (void)keyPath_ {
+    
+    do {
+        [self property_]; 
+    } while ([self speculate:^{ [self property_]; }]);
+
+    [self fireDelegateSelector:@selector(parser:didMatchKeyPath:)];
+}
+
+- (void)property_ {
+    
+    [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_DOT discard:YES]; 
+    [self matchWord:NO]; 
+
+    [self fireDelegateSelector:@selector(parser:didMatchProperty:)];
+}
+
+- (void)propertyName_ {
+    
+    [self testAndThrow:(id)^{ return islower([LS(1) characterAtIndex:0]); }]; 
+    [self unQuotedString_]; 
+
+    [self fireDelegateSelector:@selector(parser:didMatchPropertyName:)];
+}
+
+- (void)unQuotedString_ {
+    
+    [self matchWord:NO]; 
+
+    [self fireDelegateSelector:@selector(parser:didMatchUnQuotedString:)];
 }
 
 - (void)op_ {

@@ -12,159 +12,148 @@
 #import "STLogExpressionParser.h"
 #import "STLogExpressionParserDelegate.h"
 
-typedef NS_OPTIONS(int, Matched) {
-    MatchedValue = 1 << 0,
-    MatchedClass = 1 << 1,
-    MatchedProtocol = 1 << 2,
-    MatchedOp = 1 << 3
-};
-
 @interface STLogExpressionParserTests : XCTestCase<STLogExpressionParserDelegate>
 
 @end
 
 @implementation STLogExpressionParserTests {
-    int _matched;
-    PKToken *_valueToken;
-    PKToken *_classToken;
-    PKToken *_protocolToken;
-    NSString *_keyPath;
-    PKToken *_opToken;
+    NSArray<PKToken *> *_matchedTokens;
+    BOOL _matchedClass;
+    BOOL _matchedProtocol;
 }
 
 -(void) setUp {
-    _matched = 0;
-    _valueToken = nil;
-    _classToken = nil;
-    _protocolToken = nil;
-    _keyPath = nil;
-    _opToken = nil;
+    _matchedTokens = @[];
+    _matchedClass = NO;
+    _matchedProtocol = NO;
 }
 
 
 #pragma mark - Delegate methods
 
 -(void) parser:(PKParser * __nonnull) parser didMatchClass:(PKAssembly * __nonnull) assembly {
-    _matched += MatchedClass;
-    _classToken = [parser popToken];
+    _matchedTokens = [_matchedTokens arrayByAddingObject:[parser popToken]];
+    _matchedClass = YES;
 }
 
 -(void) parser:(PKParser * __nonnull) parser didMatchProtocol:(PKAssembly * __nonnull) assembly {
-    _matched += MatchedProtocol;
-    _protocolToken = [parser popToken];
+    _matchedTokens = [_matchedTokens arrayByAddingObject:[parser popToken]];
+    _matchedProtocol = YES;
 }
 
--(void) parser:(PKParser * __nonnull) parser didMatchValue:(PKAssembly * __nonnull) assembly {
-    _matched += MatchedValue;
-    _valueToken = [parser popToken];
+-(void) parser:(PKParser * __nonnull) parser didMatchString:(PKAssembly * __nonnull) assembly {
+    _matchedTokens = [_matchedTokens arrayByAddingObject:[parser popToken]];
+}
+
+-(void) parser:(PKParser * __nonnull) parser didMatchNumber:(PKAssembly * __nonnull) assembly {
+    _matchedTokens = [_matchedTokens arrayByAddingObject:[parser popToken]];
+}
+
+-(void) parser:(PKParser * __nonnull) parser didMatchBooleanTrue:(PKAssembly * __nonnull) assembly {
+    _matchedTokens = [_matchedTokens arrayByAddingObject:[parser popToken]];
+}
+
+-(void) parser:(PKParser * __nonnull) parser didMatchBooleanFalse:(PKAssembly * __nonnull) assembly {
+    _matchedTokens = [_matchedTokens arrayByAddingObject:[parser popToken]];
 }
 
 -(void) parser:(PKParser * __nonnull) parser didMatchKeyPath:(PKAssembly * __nonnull) assembly {
-    NSMutableArray *results = [@[] mutableCopy];
-    while(!assembly.isStackEmpty) {
-        [results insertObject:[parser popString] atIndex:0];
+    while (! [assembly isStackEmpty]) {
+        _matchedTokens = [_matchedTokens arrayByAddingObject:[parser popToken]];
     }
-    _keyPath = [results componentsJoinedByString:@"."];
 }
 
 -(void) parser:(PKParser * __nonnull) parser didMatchOp:(PKAssembly * __nonnull) assembly {
-    _matched += MatchedOp;
-    _opToken = [parser popToken];
+    _matchedTokens = [_matchedTokens arrayByAddingObject:[parser popToken]];
 }
 
 #pragma mark - Tests
 
 -(void) testString {
     [self parse:@"\"abc\""];
-    XCTAssertEqual(_matched, MatchedValue);
-    XCTAssertEqual(_valueToken.tokenKind, TOKEN_KIND_BUILTIN_QUOTEDSTRING);
-    XCTAssertEqualObjects(@"abc", _valueToken.quotedStringValue);
+    [self validateMatchedTokens:@[@(TOKEN_KIND_BUILTIN_QUOTEDSTRING)]];
+    XCTAssertEqualObjects(@"abc", _matchedTokens[0].quotedStringValue);
 }
 
 -(void) testQuotedString {
     [self parse:@"abc"];
-    XCTAssertEqual(_matched, MatchedValue);
-    XCTAssertEqual(_valueToken.tokenKind, TOKEN_KIND_BUILTIN_WORD);
-    XCTAssertEqualObjects(@"abc", _valueToken.value);
+    [self validateMatchedTokens:@[@(TOKEN_KIND_BUILTIN_WORD)]];
+    XCTAssertEqualObjects(@"abc", _matchedTokens[0].quotedStringValue);
 }
 
 -(void) testNumber {
     [self parse:@"1.23"];
-    XCTAssertEqual(_matched, MatchedValue);
-    XCTAssertEqual(_valueToken.tokenKind, TOKEN_KIND_BUILTIN_NUMBER);
-    XCTAssertEqualObjects(@(1.23), _valueToken.value);
+    [self validateMatchedTokens:@[@(TOKEN_KIND_BUILTIN_NUMBER)]];
+    XCTAssertEqualObjects(@(1.23), _matchedTokens[0].value);
 }
 
 -(void) testBooleanTrue {
     [self parse:@"true"];
-    XCTAssertEqual(_matched, MatchedValue);
-    XCTAssertEqual(_valueToken.tokenKind, STLOGEXPRESSIONPARSER_TOKEN_KIND_TRUE);
+    [self validateMatchedTokens:@[@(STLOGEXPRESSIONPARSER_TOKEN_KIND_TRUE)]];
 }
 
 -(void) testBooleanYes {
     [self parse:@"YES"];
-    XCTAssertEqual(_matched, MatchedValue);
-    XCTAssertEqual(STLOGEXPRESSIONPARSER_TOKEN_KIND_YES_UPPER, _valueToken.tokenKind);
+    [self validateMatchedTokens:@[@(STLOGEXPRESSIONPARSER_TOKEN_KIND_YES_UPPER)]];
 }
 
 -(void) testBooleanFalse {
     [self parse:@"false"];
-    XCTAssertEqual(_matched, MatchedValue);
-    XCTAssertEqual(STLOGEXPRESSIONPARSER_TOKEN_KIND_FALSE, _valueToken.tokenKind);
+    [self validateMatchedTokens:@[@(STLOGEXPRESSIONPARSER_TOKEN_KIND_FALSE)]];
 }
 
 -(void) testBooleanNo {
     [self parse:@"NO"];
-    XCTAssertEqual(_matched, MatchedValue);
-    XCTAssertEqual(STLOGEXPRESSIONPARSER_TOKEN_KIND_NO_UPPER, _valueToken.tokenKind);
+    [self validateMatchedTokens:@[@(STLOGEXPRESSIONPARSER_TOKEN_KIND_NO_UPPER)]];
 }
 
 -(void) testClass {
     [self parse:@"[Abc]"];
-    XCTAssertEqual(_matched, MatchedClass);
-    XCTAssertEqual(_classToken.tokenKind, TOKEN_KIND_BUILTIN_WORD);
-    XCTAssertEqualObjects(@"Abc", _classToken.value);
+    [self validateMatchedTokens:@[@(TOKEN_KIND_BUILTIN_WORD)]];
+    XCTAssertEqualObjects(@"Abc", _matchedTokens[0].value);
+    XCTAssertTrue(_matchedClass);
 }
 
 -(void) testProtocol {
     [self parse:@"<Abc>"];
-    XCTAssertEqual(_matched, MatchedProtocol);
-    XCTAssertEqual(_protocolToken.tokenKind, TOKEN_KIND_BUILTIN_WORD);
-    XCTAssertEqualObjects(@"Abc", _protocolToken.value);
+    [self validateMatchedTokens:@[@(TOKEN_KIND_BUILTIN_WORD)]];
+    XCTAssertEqualObjects(@"Abc", _matchedTokens[0].value);
+    XCTAssertTrue(_matchedProtocol);
 }
 
 -(void) testClassPropertyEqualsString {
 
     [self parse:@"[Abc].userId = \"Derekc\""];
 
-    XCTAssertEqual(MatchedClass + MatchedOp + MatchedValue, _matched);
-
-    XCTAssertEqual(_classToken.tokenKind, TOKEN_KIND_BUILTIN_WORD);
-    XCTAssertEqualObjects(@"Abc", _classToken.value);
-
-    XCTAssertEqualObjects(@"userId", _keyPath);
-
-    XCTAssertEqual(_opToken.tokenKind, STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ);
-
-    XCTAssertEqual(_valueToken.tokenKind, TOKEN_KIND_BUILTIN_QUOTEDSTRING);
-    XCTAssertEqualObjects(@"Derekc", _valueToken.quotedStringValue);
-
+//    [self validateMatchedTokens:@[
+//                                  @(TOKEN_KIND_BUILTIN_WORD),
+//                                  @(TOKEN_KIND_BUILTIN_WORD),
+//                                  @(STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ),
+//                                  @(TOKEN_KIND_BUILTIN_QUOTEDSTRING)
+//                                  ]];
+//    XCTAssertEqualObjects(@"Abc", _matchedTokens[0].quotedStringValue);
+//    XCTAssertEqualObjects(@"userId", _matchedTokens[1].value);
+//    XCTAssertEqualObjects(@"=", _matchedTokens[2].value);
+//    XCTAssertEqualObjects(@"Derekc", _matchedTokens[3].quotedStringValue);
 }
 
 -(void) testClassKeyPathEqualsString {
     [self parse:@"[Abc].user.supervisor.name = \"Derekc\""];
 
-    XCTAssertEqual(MatchedClass + MatchedOp + MatchedValue, _matched);
-
-    XCTAssertEqual(_classToken.tokenKind, TOKEN_KIND_BUILTIN_WORD);
-    XCTAssertEqualObjects(@"Abc", _classToken.value);
-
-    XCTAssertEqualObjects(@"user.supervisor.name", _keyPath);
-
-    XCTAssertEqual(_opToken.tokenKind, STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ);
-
-    XCTAssertEqual(_valueToken.tokenKind, TOKEN_KIND_BUILTIN_QUOTEDSTRING);
-    XCTAssertEqualObjects(@"Derekc", _valueToken.quotedStringValue);
+    [self validateMatchedTokens:@[
+                                  @(TOKEN_KIND_BUILTIN_WORD),
+                                  @(TOKEN_KIND_BUILTIN_WORD),
+                                  @(TOKEN_KIND_BUILTIN_WORD),
+                                  @(TOKEN_KIND_BUILTIN_WORD),
+                                  @(STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ),
+                                  @(TOKEN_KIND_BUILTIN_QUOTEDSTRING)
+                                  ]];
+    XCTAssertEqualObjects(@"Abc", _matchedTokens[0].quotedStringValue);
+    XCTAssertEqualObjects(@"name", _matchedTokens[1].value);
+    XCTAssertEqualObjects(@"supervisor", _matchedTokens[2].value);
+    XCTAssertEqualObjects(@"user", _matchedTokens[3].value);
+    XCTAssertEqualObjects(@"=", _matchedTokens[4].value);
+    XCTAssertEqualObjects(@"Derekc", _matchedTokens[5].quotedStringValue);
 }
 
 -(void) testMissingValue {
@@ -189,9 +178,19 @@ typedef NS_OPTIONS(int, Matched) {
 
 #pragma mark - Internal
 
+-(void) validateMatchedTokens:(NSArray<NSNumber *> *) expected {
+
+    XCTAssertEqual([expected count], [_matchedTokens count]);
+    [expected enumerateObjectsUsingBlock:^(NSNumber *  __nonnull expectedTokenKind, NSUInteger idx, BOOL * __nonnull stop) {
+        XCTAssertEqual([expectedTokenKind integerValue], self->_matchedTokens[idx].tokenKind);
+    }];
+
+}
+
 -(void) parse:(NSString __nonnull *) string {
     NSError *localError = nil;
     STLogExpressionParser *parser = [[STLogExpressionParser alloc] initWithDelegate:self];
+    parser.enableVerboseErrorReporting = YES;
     PKAssembly __nonnull *result = [parser parseString:string error:&localError];
     XCTAssertNil(localError);
     XCTAssertNotNil(result.stack);
@@ -202,6 +201,7 @@ typedef NS_OPTIONS(int, Matched) {
 -(void) parse:(NSString __nonnull *) string withCode:(NSInteger) code error:(NSString *) errorMessage {
     NSError *localError = nil;
     STLogExpressionParser *parser = [[STLogExpressionParser alloc] initWithDelegate:self];
+    parser.enableVerboseErrorReporting = YES;
     PKAssembly __nonnull *result = [parser parseString:string error:&localError];
     XCTAssertNotNil(localError);
     XCTAssertNil(result);

@@ -13,7 +13,10 @@
 
 -(void) parser:(PKParser __nonnull *) parser didMatchClass:(PKAssembly __nonnull *) assembly;
 -(void) parser:(PKParser __nonnull *) parser didMatchProtocol:(PKAssembly __nonnull *) assembly;
--(void) parser:(PKParser __nonnull *) parser didMatchValue:(PKAssembly __nonnull *) assembly;
+-(void) parser:(PKParser __nonnull *) parser didMatchString:(PKAssembly __nonnull *) assembly;
+-(void) parser:(PKParser __nonnull *) parser didMatchNumber:(PKAssembly __nonnull *) assembly;
+-(void) parser:(PKParser __nonnull *) parser didMatchBooleanTrue:(PKAssembly __nonnull *) assembly;
+-(void) parser:(PKParser __nonnull *) parser didMatchBooleanFalse:(PKAssembly __nonnull *) assembly;
 -(void) parser:(PKParser __nonnull *) parser didMatchKeyPath:(PKAssembly __nonnull *) assembly;
 -(void) parser:(PKParser __nonnull *) parser didMatchOp:(PKAssembly __nonnull *) assembly;
 
