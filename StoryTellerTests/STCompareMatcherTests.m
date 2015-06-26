@@ -21,6 +21,8 @@
 
     __block BOOL compareCalled = NO;
     id mockMatcher = OCMProtocolMock(@protocol(STMatcher));
+    OCMStub([mockMatcher matches:@"abc"]).andReturn(YES);
+
     STCompareMatcher *matcher = [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
         compareCalled = YES;
         return YES;
