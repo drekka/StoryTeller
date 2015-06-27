@@ -19,6 +19,7 @@
     id<STMatcher> _matcher;
     NSInteger _op;
     id<STMatcher> _valueMatcher;
+    BOOL _runtimeQuery;
 }
 
 -(instancetype) init {
@@ -59,31 +60,47 @@
 
 #pragma mark - Delegate methods
 
--(void) parser:(PKParser __nonnull *) parser didMatchProtocol:(PKAssembly __nonnull *) assembly {
+-(void) parser:(PKParser __nonnull *) parser didMatchIsa:(PKAssembly __nonnull *) assembly {
+    [parser popToken];
+    _runtimeQuery = YES;
+}
 
-    NSString *protocolName = [parser popString];
-    Protocol *protocol = objc_getProtocol(protocolName.UTF8String);
-    if (protocol == NULL) {
-        [parser raise:[NSString stringWithFormat:@"Unable to find protocol %@", protocolName]];
-        return;
-    }
-    _matcher = [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
-        return [key conformsToProtocol:protocol];
-    }];
+-(void) parser:(PKParser __nonnull *) parser didMatchProtocol:(PKAssembly __nonnull *) assembly {
+    [self parser:parser
+        didMatch:@"protocol"
+     lookupBlock:^id(const char * __nonnull objName) {
+         return objc_getProtocol(objName);
+     }
+      checkBlock:^BOOL(id __nonnull key, id __nonnull rtObj) {
+          return [key conformsToProtocol:rtObj];
+      }];
 }
 
 -(void) parser:(PKParser __nonnull *) parser didMatchClass:(PKAssembly __nonnull *) assembly {
+    [self parser:parser
+        didMatch:@"class"
+     lookupBlock:^id(const char * __nonnull objName) {
+         return objc_lookUpClass(objName);
+     }
+      checkBlock:^BOOL(id __nonnull key, id __nonnull rtObj) {
+          return [key isKindOfClass:rtObj];
+      }];
+}
 
-    NSString *className = [parser popString];
-    Class class = objc_lookUpClass(className.UTF8String);
-    if (class == NULL) {
-        [parser raise:[NSString stringWithFormat:@"Unable to find class %@", className]];
+-(void) parser:(PKParser __nonnull *) parser didMatch:(NSString __nonnull *) type lookupBlock:(id (^ __nonnull)(const char * __nonnull objName)) lookupBlock checkBlock:(BOOL (^ __nonnull)(id __nonnull key, id __nonnull rtObj)) checkBlock {
+
+    NSString *rtObjName = [parser popString];
+    id rtObj = lookupBlock(rtObjName.UTF8String);
+    if (rtObj == NULL) {
+        [parser raise:[NSString stringWithFormat:@"Unable to find %@ %@", type, rtObjName]];
         return;
     }
 
+    BOOL useEquals = _runtimeQuery;
     _matcher = [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
-        return [key isKindOfClass:class];
+        return useEquals ? key == rtObj : checkBlock(key, rtObj);
     }];
+
 }
 
 -(void) parser:(PKParser __nonnull *) parser didMatchString:(PKAssembly __nonnull *) assembly {
@@ -98,9 +115,10 @@
 
     PKToken *token = [parser popToken];
     NSNumber *expected = token.value;
+    NSInteger op = _op;
     _valueMatcher =  [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
         NSNumber *actual = (NSNumber *) key;
-        switch (self->_op) {
+        switch (op) {
             case STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ:
                 return [actual compare:expected] == NSOrderedSame;
 
@@ -111,10 +129,10 @@
                 return [actual compare:expected] >= NSOrderedSame;
 
             case STLOGEXPRESSIONPARSER_TOKEN_KIND_LT_SYM:
-                return [actual compare:expected] <= NSOrderedSame;
+                return [actual compare:expected] < NSOrderedSame;
 
             case STLOGEXPRESSIONPARSER_TOKEN_KIND_LE:
-                return [actual compare:expected] < NSOrderedSame;
+                return [actual compare:expected] <= NSOrderedSame;
 
             default:
                 // NE

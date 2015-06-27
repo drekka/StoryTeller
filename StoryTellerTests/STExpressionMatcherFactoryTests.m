@@ -101,6 +101,90 @@
     XCTAssertFalse([matcher matches:a]);
 }
 
+-(void) testClassIntPropertyEqualsMatches {
+    id<STMatcher> matcher = [_factory parseExpression:@"[A].x == 5" error:NULL];
+    A *a = [[A alloc] init];
+    a.x = 5;
+    XCTAssertTrue([matcher matches:a]);
+}
+
+-(void) testClassIntPropertyNotEqualsMatches {
+    id<STMatcher> matcher = [_factory parseExpression:@"[A].x != 5" error:NULL];
+    A *a = [[A alloc] init];
+    a.x = 1;
+    XCTAssertTrue([matcher matches:a]);
+}
+
+-(void) testClassIntPropertyGTMatches {
+    id<STMatcher> matcher = [_factory parseExpression:@"[A].x > 5" error:NULL];
+    A *a = [[A alloc] init];
+    a.x = 6;
+    XCTAssertTrue([matcher matches:a]);
+}
+
+-(void) testClassIntPropertyGTFailsMatch {
+    id<STMatcher> matcher = [_factory parseExpression:@"[A].x > 5" error:NULL];
+    A *a = [[A alloc] init];
+    a.x = 5;
+    XCTAssertFalse([matcher matches:a]);
+}
+
+-(void) testClassIntPropertyGEWhenEqualMatches {
+    id<STMatcher> matcher = [_factory parseExpression:@"[A].x >= 5" error:NULL];
+    A *a = [[A alloc] init];
+    a.x = 5;
+    XCTAssertTrue([matcher matches:a]);
+}
+
+-(void) testClassIntPropertyGEMatches {
+    id<STMatcher> matcher = [_factory parseExpression:@"[A].x >= 5" error:NULL];
+    A *a = [[A alloc] init];
+    a.x = 6;
+    XCTAssertTrue([matcher matches:a]);
+}
+
+-(void) testClassIntPropertyGEFailsMatch {
+    id<STMatcher> matcher = [_factory parseExpression:@"[A].x >= 5" error:NULL];
+    A *a = [[A alloc] init];
+    a.x = 4;
+    XCTAssertFalse([matcher matches:a]);
+}
+
+-(void) testClassIntPropertyLTMatches {
+    id<STMatcher> matcher = [_factory parseExpression:@"[A].x < 5" error:NULL];
+    A *a = [[A alloc] init];
+    a.x = 4;
+    XCTAssertTrue([matcher matches:a]);
+}
+
+-(void) testClassIntPropertyLTFailsMatch {
+    id<STMatcher> matcher = [_factory parseExpression:@"[A].x < 5" error:NULL];
+    A *a = [[A alloc] init];
+    a.x = 5;
+    XCTAssertFalse([matcher matches:a]);
+}
+
+-(void) testClassIntPropertyLEWhenEqualMatches {
+    id<STMatcher> matcher = [_factory parseExpression:@"[A].x <= 5" error:NULL];
+    A *a = [[A alloc] init];
+    a.x = 5;
+    XCTAssertTrue([matcher matches:a]);
+}
+
+-(void) testClassIntPropertyLEWhenEqualFailsMatch {
+    id<STMatcher> matcher = [_factory parseExpression:@"[A].x <= 5" error:NULL];
+    A *a = [[A alloc] init];
+    a.x = 6;
+    XCTAssertFalse([matcher matches:a]);
+}
+
+-(void) testClassIntPropertyLEMatches {
+    id<STMatcher> matcher = [_factory parseExpression:@"[A].x <= 5" error:NULL];
+    A *a = [[A alloc] init];
+    a.x = 4;
+    XCTAssertTrue([matcher matches:a]);
+}
+
 -(void) testClassInvalidStringProperty {
     NSError *error = nil;
     id<STMatcher> matcher = [_factory parseExpression:@"[A].xxxx == abc" error:&error];
@@ -167,5 +251,14 @@
     XCTAssertTrue([matcher matches:a]);
 }
 
+-(void) testIsaClassMatches {
+    id<STMatcher> matcher = [_factory parseExpression:@"isa [A]" error:NULL];
+    XCTAssertTrue([matcher matches:[A class]]);
+}
+
+-(void) testIsaProtocolMatches {
+    id<STMatcher> matcher = [_factory parseExpression:@"isa <C>" error:NULL];
+    XCTAssertTrue([matcher matches:@protocol(C)]);
+}
 
 @end

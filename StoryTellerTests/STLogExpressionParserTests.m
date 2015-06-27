@@ -20,16 +20,23 @@
     NSArray<PKToken *> *_matchedTokens;
     BOOL _matchedClass;
     BOOL _matchedProtocol;
+    BOOL _matchedIsa;
 }
 
 -(void) setUp {
     _matchedTokens = @[];
     _matchedClass = NO;
     _matchedProtocol = NO;
+    _matchedIsa = NO;
 }
 
 
 #pragma mark - Delegate methods
+
+-(void) parser:(PKParser __nonnull *) parser didMatchIsa:(PKAssembly __nonnull *) assembly {
+    [parser popToken];
+    _matchedIsa = YES;
+}
 
 -(void) parser:(PKParser * __nonnull) parser didMatchClass:(PKAssembly * __nonnull) assembly {
     PKToken *token = [parser popToken];
@@ -195,6 +202,26 @@
 
 -(void) testInvalidOp2 {
     [self parse:@"[Abc].userId >=< abc" withCode:1 error:@"Failed to match next input token"];
+}
+
+-(void) testIsaClass {
+    [self parse:@"isa [Abc]"];
+    [self validateMatchedTokens:@[
+                                  @(TOKEN_KIND_BUILTIN_WORD)
+                                  ]];
+    XCTAssertEqualObjects(@"Abc", _matchedTokens[0].value);
+    XCTAssertTrue(_matchedClass);
+    XCTAssertTrue(_matchedIsa);
+}
+
+-(void) testIsaProtocol {
+    [self parse:@"isa <Abc>"];
+    [self validateMatchedTokens:@[
+                                  @(TOKEN_KIND_BUILTIN_WORD)
+                                  ]];
+    XCTAssertEqualObjects(@"Abc", _matchedTokens[0].value);
+    XCTAssertTrue(_matchedProtocol);
+    XCTAssertTrue(_matchedIsa);
 }
 
 #pragma mark - Internal

@@ -19,5 +19,6 @@
 -(void) parser:(PKParser __nonnull *) parser didMatchBooleanFalse:(PKAssembly __nonnull *) assembly;
 -(void) parser:(PKParser __nonnull *) parser didMatchKeyPath:(PKAssembly __nonnull *) assembly;
 -(void) parser:(PKParser __nonnull *) parser didMatchOp:(PKAssembly __nonnull *) assembly;
+-(void) parser:(PKParser __nonnull *) parser didMatchIsa:(PKAssembly __nonnull *) assembly;
 
 @end
