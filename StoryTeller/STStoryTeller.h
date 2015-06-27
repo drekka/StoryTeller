@@ -55,13 +55,7 @@
  Start logging for the passed key.
  @param the key to log.
  */
--(void) startLogging:(id __nonnull) key;
-
-/**
- Stops logging for the passed key.
- @param the key to stop.
- */
--(void) stopLogging:(id __nonnull) key;
+-(void) startLogging:(NSString __nonnull *) keyExpression;
 
 #pragma mark - Stories
 

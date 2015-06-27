@@ -21,30 +21,40 @@
     id<STMatcher> _valueMatcher;
 }
 
+-(instancetype) init {
+    self = [super init];
+    if (self) {
+        [self reset];
+    }
+    return self;
+}
+
 -(nullable id<STMatcher>) parseExpression:(NSString __nonnull *) expression
                                     error:(NSError *__autoreleasing  __nullable * __nullable) error {
 
-    // Clear
+    STLogExpressionParser *parser = [[STLogExpressionParser alloc] initWithDelegate:self];
+
+    // Finish matching.
+    id<STMatcher> initialMatcher = nil;
+    if ([parser parseString:expression error:error] == nil) {
+        // Didn't parse. Nothing to do.
+    } else if (_matcher == nil) {
+        // Must be a single value
+        initialMatcher = _valueMatcher;
+    } else {
+        // More complex expression. Here we should have a class and keypath.
+        _matcher.nextMatcher.nextMatcher = _valueMatcher;
+        initialMatcher = _matcher;
+    }
+
+    [self reset];
+    return initialMatcher;
+}
+
+-(void) reset {
     _matcher = nil;
     _valueMatcher = nil;
     _op = STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ;
-
-    STLogExpressionParser *parser = [[STLogExpressionParser alloc] initWithDelegate:self];
-    if ([parser parseString:expression error:error] == nil) {
-        // Didn't parse.
-        return nil;
-    }
-
-    // Finish matching.
-    if (_matcher == nil) {
-        // Must be a single value
-        return _valueMatcher;
-    }
-
-    // More complex expression. Here we should have a class and keypath.
-    _matcher.nextMatcher.nextMatcher = _valueMatcher;
-
-    return _matcher;
 }
 
 #pragma mark - Delegate methods
@@ -124,9 +134,10 @@
 -(void) parser:(PKParser __nonnull *) parser didMatchBoolean:(BOOL) expected {
     [parser popToken];
     if (_op == STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ || _op == STLOGEXPRESSIONPARSER_TOKEN_KIND_NE) {
+        NSInteger blockOp = _op; // Gets around issues with values for blocks.
         _valueMatcher = [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
             return expected ==
-            (self->_op == STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ ? ((NSNumber *) key).boolValue : ! ((NSNumber *) key).boolValue);
+            (blockOp == STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ ? ((NSNumber *) key).boolValue : ! ((NSNumber *) key).boolValue);
         }];
     } else {
         [parser raise:@"Invalid operator. Booleans can only accept '==' or '!=' operators."];

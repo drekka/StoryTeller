@@ -8,11 +8,14 @@
 
 #import <StoryTeller/STStoryTeller.h>
 #import <StoryTeller/STConfig.h>
+#import "STMatcher.h"
+#import "STExpressionMatcherFactory.h"
 
 @implementation STStoryTeller {
     NSMutableSet *_activeKeys;
-    NSMutableSet *_activeLogs;
+    NSMutableSet<id<STMatcher>> *_logMatchers;
     STConfig *_config;
+    STExpressionMatcherFactory *_expressionMatcherFactory;
 }
 
 static STStoryTeller *__storyTeller;
@@ -31,7 +34,8 @@ static STStoryTeller *__storyTeller;
     self = [super init];
     if (self) {
         _activeKeys = [[NSMutableSet alloc] init];
-        _activeLogs = [[NSMutableSet alloc] init];
+        _logMatchers = [[NSMutableSet alloc] init];
+        _expressionMatcherFactory = [[STExpressionMatcherFactory alloc] init];
         _config = [[STConfig alloc] init];
         [_config configure:self];
     }
@@ -46,12 +50,10 @@ static STStoryTeller *__storyTeller;
 
 #pragma mark - Activating logging
 
--(void) startLogging:(id __nonnull) key {
-    [_activeLogs addObject:key];
-}
-
--(void) stopLogging:(id __nonnull) key {
-    [_activeLogs removeObject:key];
+-(void) startLogging:(NSString __nonnull *) keyExpression {
+    NSError *error = nil;
+    [_logMatchers addObject:[_expressionMatcherFactory parseExpression:keyExpression
+                                                                 error:&error]];
 }
 
 #pragma mark - Activating
@@ -107,7 +109,7 @@ static STStoryTeller *__storyTeller;
 -(BOOL) isLogging:(id) key {
 
     // Check the bypass and active keys.
-    if (_logAll || [_activeLogs containsObject:key]) {
+    if (_logAll || [self isKeyActive:key]) {
         return YES;
     }
 
@@ -118,11 +120,20 @@ static STStoryTeller *__storyTeller;
 
     // If any of the active keys are logging then we also fire.
     for (id scopeKey in _activeKeys) {
-        if ([_activeLogs containsObject:scopeKey]) {
+        if ([self isKeyActive:scopeKey]) {
             return YES;
         }
     }
 
+    return NO;
+}
+
+-(BOOL) isKeyActive:(id) key {
+    for (id<STMatcher> matcher in _logMatchers) {
+        if ([matcher matches:key]) {
+            return YES;
+        }
+    }
     return NO;
 }
 

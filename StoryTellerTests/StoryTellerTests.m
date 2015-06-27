@@ -38,10 +38,9 @@
 
 -(void) testMessageRecordedWhenKeyNotLogging {
     XCTAssertEqual(0lu, [self.inMemoryLogger.log count]);
-    [[STStoryTeller storyTeller] stopLogging:@"abc"];
     STStoryTeller *teller = [STStoryTeller storyTeller];
     NSLog(@"%@", teller);
-    log(@"abc", @"hello world");
+    log(@"xyz", @"hello world");
     XCTAssertEqual(0lu, [self.inMemoryLogger.log count]);
 }
 
@@ -99,7 +98,6 @@
 
 -(void) testLogAll {
 
-    [[STStoryTeller storyTeller] stopLogging:@"abc"];
     [STStoryTeller storyTeller].logAll = YES;
 
     int logLine1 = __LINE__ + 1;
@@ -119,12 +117,11 @@
 
 -(void) testLogRoot {
 
-    [[STStoryTeller storyTeller] stopLogging:@"abc"];
     [STStoryTeller storyTeller].logRoot = YES;
 
     int logLine1 = __LINE__ + 1;
     log(@"xyz", @"hello world 1");
-    startScope(@"abc");
+    startScope(@"def");
     log(@"xyz", @"hello world 2");
     log(@"def", @"hello world 3");
 

@@ -17,7 +17,7 @@
 -(nonnull instancetype) initWithCompare:(BOOL (^ __nonnull)(__nonnull id key)) compareBlock {
     self = [super init];
     if (self) {
-        _compareBlock = compareBlock;
+        _compareBlock = [compareBlock copy];
     }
     return self;
 }

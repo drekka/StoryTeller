@@ -17,7 +17,7 @@
 -(nonnull instancetype) initWithFilter:(__nullable id (^ __nonnull)(__nonnull id key)) filterBlock {
     self = [super init];
     if (self) {
-        _filterBlock = filterBlock;
+        _filterBlock = [filterBlock copy];
     }
     return self;
 }
