@@ -33,6 +33,12 @@
 
 #pragma mark - Delegate methods
 
+-(void) parser:(PKParser __nonnull *) parser didMatchLogAll:(PKAssembly __nonnull *) assembly {
+}
+
+-(void) parser:(PKParser __nonnull *) parser didMatchLogRoot:(PKAssembly __nonnull *) assembly {
+}
+
 -(void) parser:(PKParser __nonnull *) parser didMatchIsa:(PKAssembly __nonnull *) assembly {
     [parser popToken];
     _matchedIsa = YES;
