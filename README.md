@@ -107,11 +107,20 @@ Story Teller reads it's config using this process:
 
 3. Finally the process is checked and if any of the arguments set on the process match known keys in the config, then those values are updated.
 
-The basic idea is that you can add a ***StoryTellerConfig.json*** file to your app to provide the general config you want to run with, and then during development you can override at will by setting arguments in XCode's scheme for your app.
+The basic idea is that you can add a ***StoryTellerConfig.json*** file to your app to provide the general config you want to run with, and then during development you can override at will by setting arguments in XCode's scheme for your app. Here is an example one:
+
+```json
+{
+"logAll": "YES",
+"logRoot": "NO",
+"activeLogs": ["abc", "def"],
+"loggerClass": "STConsoleLogger"
+}
+```
 
 ### Programmatically
 
-You can also programmically enable logging as well. To enable logging from code:
+You can also programmically enable logging as well using this statement:
 
 ```objectivec
 startLogging(<criteria>);
@@ -128,59 +137,92 @@ LogRoots | Similar to *logAll* except that only top scope log statements are act
 activeLogs | A comma separated list of `criteria` which defines the logging that will occur. This is the main setting for activating on logging.
 loggerClass | If you want to set a different class for the, use this setting to specify the class. The class must implement `STLogger` and have a no-arg constructor. You only need to put the class name in this setting. Story Teller will handle the rest.
 
-## Log Criteria
+## Smart Logging Criteria
 
-The `activeLogs` configuration setting contains an comma seperated list of criteria for when to activate individual log statements. The  `startLogging(<criteria>)` command does the same thing, except you can only pass one criteria at a time. 
+The `activeLogs` configuration setting contains an comma seperated list of smart criteria which activate the log statements. The  `startLogging(<criteria>);` Objective C statement does the same thing, except you can only pass one criteria at a time. 
 
-So what are these criteria?
+So what are these criteria? Here are the options
 
-### Simple criteria
+### Single value criteria
 
-The simplest ones are simple single values that are tested against the keys in the log statements. For example:
+When Story Teller encounters a single value in a criteria, it makes the assumption that the same value has been used as a key. A single value criteria can be any of the following types: **String**, **Number** or **Boolean**. Here is an example:
 
-```json
+```
 ...
-"activeLogs":"GUI, DB" 
+"activeLogs":["DerekC, \"GUI system\", 12, true, YES],  
 ...
 ```
-or
+
+You can use any of these types, although using the booleans would not normally make sense. Using strings mades a good descriptive sense and integers can be a good idea for matching enums. Notice that with strings, if you don't have any white space in the value, you can enter it without quotes. For example:
 
 ```objectivec
-startLogging(@"GUI");
-startLogging(@(SubSystemDatabase));
+log("GUI System", @"Log view @ %@", aRect);
+log(@(EnumValueX), @"Log related to EnumValueX");
 ```
 
-Thats basic, but not very smart.
-
-### Smart criteria
- 
-Smart Criteria have a more complex set of commands you can issues. The basic syntax follows this structure:
-
- * A class or protocol declaration.
- * One or more property names forming a keypath.
- * An operator. One of ==, !=, >, >=, < or <=.
- * A string, numeric or boolean value. 
-
- The best way to see this is with some examples:
- 
-Goal  | Expression
-------------- | -------------
-Anything that is relevant to a user | [User]
-Anything that implements the KickAss protocol | &lt;KickAss&gt;
-User 'DerekC' | [User].name == DerekC<br />[User].name == "DerekC"
-User's main account has more than $100 | [User].mainAccount.balance > 100
-Anything that has an animatable protocol and is on the right side of the screen | &lt;Animatable&gt;.frame.x >= 500
-Where the view is hidden | [UIView].hidden == YES 
- 
-At this stage the smart criteria syntax is pretty simple. I may expand this in the future as I work out what sorts of things are needed. Nil testing, arrays and dictionarys, etc. Suggestions welcome.
-
-Oh and a quick example of this in action:
-
-```json
-...
-"activeLogs":"[Scanner].active = true, <Mappable>, [User].name = DerekC" 
-...
+```objectivec
+startLogging(@"GUI-System");
+startLogging(@"\"GUI-System\"");
+startLogging(@"5"); // EnumValueX -> 5
 ```
+
+### Classes and Protocols 
+
+#### Instances
+
+You can log based on the type of the key used like this"
+
+`[class-name] | <protocol-name>`
+
+These will search for any logging where the key is an instance of the class (or is a subclass of it), or an instance that implements the specified protocol. Here's an example:
+
+```objectivec
+log(User, @"Log message for a user");
+```
+
+```objectivec
+startLogging(@"[User]");
+startLogging(@"<NSCopying>");
+```
+
+#### Runtime keys
+
+Secondly you can add the **isa** prefix to search for log statements where the actual class or protocol has been used as a key, rather that an instance of one.
+
+`isa [class-name] | <protocol-name>`
+
+For example:
+
+```objectivec
+log([User class], @"Log message for class");
+log(@protocol(NSCopying), @"Log message for NSCopying");
+```
+
+```objectivec
+startLogging(@"isa [User]");
+startLogging(@"isa <NSCopying>");
+```
+
+### KVC Property criteria
+
+`[class-name].keypath op value`
+`<protocol-name>.keypath op value`
+
+This criteria looks for keys that matches the specified class or protocol, then examine the `keypath` on the object for the required value. Here are some examples
+
+```objectivec
+log(user, @"Log message for user");
+```
+
+```objectivec
+startLogging(@"[User].account.name == \"derek's account\"");
+startLogging(@"[User].account.balance > 500");
+startLogging(@"<Banking>.active == YES");
+```
+As you can see there is a lot of power here to decide what gets logged. 
+
+Operators include all the standard comparison operators: **==** ,**!=** ,**<** ,**<=** ,**>** or **>=**.
+
 
 ## Execution blocks
 
