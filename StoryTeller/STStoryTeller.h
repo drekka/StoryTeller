@@ -38,16 +38,16 @@
 
 /**
  Logs everything regardless of log settings.
- @discussion Again not something that would normally be turned on. But can be useful when debugging.
+ @discussion Again not something that would normally be turned on. But can be useful when debugging. Activating this will override any other logging settings.
  */
-@property (nonatomic, assign) BOOL logAll;
+-(void) logAll;
 
 /**
  Logs all top level log statements.
 
- @discussion Similar to @c logAll except that it only logs the top level log statements. Any statement which is inside an active Key Scope will be ignored. The main goal of this is to enable a semi-quick high level report of the data going through the app.
+ @discussion Similar to @c logAll except that it only logs the top level log statements. Any statement which is inside an active Key Scope will be ignored. The main goal of this is to enable a semi-quick high level report of the data going through the app. Activating this will will override any logging criteria. But not logAll.
  */
-@property (nonatomic, assign) BOOL logRoot;
+-(void) logRoot;
 
 #pragma mark - Activating logging
 

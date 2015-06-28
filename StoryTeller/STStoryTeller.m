@@ -16,6 +16,8 @@
     NSMutableSet<id<STMatcher>> *_logMatchers;
     STConfig *_config;
     STExpressionMatcherFactory *_expressionMatcherFactory;
+    BOOL _logAll;
+    BOOL _logRoot;
 }
 
 static STStoryTeller *__storyTeller;
@@ -52,10 +54,30 @@ static STStoryTeller *__storyTeller;
 
 #pragma mark - Activating logging
 
+-(void) logAll {
+    _logAll = YES;
+    _logRoot = NO;
+    [_logMatchers removeAllObjects];
+}
+
+-(void) logRoot {
+
+    if (_logAll) {
+        return;
+    }
+
+    _logRoot = YES;
+    [_logMatchers removeAllObjects];
+}
+
 -(void) startLogging:(NSString __nonnull *) keyExpression {
+
     NSError *error = nil;
-    [_logMatchers addObject:[_expressionMatcherFactory parseExpression:keyExpression
-                                                                 error:&error]];
+    id<STMatcher> matcher = [_expressionMatcherFactory parseExpression:keyExpression
+                                                                 error:&error];
+    if (matcher) {
+        [_logMatchers addObject:matcher];
+    }
 }
 
 #pragma mark - Activating

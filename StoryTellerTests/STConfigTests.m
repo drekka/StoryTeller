@@ -33,14 +33,12 @@
     [config configure:mockStoryTeller];
 
     // Verify
-    OCMVerify([mockStoryTeller setLogAll:NO]);
-    OCMVerify([mockStoryTeller setLogRoot:NO]);
     OCMVerify([mockStoryTeller setLogger:[OCMArg isKindOfClass:[STConsoleLogger class]]]);
 }
 
 -(void) testConfigReadsCommandLineArgs {
 
-    [self stubProcessInfoArguments:@[@"logAll=YES", @"logRoots=YES", @"loggerClass=InMemoryLogger", @"activeLogs=abc,def"]];
+    [self stubProcessInfoArguments:@[@"loggerClass=InMemoryLogger", @"activeLogs=abc,def"]];
 
     // Test
     STConfig *config = [[STConfig alloc] init];
@@ -48,8 +46,6 @@
     [config configure:mockStoryTeller];
 
     // Verify
-    OCMVerify([mockStoryTeller setLogAll:YES]);
-    OCMVerify([mockStoryTeller setLogRoot:YES]);
     OCMVerify([mockStoryTeller setLogger:[OCMArg isKindOfClass:[InMemoryLogger class]]]);
     OCMVerify([mockStoryTeller startLogging:@"abc"]);
     OCMVerify([mockStoryTeller startLogging:@"def"]);

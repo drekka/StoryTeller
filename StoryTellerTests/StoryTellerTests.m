@@ -98,7 +98,7 @@
 
 -(void) testLogAll {
 
-    [STStoryTeller storyTeller].logAll = YES;
+    [[STStoryTeller storyTeller] logAll];
 
     int logLine1 = __LINE__ + 1;
     log(@"xyz", @"hello world 1");
@@ -117,7 +117,7 @@
 
 -(void) testLogRoot {
 
-    [STStoryTeller storyTeller].logRoot = YES;
+    [[STStoryTeller storyTeller] logRoot];
 
     int logLine1 = __LINE__ + 1;
     log(@"xyz", @"hello world 1");

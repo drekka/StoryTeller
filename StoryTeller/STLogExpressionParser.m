@@ -19,13 +19,15 @@
         self.tokenKindTab[@">="] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_GE);
         self.tokenKindTab[@"=="] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ);
         self.tokenKindTab[@"<"] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_LT_SYM);
-        self.tokenKindTab[@"<="] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_LE);
         self.tokenKindTab[@"["] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_OPEN_BRACKET);
         self.tokenKindTab[@"true"] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_TRUE);
-        self.tokenKindTab[@"."] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_DOT);
         self.tokenKindTab[@"isa"] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_ISA);
+        self.tokenKindTab[@"logRoot"] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_LOGROOT);
+        self.tokenKindTab[@"."] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_DOT);
         self.tokenKindTab[@">"] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_GT_SYM);
         self.tokenKindTab[@"]"] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_CLOSE_BRACKET);
+        self.tokenKindTab[@"<="] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_LE);
+        self.tokenKindTab[@"logAll"] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_LOGALL);
         self.tokenKindTab[@"YES"] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_YES_UPPER);
         self.tokenKindTab[@"!="] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_NE);
         self.tokenKindTab[@"NO"] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_NO_UPPER);
@@ -34,13 +36,15 @@
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_GE] = @">=";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ] = @"==";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_LT_SYM] = @"<";
-        self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_LE] = @"<=";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_OPEN_BRACKET] = @"[";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_TRUE] = @"true";
-        self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_DOT] = @".";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_ISA] = @"isa";
+        self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_LOGROOT] = @"logRoot";
+        self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_DOT] = @".";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_GT_SYM] = @">";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_CLOSE_BRACKET] = @"]";
+        self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_LE] = @"<=";
+        self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_LOGALL] = @"logAll";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_YES_UPPER] = @"YES";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_NE] = @"!=";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_NO_UPPER] = @"NO";
@@ -68,12 +72,14 @@
     [t.symbolState add:@">="];
 
     }];
-    if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_LT_SYM, STLOGEXPRESSIONPARSER_TOKEN_KIND_OPEN_BRACKET, 0]) {
+    if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_LOGALL, STLOGEXPRESSIONPARSER_TOKEN_KIND_LOGROOT, 0]) {
+        [self logControl_]; 
+    } else if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_ISA, 0]) {
+        [self runtimeExpr_]; 
+    } else if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_LT_SYM, STLOGEXPRESSIONPARSER_TOKEN_KIND_OPEN_BRACKET, 0]) {
         [self classExpr_]; 
     } else if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_FALSE, STLOGEXPRESSIONPARSER_TOKEN_KIND_NO_UPPER, STLOGEXPRESSIONPARSER_TOKEN_KIND_TRUE, STLOGEXPRESSIONPARSER_TOKEN_KIND_YES_UPPER, TOKEN_KIND_BUILTIN_NUMBER, TOKEN_KIND_BUILTIN_QUOTEDSTRING, TOKEN_KIND_BUILTIN_WORD, 0]) {
         [self value_]; 
-    } else if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_ISA, 0]) {
-        [self runtimeExpr_]; 
     } else {
         [self raise:@"No viable alternative found in rule 'expr'."];
     }
@@ -91,6 +97,33 @@
     }
 
     [self fireDelegateSelector:@selector(parser:didMatchClassExpr:)];
+}
+
+- (void)logControl_ {
+    
+    if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_LOGALL, 0]) {
+        [self logAll_]; 
+    } else if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_LOGROOT, 0]) {
+        [self logRoot_]; 
+    } else {
+        [self raise:@"No viable alternative found in rule 'logControl'."];
+    }
+
+    [self fireDelegateSelector:@selector(parser:didMatchLogControl:)];
+}
+
+- (void)logAll_ {
+    
+    [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_LOGALL discard:NO]; 
+
+    [self fireDelegateSelector:@selector(parser:didMatchLogAll:)];
+}
+
+- (void)logRoot_ {
+    
+    [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_LOGROOT discard:NO]; 
+
+    [self fireDelegateSelector:@selector(parser:didMatchLogRoot:)];
 }
 
 - (void)runtimeExpr_ {
@@ -112,6 +145,13 @@
     }
 
     [self fireDelegateSelector:@selector(parser:didMatchRuntimeType:)];
+}
+
+- (void)isa_ {
+    
+    [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_ISA discard:NO]; 
+
+    [self fireDelegateSelector:@selector(parser:didMatchIsa:)];
 }
 
 - (void)keyPath_ {
@@ -289,13 +329,6 @@
     [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_GE discard:NO]; 
 
     [self fireDelegateSelector:@selector(parser:didMatchGe:)];
-}
-
-- (void)isa_ {
-    
-    [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_ISA discard:NO]; 
-
-    [self fireDelegateSelector:@selector(parser:didMatchIsa:)];
 }
 
 @end

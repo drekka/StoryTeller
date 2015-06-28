@@ -8,6 +8,7 @@
 
 @import Foundation;
 
+@class STStoryTeller;
 #import "STLogExpressionParserDelegate.h"
 #import "STMatcher.h"
 

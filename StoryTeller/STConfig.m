@@ -15,8 +15,6 @@
 #import <StoryTeller/STConsoleLogger.h>
 
 @interface STConfig ()
-@property (nonatomic, assign) BOOL logAll;
-@property (nonatomic, assign) BOOL logRoots;
 @property (nonatomic, strong) NSArray<NSString *> *activeLogs;
 @property (nonatomic, strong) NSString *loggerClass;
 @end
@@ -32,8 +30,6 @@
 -(instancetype) init {
     self = [super init];
     if (self) {
-        _logAll = NO;
-        _logRoots = NO;
         _activeLogs = @[];
         _loggerClass = NSStringFromClass([STConsoleLogger class]);
         [self configurefromFile];
@@ -79,9 +75,6 @@
 
 -(void) configure:(STStoryTeller __nonnull *) storyTeller {
 
-    storyTeller.logAll = _logAll;
-    storyTeller.logRoot = _logRoots;
-
     Class loggerClass = objc_lookUpClass([_loggerClass UTF8String]);
     id<STLogger> newLogger = [[loggerClass alloc] init];
     if (newLogger == nil) {
@@ -90,8 +83,8 @@
     storyTeller.logger = newLogger;
     _currentLogger = newLogger;
 
-    [_activeLogs enumerateObjectsUsingBlock:^(NSString * __nonnull key, NSUInteger idx, BOOL * __nonnull stop) {
-        [storyTeller startLogging:key];
+    [_activeLogs enumerateObjectsUsingBlock:^(NSString * __nonnull expression, NSUInteger idx, BOOL * __nonnull stop) {
+        [storyTeller startLogging:expression];
     }];
 }
 

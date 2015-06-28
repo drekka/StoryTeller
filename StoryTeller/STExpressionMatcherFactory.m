@@ -9,6 +9,7 @@
 @import ObjectiveC;
 #import <PEGKit/PEGKit.h>
 
+#import <StoryTeller/STStoryTeller.h>
 #import "STExpressionMatcherFactory.h"
 
 #import "STLogExpressionParser.h"
@@ -20,6 +21,7 @@
     NSInteger _op;
     id<STMatcher> _valueMatcher;
     BOOL _runtimeQuery;
+    BOOL _optionSet;
 }
 
 -(instancetype) init {
@@ -38,14 +40,25 @@
     // Finish matching.
     id<STMatcher> initialMatcher = nil;
     if ([parser parseString:expression error:error] == nil) {
-        // Didn't parse. Nothing to do.
-    } else if (_matcher == nil) {
+        // Didn't parse or something that doesn't return a matcher.
+        [self reset];
+        return nil;
+    }
+
+    // If log options have been set, return a nil
+    if (_optionSet) {
+        [self reset];
+        return nil;
+    }
+
+    // Add the matcher.
+    if (_matcher == nil) {
         // Must be a single value
         initialMatcher = _valueMatcher;
     } else {
         // More complex expression. Here we should have a class and keypath.
-        _matcher.nextMatcher.nextMatcher = _valueMatcher;
         initialMatcher = _matcher;
+        initialMatcher.nextMatcher.nextMatcher = _valueMatcher;
     }
 
     [self reset];
@@ -55,10 +68,23 @@
 -(void) reset {
     _matcher = nil;
     _valueMatcher = nil;
+    _optionSet = NO;
     _op = STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ;
 }
 
 #pragma mark - Delegate methods
+
+-(void) parser:(PKParser * __nonnull)parser didMatchLogAll:(PKAssembly * __nonnull)assembly {
+    [parser popToken];
+    [[STStoryTeller storyTeller] logAll];
+    _optionSet = YES;
+}
+
+-(void) parser:(PKParser * __nonnull)parser didMatchLogRoot:(PKAssembly * __nonnull)assembly {
+    [parser popToken];
+    [[STStoryTeller storyTeller] logRoot];
+    _optionSet = YES;
+}
 
 -(void) parser:(PKParser __nonnull *) parser didMatchIsa:(PKAssembly __nonnull *) assembly {
     [parser popToken];
