@@ -23,7 +23,9 @@ static STStoryTeller *__storyTeller;
 #pragma mark - Lifecycle
 
 +(void) initialize {
+#ifndef DISABLE_STORY_TELLER
     __storyTeller = [[STStoryTeller alloc] init];
+#endif
 }
 
 +(STStoryTeller __nonnull *) storyTeller {

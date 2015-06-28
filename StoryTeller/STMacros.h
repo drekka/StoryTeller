@@ -9,6 +9,17 @@
 #import <StoryTeller/STSToryTeller.h>
 #import <StoryTeller/STDeallocHook.h>
 
+#ifdef DISABLE_STORY_TELLER
+
+// Remove all logging code.
+#define startLogging(key)
+#define startScope(key)
+#define endScope(key)
+#define log(key, messageTemplate, ...)
+#define executeBlock(key, codeBlock)
+
+#else
+
 // Internal macro - don't use publically.
 #define _ST_CONCAT(prefix, suffix) prefix ## suffix
 
@@ -36,3 +47,5 @@ _Pragma ("clang diagnostic pop") \
 
 #define executeBlock(key, codeBlock) \
 [[STStoryTeller storyTeller] execute:key block:codeBlock]
+
+#endif
