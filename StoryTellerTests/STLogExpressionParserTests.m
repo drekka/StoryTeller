@@ -21,6 +21,8 @@
     BOOL _matchedClass;
     BOOL _matchedProtocol;
     BOOL _matchedIsa;
+    BOOL _matchedLogAll;
+    BOOL _matchedLogRoot;
 }
 
 -(void) setUp {
@@ -34,9 +36,17 @@
 #pragma mark - Delegate methods
 
 -(void) parser:(PKParser __nonnull *) parser didMatchLogAll:(PKAssembly __nonnull *) assembly {
+    PKToken *token = [parser popToken];
+    NSLog(@"Token LogAll: %@", token.value);
+    _matchedTokens = [_matchedTokens arrayByAddingObject:token];
+    _matchedLogAll = YES;
 }
 
 -(void) parser:(PKParser __nonnull *) parser didMatchLogRoot:(PKAssembly __nonnull *) assembly {
+    PKToken *token = [parser popToken];
+    NSLog(@"Token LogRoot: %@", token.value);
+    _matchedTokens = [_matchedTokens arrayByAddingObject:token];
+    _matchedLogRoot = YES;
 }
 
 -(void) parser:(PKParser __nonnull *) parser didMatchIsa:(PKAssembly __nonnull *) assembly {
@@ -98,6 +108,18 @@
 }
 
 #pragma mark - Tests
+
+-(void) testLogAll {
+    [self parse:@"LogAll"];
+    [self validateMatchedTokens:@[@(STLOGEXPRESSIONPARSER_TOKEN_KIND_LOGALL)]];
+    XCTAssertEqualObjects(@"LogAll", _matchedTokens[0].value);
+}
+
+-(void) testLogRoots {
+    [self parse:@"LogRoots"];
+    [self validateMatchedTokens:@[@(STLOGEXPRESSIONPARSER_TOKEN_KIND_LOGROOT)]];
+    XCTAssertEqualObjects(@"LogRoots", _matchedTokens[0].value);
+}
 
 -(void) testString {
     [self parse:@"\"abc\""];
@@ -186,6 +208,8 @@
     XCTAssertEqualObjects(@"Derekc", _matchedTokens[5].quotedStringValue);
 }
 
+#pragma mark - Errors
+
 -(void) testMissingValue {
     [self parse:@"[Abc].userId =" withCode:1 error:@"Failed to match next input token"];
 }
@@ -208,6 +232,10 @@
 
 -(void) testInvalidOp2 {
     [self parse:@"[Abc].userId >=< abc" withCode:1 error:@"Failed to match next input token"];
+}
+
+-(void) testIllegalSyntaxOptionAndCriteria {
+    [self parse:@"LogAll [Abc].userId == abc" withCode:1 error:@"Failed to match next input token"];
 }
 
 -(void) testIsaClass {

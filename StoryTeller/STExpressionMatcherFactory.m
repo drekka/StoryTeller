@@ -82,7 +82,7 @@
 
 -(void) parser:(PKParser * __nonnull)parser didMatchLogRoot:(PKAssembly * __nonnull)assembly {
     [parser popToken];
-    [[STStoryTeller storyTeller] logRoot];
+    [[STStoryTeller storyTeller] logRoots];
     _optionSet = YES;
 }
 

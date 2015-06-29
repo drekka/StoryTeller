@@ -17,34 +17,34 @@
         self.startRuleName = @"expr";
         self.tokenKindTab[@"false"] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_FALSE);
         self.tokenKindTab[@">="] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_GE);
+        self.tokenKindTab[@"LogRoots"] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_LOGROOT);
         self.tokenKindTab[@"=="] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ);
         self.tokenKindTab[@"<"] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_LT_SYM);
         self.tokenKindTab[@"["] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_OPEN_BRACKET);
         self.tokenKindTab[@"true"] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_TRUE);
         self.tokenKindTab[@"isa"] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_ISA);
-        self.tokenKindTab[@"logRoot"] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_LOGROOT);
+        self.tokenKindTab[@"LogAll"] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_LOGALL);
         self.tokenKindTab[@"."] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_DOT);
         self.tokenKindTab[@">"] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_GT_SYM);
         self.tokenKindTab[@"]"] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_CLOSE_BRACKET);
         self.tokenKindTab[@"<="] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_LE);
-        self.tokenKindTab[@"logAll"] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_LOGALL);
         self.tokenKindTab[@"YES"] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_YES_UPPER);
         self.tokenKindTab[@"!="] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_NE);
         self.tokenKindTab[@"NO"] = @(STLOGEXPRESSIONPARSER_TOKEN_KIND_NO_UPPER);
 
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_FALSE] = @"false";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_GE] = @">=";
+        self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_LOGROOT] = @"LogRoots";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ] = @"==";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_LT_SYM] = @"<";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_OPEN_BRACKET] = @"[";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_TRUE] = @"true";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_ISA] = @"isa";
-        self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_LOGROOT] = @"logRoot";
+        self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_LOGALL] = @"LogAll";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_DOT] = @".";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_GT_SYM] = @">";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_CLOSE_BRACKET] = @"]";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_LE] = @"<=";
-        self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_LOGALL] = @"logAll";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_YES_UPPER] = @"YES";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_NE] = @"!=";
         self.tokenKindNameTab[STLOGEXPRESSIONPARSER_TOKEN_KIND_NO_UPPER] = @"NO";
@@ -65,7 +65,6 @@
     [self execute:^{
     
     PKTokenizer *t = self.tokenizer;
-    [t.symbolState add:@"isa"];
     [t.symbolState add:@"=="];
     [t.symbolState add:@"!="];
     [t.symbolState add:@"<="];

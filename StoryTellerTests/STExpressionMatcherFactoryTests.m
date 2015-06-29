@@ -8,7 +8,7 @@
 
 @import XCTest;
 #import <OCMock/OCMock.h>
-
+#import <StoryTeller/StoryTeller.h>
 #import "STExpressionMatcherFactory.h"
 #import "STMatcher.h"
 
@@ -37,11 +37,36 @@
 
 @implementation STExpressionMatcherFactoryTests {
     STExpressionMatcherFactory *_factory;
+    id _mockStoryTeller;
 }
 
 -(void) setUp {
     _factory = [[STExpressionMatcherFactory alloc] init];
+
+    // Mock out story teller.
+    _mockStoryTeller = OCMClassMock([STStoryTeller class]);
+    OCMStub([_mockStoryTeller storyTeller]).andReturn(_mockStoryTeller);
 }
+
+-(void) tearDown {
+    [_mockStoryTeller stopMocking];
+}
+
+#pragma mark - Options
+
+-(void) testLogAll {
+    id<STMatcher> matcher = [_factory parseExpression:@"LogAll" error:NULL];
+    XCTAssertNil(matcher);
+    OCMVerify([_mockStoryTeller logAll]);
+}
+
+-(void) testLogRoots {
+    id<STMatcher> matcher = [_factory parseExpression:@"LogRoots" error:NULL];
+    XCTAssertNil(matcher);
+    OCMVerify([_mockStoryTeller logRoots]);
+}
+
+#pragma mark - Simple values
 
 -(void) testStringMatches {
     id<STMatcher> matcher = [_factory parseExpression:@"abc" error:NULL];
@@ -63,6 +88,8 @@
     XCTAssertFalse([matcher matches:@12.678]);
 }
 
+#pragma mark - Classes
+
 -(void) testClassMatches {
     id<STMatcher> matcher = [_factory parseExpression:@"[NSString]" error:NULL];
     XCTAssertTrue([matcher matches:@"abc"]);
@@ -79,6 +106,8 @@
     id<STMatcher> matcher = [_factory parseExpression:@"[NSString]" error:NULL];
     XCTAssertFalse([matcher matches:@12]);
 }
+
+#pragma mark - Properties
 
 -(void) testClassStringPropertyQuotedMatches {
     id<STMatcher> matcher = [_factory parseExpression:@"[A].string == \"abc\"" error:NULL];
@@ -227,6 +256,8 @@
     XCTAssertEqualObjects(@"Invalid operator. Booleans can only accept '==' or '!=' operators.\nLine : Unknown\n", error.localizedFailureReason);
 }
 
+#pragma mark - Protocols
+
 -(void) testProtocolMatches {
     id<STMatcher> matcher = [_factory parseExpression:@"<NSCopying>" error:NULL];
     XCTAssertTrue([matcher matches:@"abc"]);
@@ -250,6 +281,8 @@
     a.x = 5;
     XCTAssertTrue([matcher matches:a]);
 }
+
+#pragma mark - Runtime
 
 -(void) testIsaClassMatches {
     id<STMatcher> matcher = [_factory parseExpression:@"isa [A]" error:NULL];

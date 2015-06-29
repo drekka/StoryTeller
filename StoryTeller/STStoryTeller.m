@@ -16,8 +16,6 @@
     NSMutableSet<id<STMatcher>> *_logMatchers;
     STConfig *_config;
     STExpressionMatcherFactory *_expressionMatcherFactory;
-    BOOL _logAll;
-    BOOL _logRoot;
 }
 
 static STStoryTeller *__storyTeller;
@@ -56,17 +54,17 @@ static STStoryTeller *__storyTeller;
 
 -(void) logAll {
     _logAll = YES;
-    _logRoot = NO;
+    _logRoots = NO;
     [_logMatchers removeAllObjects];
 }
 
--(void) logRoot {
+-(void) logRoots {
 
     if (_logAll) {
         return;
     }
 
-    _logRoot = YES;
+    _logRoots = YES;
     [_logMatchers removeAllObjects];
 }
 
@@ -138,7 +136,7 @@ static STStoryTeller *__storyTeller;
     }
 
     // If logRoot is in effect we need to log as long as there are no scopes.
-    if (_logRoot && [_activeKeys count] == 0) {
+    if (_logRoots && [_activeKeys count] == 0) {
         return YES;
     }
 
