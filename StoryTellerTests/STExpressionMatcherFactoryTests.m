@@ -130,6 +130,26 @@
     XCTAssertFalse([matcher matches:a]);
 }
 
+-(void) testClassStringPropertyNilMatches {
+    id<STMatcher> matcher = [_factory parseExpression:@"[A].string == nil" error:NULL];
+    A *a = [[A alloc] init];
+    XCTAssertTrue([matcher matches:a]);
+}
+
+-(void) testClassStringPropertyNilNotEqualMatches {
+    id<STMatcher> matcher = [_factory parseExpression:@"[A].string != nil" error:NULL];
+    A *a = [[A alloc] init];
+    a.string = @"def";
+    XCTAssertTrue([matcher matches:a]);
+}
+
+-(void) testClassStringPropertyNilFailsMatch {
+    id<STMatcher> matcher = [_factory parseExpression:@"[A].string == nil" error:NULL];
+    A *a = [[A alloc] init];
+    a.string = @"def";
+    XCTAssertFalse([matcher matches:a]);
+}
+
 -(void) testClassIntPropertyEqualsMatches {
     id<STMatcher> matcher = [_factory parseExpression:@"[A].x == 5" error:NULL];
     A *a = [[A alloc] init];
@@ -253,7 +273,7 @@
     NSError *error = nil;
     id<STMatcher> matcher = [_factory parseExpression:@"[A].b.y > YES" error:&error];
     XCTAssertNil(matcher);
-    XCTAssertEqualObjects(@"Invalid operator. Booleans can only accept '==' or '!=' operators.\nLine : Unknown\n", error.localizedFailureReason);
+    XCTAssertEqualObjects(@"Failed to match next input token", error.localizedDescription);
 }
 
 #pragma mark - Protocols

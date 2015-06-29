@@ -16,12 +16,30 @@
 #import "STCompareMatcher.h"
 #import "STFilterMatcher.h"
 
+typedef NS_ENUM(NSUInteger, ExpressionValueType) {
+    ExpressionValueTypeNone,
+    ExpressionValueTypeBoolean,
+    ExpressionValueTypeString,
+    ExpressionValueTypeNumber,
+    ExpressionValueTypeNil
+};
+
 @implementation STExpressionMatcherFactory {
     id<STMatcher> _matcher;
-    NSInteger _op;
     id<STMatcher> _valueMatcher;
     BOOL _runtimeQuery;
     BOOL _optionSet;
+    ExpressionValueType _exprValueType;
+    BOOL _exprBoolValue;
+    NSString *_exprStringValue;
+    NSNumber *_exprNumberValue;
+}
+
+-(void) reset {
+    _matcher = nil;
+    _valueMatcher = nil;
+    _optionSet = NO;
+    _exprValueType = ExpressionValueTypeNone;
 }
 
 -(instancetype) init {
@@ -40,7 +58,7 @@
     // Finish matching.
     id<STMatcher> initialMatcher = nil;
     if ([parser parseString:expression error:error] == nil) {
-        // Didn't parse or something that doesn't return a matcher.
+        // Didn't parse
         [self reset];
         return nil;
     }
@@ -63,13 +81,6 @@
 
     [self reset];
     return initialMatcher;
-}
-
--(void) reset {
-    _matcher = nil;
-    _valueMatcher = nil;
-    _optionSet = NO;
-    _op = STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ;
 }
 
 #pragma mark - Delegate methods
@@ -113,35 +124,41 @@
       }];
 }
 
--(void) parser:(PKParser __nonnull *) parser didMatch:(NSString __nonnull *) type lookupBlock:(id (^ __nonnull)(const char * __nonnull objName)) lookupBlock checkBlock:(BOOL (^ __nonnull)(id __nonnull key, id __nonnull rtObj)) checkBlock {
+-(void) parser:(PKParser * __nonnull)parser didMatchLogicalExpression:(PKAssembly * __nonnull)assembly {
 
-    NSString *rtObjName = [parser popString];
-    id rtObj = lookupBlock(rtObjName.UTF8String);
-    if (rtObj == NULL) {
-        [parser raise:[NSString stringWithFormat:@"Unable to find %@ %@", type, rtObjName]];
-        return;
+    // Get the op.
+    BOOL isEqual = [parser popToken].tokenKind == STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ;
+
+    switch (_exprValueType) {
+        case ExpressionValueTypeBoolean: {
+            BOOL expected = _exprBoolValue;
+            _valueMatcher = [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
+                BOOL value = ((NSNumber *) key).boolValue;
+                return (expected == value) == isEqual;
+            }];
+            break;
+        }
+
+        case ExpressionValueTypeNil:
+            _valueMatcher = [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
+                return (key == nil) == isEqual;
+            }];
+            break;
+
+        default: {
+            NSString *expected = _exprStringValue;
+            _valueMatcher = [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
+                return [expected isEqualToString:key] == isEqual;
+            }];
+        }
     }
 
-    BOOL useEquals = _runtimeQuery;
-    _matcher = [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
-        return useEquals ? key == rtObj : checkBlock(key, rtObj);
-    }];
-
 }
 
--(void) parser:(PKParser __nonnull *) parser didMatchString:(PKAssembly __nonnull *) assembly {
-    PKToken *token = [parser popToken];
-    NSString *expected = token.tokenKind == TOKEN_KIND_BUILTIN_QUOTEDSTRING ? token.quotedStringValue : token.value;
-    _valueMatcher = [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
-        return [expected isEqualToString:key];
-    }];
-}
+-(void) parser:(PKParser * __nonnull)parser didMatchMathExpression:(PKAssembly * __nonnull)assembly {
 
--(void) parser:(PKParser __nonnull *) parser didMatchNumber:(PKAssembly __nonnull *) assembly {
-
-    PKToken *token = [parser popToken];
-    NSNumber *expected = token.value;
-    NSInteger op = _op;
+    NSNumber *expected = _exprNumberValue;
+    NSInteger op = [parser popToken].tokenKind;
     _valueMatcher =  [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
         NSNumber *actual = (NSNumber *) key;
         switch (op) {
@@ -167,27 +184,41 @@
     }];
 }
 
--(void) parser:(PKParser __nonnull *) parser didMatchBooleanTrue:(PKAssembly __nonnull *) assembly {
-    [self parser:parser didMatchBoolean:YES];
-}
-
--(void) parser:(PKParser __nonnull *) parser didMatchBooleanFalse:(PKAssembly __nonnull *) assembly {
-    [self parser:parser didMatchBoolean:NO];
-}
-
--(void) parser:(PKParser __nonnull *) parser didMatchBoolean:(BOOL) expected {
-    [parser popToken];
-    if (_op == STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ || _op == STLOGEXPRESSIONPARSER_TOKEN_KIND_NE) {
-        NSInteger blockOp = _op; // Gets around issues with values for blocks.
+-(void) parser:(PKParser __nonnull *) parser didMatchSingleKey:(PKAssembly * __nonnull)assembly {
+    if (_exprNumberValue) {
+        NSNumber *expected = _exprNumberValue;
         _valueMatcher = [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
-            return expected ==
-            (blockOp == STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ ? ((NSNumber *) key).boolValue : ! ((NSNumber *) key).boolValue);
+            return [expected compare:key] == NSOrderedSame;
         }];
     } else {
-        [parser raise:@"Invalid operator. Booleans can only accept '==' or '!=' operators."];
+        NSString *expected = _exprStringValue;
+        _valueMatcher = [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
+            return [expected isEqualToString:key];
+        }];
     }
 }
 
+-(void) parser:(PKParser __nonnull *) parser didMatchBoolean:(PKAssembly __nonnull *) assembly {
+    _exprValueType = ExpressionValueTypeBoolean;
+    NSInteger tokenKind = [parser popToken].tokenKind;
+    _exprBoolValue = tokenKind == STLOGEXPRESSIONPARSER_TOKEN_KIND_TRUE || tokenKind == STLOGEXPRESSIONPARSER_TOKEN_KIND_YES_UPPER;
+}
+
+-(void) parser:(PKParser __nonnull *) parser didMatchString:(PKAssembly __nonnull *) assembly {
+    _exprValueType = ExpressionValueTypeString;
+    PKToken *token = [parser popToken];
+    _exprStringValue = token.tokenKind == TOKEN_KIND_BUILTIN_QUOTEDSTRING ? token.quotedStringValue : token.value;
+}
+
+-(void) parser:(PKParser __nonnull *) parser didMatchNumber:(PKAssembly __nonnull *) assembly {
+    _exprValueType = ExpressionValueTypeNumber;
+    _exprNumberValue = [parser popToken].value;
+}
+
+-(void) parser:(PKParser __nonnull *) parser didMatchNil:(PKAssembly __nonnull *) assembly {
+    _exprValueType = ExpressionValueTypeNil;
+    [parser popToken];
+}
 
 -(void) parser:(PKParser __nonnull *) parser didMatchKeyPath:(PKAssembly __nonnull *) assembly {
 
@@ -204,8 +235,22 @@
     }];
 }
 
--(void) parser:(PKParser __nonnull *) parser didMatchOp:(PKAssembly __nonnull *) assembly {
-    _op = [parser popToken].tokenKind;
+#pragma mark - Internal
+
+-(void) parser:(PKParser __nonnull *) parser didMatch:(NSString __nonnull *) type lookupBlock:(id (^ __nonnull)(const char * __nonnull objName)) lookupBlock checkBlock:(BOOL (^ __nonnull)(id __nonnull key, id __nonnull rtObj)) checkBlock {
+
+    NSString *rtObjName = [parser popString];
+    id rtObj = lookupBlock(rtObjName.UTF8String);
+    if (rtObj == NULL) {
+        [parser raise:[NSString stringWithFormat:@"Unable to find %@ %@", type, rtObjName]];
+        return;
+    }
+
+    BOOL useEquals = _runtimeQuery;
+    _matcher = [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
+        return useEquals ? key == rtObj : checkBlock(key, rtObj);
+    }];
+    
 }
 
 @end
