@@ -18,12 +18,12 @@
     STExpressionMatcherFactory *_expressionMatcherFactory;
 }
 
-static STStoryTeller *__storyTeller;
+static __strong STStoryTeller *__storyTeller;
 
 #pragma mark - Lifecycle
 
 +(void) initialize {
-    NSLog(@"Starting Story Teller ...");
+    NSLog(@"XXXXXXXX Starting Story Teller ...");
 #ifndef DISABLE_STORY_TELLER
     __storyTeller = [[STStoryTeller alloc] init];
 #endif
