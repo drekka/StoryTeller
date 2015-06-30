@@ -23,17 +23,19 @@ static STStoryTeller *__storyTeller;
 #pragma mark - Lifecycle
 
 +(void) initialize {
-#ifndef DISABLE_STORY_TELLER
     NSLog(@"Starting Story Teller ...");
+#ifndef DISABLE_STORY_TELLER
     __storyTeller = [[STStoryTeller alloc] init];
 #endif
 }
 
 +(STStoryTeller __nonnull *) storyTeller {
+    NSLog(@"Story Teller is %@", __storyTeller == nil ? @"NIL!": @"Present");
     return __storyTeller;
 }
 
 -(instancetype) init {
+    NSLog(@"Initing");
     self = [super init];
     if (self) {
         _activeKeys = [[NSMutableSet alloc] init];
