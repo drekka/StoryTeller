@@ -20,6 +20,9 @@
 		6C158E341B38278500119725 /* STConsoleLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CD18E001B32A5B8002C9806 /* STConsoleLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6C158E351B38278500119725 /* STAbstractLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C6879971B32F49A00091F87 /* STAbstractLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6C158E361B38278500119725 /* STStoryTeller.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CE5C3E71B329BD100F0A470 /* STStoryTeller.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6C3B91C71B412D4800E7FCCD /* CocoaLumberjack.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6C556C311B412B4100EB1547 /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6C556C321B412B4100EB1547 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C556C311B412B4100EB1547 /* CocoaLumberjack.framework */; };
+		6C556C341B412BA300EB1547 /* PerformanceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C556C331B412BA300EB1547 /* PerformanceTests.m */; };
 		6C7266E51B3C37E7004B593C /* STExpressionMatcherFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C7266E41B3C37E7004B593C /* STExpressionMatcherFactoryTests.m */; };
 		6C8174321B3CDBA300342066 /* STCompareMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C8174301B3CDBA300342066 /* STCompareMatcher.h */; };
 		6C8174331B3CDBA300342066 /* STCompareMatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C8174311B3CDBA300342066 /* STCompareMatcher.m */; };
@@ -64,6 +67,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		6C3B91C61B412D4000E7FCCD /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				6C3B91C71B412D4800E7FCCD /* CocoaLumberjack.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -72,6 +85,8 @@
 		6C158DE51B3820F100119725 /* StoryTellerConfig.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = StoryTellerConfig.json; path = ../StoryTeller/StoryTellerConfig.json; sourceTree = "<group>"; };
 		6C158E141B38269D00119725 /* StoryTeller.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StoryTeller.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C158E181B38269D00119725 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = StoryTeller/Info.plist; sourceTree = "<group>"; };
+		6C556C311B412B4100EB1547 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = Carthage/Build/iOS/CocoaLumberjack.framework; sourceTree = "<group>"; };
+		6C556C331B412BA300EB1547 /* PerformanceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PerformanceTests.m; sourceTree = "<group>"; };
 		6C6879971B32F49A00091F87 /* STAbstractLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STAbstractLogger.h; sourceTree = "<group>"; };
 		6C6879981B32F49A00091F87 /* STAbstractLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STAbstractLogger.m; sourceTree = "<group>"; };
 		6C7266E41B3C37E7004B593C /* STExpressionMatcherFactoryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STExpressionMatcherFactoryTests.m; sourceTree = "<group>"; };
@@ -121,6 +136,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C556C321B412B4100EB1547 /* CocoaLumberjack.framework in Frameworks */,
 				6C1085C61B3A73F4009C7AB8 /* StoryTeller.framework in Frameworks */,
 				6CDCEB971B38F07A007DAF3D /* libOCMock.a in Frameworks */,
 			);
@@ -199,6 +215,7 @@
 		6CE5C3DB1B329BD100F0A470 = {
 			isa = PBXGroup;
 			children = (
+				6C556C311B412B4100EB1547 /* CocoaLumberjack.framework */,
 				6C8AE1961B3A3BF300DF2B9F /* PEGKit.framework */,
 				6C0A55FF1B38DFB4006E0A4A /* Resources */,
 				6CE5C3E51B329BD100F0A470 /* Products */,
@@ -242,6 +259,7 @@
 				6C9B50FD1B32ADD80004E06D /* STTestCase.m */,
 				6CA7DF081B3A6584002491FF /* STLogExpressionParserTests.m */,
 				6C7266E41B3C37E7004B593C /* STExpressionMatcherFactoryTests.m */,
+				6C556C331B412BA300EB1547 /* PerformanceTests.m */,
 			);
 			path = StoryTellerTests;
 			sourceTree = "<group>";
@@ -299,6 +317,7 @@
 				6CE5C3EB1B329BD100F0A470 /* Sources */,
 				6CE5C3EC1B329BD100F0A470 /* Frameworks */,
 				6CE5C3ED1B329BD100F0A470 /* Resources */,
+				6C3B91C61B412D4000E7FCCD /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -385,6 +404,7 @@
 			files = (
 				6CEB2FB71B3D8CF5007C1531 /* STLogExpressionParserTests.m in Sources */,
 				6C9B50FE1B32ADD80004E06D /* STTestCase.m in Sources */,
+				6C556C341B412BA300EB1547 /* PerformanceTests.m in Sources */,
 				6C9B50F81B32AC770004E06D /* StoryTellerTests.m in Sources */,
 				6CD938411B384AB5005B0B5D /* STConfigTests.m in Sources */,
 				6C81743B1B3D204F00342066 /* STCompareMatcherTests.m in Sources */,
