@@ -101,7 +101,7 @@
     NSError *error = nil;
     id<STMatcher> matcher = [_factory parseExpression:@"[Abc]" error:&error];
     XCTAssertNil(matcher);
-    XCTAssertEqualObjects(@"Unable to find class Abc", error.localizedDescription);
+    XCTAssertEqualObjects(@"Unable to find any runtime object called Abc\nLine : Unknown\n", error.localizedFailureReason);
 }
 
 -(void) testClassFailsMatch {
@@ -120,7 +120,7 @@
     NSError *error = nil;
     id<STMatcher> matcher = [_factory parseExpression:@"<Abc>" error:&error];
     XCTAssertNil(matcher);
-    XCTAssertEqualObjects(@"Unable to find protocol Abc\nLine : Unknown\n", error.localizedFailureReason);
+    XCTAssertEqualObjects(@"Unable to find any runtime object called Abc\nLine : Unknown\n", error.localizedFailureReason);
 }
 
 -(void) testProtocolFailsMatch {
@@ -298,11 +298,11 @@
 
 -(void) testPropertyNestedBoolYesMatches {
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].subClassProperty.boolProperty == YES" error:NULL];
-    MainClass *a = [[MainClass alloc] init];
-    SubClass *b = [[SubClass alloc] init];
-    a.subClassProperty = b;
-    b.boolProperty = YES;
-    XCTAssertTrue([matcher matches:a]);
+    MainClass *mainClass = [[MainClass alloc] init];
+    SubClass *subClass = [[SubClass alloc] init];
+    mainClass.subClassProperty = subClass;
+    subClass.boolProperty = YES;
+    XCTAssertTrue([matcher matches:mainClass]);
 }
 
 -(void) testPropertyNestedBoolInvalidOp {
@@ -310,22 +310,6 @@
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].subClassProperty.boolProperty > YES" error:&error];
     XCTAssertNil(matcher);
     XCTAssertEqualObjects(@"Failed to match next input token", error.localizedDescription);
-}
-
-#pragma mark - Runtime Properties
-
--(void) testPropertyClassMatches {
-    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].classProperty is [SubClass]" error:NULL];
-    MainClass *mainClass = [[MainClass alloc] init];
-    mainClass.classProperty = [SubClass class];
-    XCTAssertTrue([matcher matches:mainClass]);
-}
-
--(void) testPropertyProtocolMatches {
-    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].protocolProperty is <AProtocol>" error:NULL];
-    MainClass *mainClass = [[MainClass alloc] init];
-    mainClass.protocolProperty = @protocol(AProtocol);
-    XCTAssertTrue([matcher matches:mainClass]);
 }
 
 #pragma mark - Runtime
@@ -338,6 +322,28 @@
 -(void) testIsaProtocolMatches {
     id<STMatcher> matcher = [_factory parseExpression:@"is <AProtocol>" error:NULL];
     XCTAssertTrue([matcher matches:@protocol(AProtocol)]);
+}
+
+-(void) testPropertyClassMatches {
+    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].classProperty is [SubClass]" error:NULL];
+    MainClass *mainClass = [[MainClass alloc] init];
+    mainClass.classProperty = [SubClass class];
+    XCTAssertTrue([matcher matches:mainClass]);
+}
+
+-(void) testPropertyObjectClassMatches {
+    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].subClassProperty == [SubClass]" error:NULL];
+    MainClass *mainClass = [[MainClass alloc] init];
+    SubClass *subClass = [[SubClass alloc] init];
+    mainClass.subClassProperty = subClass;
+    XCTAssertTrue([matcher matches:mainClass]);
+}
+
+-(void) testPropertyProtocolMatches {
+    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].protocolProperty is <AProtocol>" error:NULL];
+    MainClass *mainClass = [[MainClass alloc] init];
+    mainClass.protocolProperty = @protocol(AProtocol);
+    XCTAssertTrue([matcher matches:mainClass]);
 }
 
 @end

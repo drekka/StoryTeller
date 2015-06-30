@@ -109,15 +109,6 @@ static Class __protocolClass;
 }
 
 -(void) parser:(PKParser __nonnull *) parser didMatchRuntimeType:(PKAssembly __nonnull *) assembly {
-    id runtimeObject = [self runtimeObjectFromParser:parser];
-    id<STMatcher> matcher = [self matcherForRuntimeObject:runtimeObject isExpectingRuntimeObject:_runtimeQuery];
-    if (_matcher == nil) {
-        // This is a runtime match on the key.
-        _matcher = matcher;
-    } else {
-        // Its a match on a value of a property.
-        _valueMatcher = matcher;
-    }
 }
 
 -(void) parser:(PKParser * __nonnull)parser didMatchLogicalExpr:(PKAssembly * __nonnull)assembly {
@@ -181,7 +172,13 @@ static Class __protocolClass;
 }
 
 -(void) parser:(PKParser * __nonnull)parser didMatchRuntimeExpr:(PKAssembly * __nonnull)assembly {
-
+    id runtimeObject = [self runtimeObjectFromParser:parser];
+    id<STMatcher> matcher = [self matcherForRuntimeObject:runtimeObject isExpectingRuntimeObject:_runtimeQuery];
+    if (_matcher == nil) {
+        _matcher = matcher;
+    } else {
+        _valueMatcher = matcher;
+    }
 }
 
 -(void) parser:(PKParser __nonnull *) parser didMatchSingleKey:(PKAssembly * __nonnull)assembly {
