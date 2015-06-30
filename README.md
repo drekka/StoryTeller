@@ -49,7 +49,7 @@ Another fine way to include Story Teller is to use [Git Submodules](https://chri
 Story Teller has one basic logging statement:
 
 ```objectivec
-log(<key>, <message-template>, <args ...>); 
+STLog(<key>, <message-template>, <args ...>); 
 ```
 This looks very similar to other logging frameworks. Except that they would either having `key` replaced with a severity level, or have multiple statements such as `logDebug`, `logInfo`, etc. 
 
@@ -58,10 +58,10 @@ This looks very similar to other logging frameworks. Except that they would eith
 Story Teller's ***Key*** is the important differentiator between it and these other logging frameworks. With Story Teller, *the key can be anything you want !"* An account number, a user id, a class, or any object you want to be able to base a search on when debugging and whatever makes sense in your app. Here are some examples:
 
 ```objectivec
-log(user, "User %@ is logging", user.id);
-log(@(EnumValueGUI), "GUI is doing %@ with %@", aGUIValue, anotherGUIVaue);
-log(currentView, "GUI is doing something with %@", currentView);
-log(@"abc", @"ABC, ha ha ha ha ha");
+STLog(user, "User %@ is logging", user.id);
+STLog(@(EnumValueGUI), "GUI is doing %@ with %@", aGUIValue, anotherGUIVaue);
+STLog(currentView, "GUI is doing something with %@", currentView);
+STLog(@"abc", @"ABC, ha ha ha ha ha");
 ```
 
 ## What if I don't have an accessible key?
@@ -69,19 +69,19 @@ log(@"abc", @"ABC, ha ha ha ha ha");
 Often you might want to log based on something , but be in some method that doesn't have access to that data. Story Teller solves this with the concept of **Key Scopes**. You can tell it to make a specific key cover a range of log statements any log statements that are in that scope are regarded as being logged under the scope's key. Here's an example:
 
 ```objectivec
-log(user.id, "User %@ is logging", user.id);
-startScope(user.id);
+STLog(user, "User %@ is logging", user.id);
+STStartScope(user.id);
 /// ...  do stuff
-log(account.id, "User %@'s account: %@", user.id, account.id); 
+STLog(account, "User %@'s account: %@", user.id, account.id); 
 [self goDoSomethingWithAccount:account];
 ```
 
-When reporting based on user, the second log statement ( `key:account.id` ) will also be printed because it's within the scope of user.
+When reporting based on user, the second log statement (key:account) will also be printed because it's within the scope of user.
 
-Scopes follow the normal Objective-C rules plus a few more: 
+Scopes follow these rules: 
 
- * They will continue until the end of the current variable scope. Normally this is the end of the current method, loop or if statement. 
- * Story Teller's scopes also include any code called. So any logging within a method or API is also included with the scope. This enables logging across a wide range of classes to be accessed using one key without having to specifically pass that key around.  
+ * Normal Objective-C scopes for variables. This is because under the hood, Story Teller is using a dynamically added variable to detect when the scope ends. Normally this is the end of the current method, loop or if statement. Assume a `STScopeStart(...)` is a variable declaration and you will ge the idea. 
+ * Story Teller's then includes any called code. So any logging within a method or API is also included with the scope. This enables logging across a wide range of classes to be accessed using one key without having to specifically pass that key around.  
 
  In the above example, any logging with in `goDoSomethingWithAccount:` will also be logged when logging for the user.
 
@@ -115,19 +115,19 @@ Current the Json file has two settings and looks something like this:
 Key  | Value
 ------------- | -------------
 activeLogs | A comma separated list of keys to activate. This is the main setting for turning on logging.
-loggerClass | If you want to set a different class for the, use this setting to specify the class. The class must implement `STLogger` and have a no-arg constructor. You only need to put the class name in this setting. Story Teller will handle the rest. By default, Story Teller uses a simple console logger.
+loggerClass | If you want to set a different class for the, use this setting to specify the class. The class must implement `<STLogger>` and have a no-arg constructor. You only need to put the class name in this setting. Story Teller will handle the rest. By default, Story Teller uses a simple console logger.
 
 ## Programmatically
 
 You can also programmically enable and disable logging as well. To enable logging, use this statement:
 
 ```objectivec
-startLogging(<key>);
+STStartLogging(<key>);
 ```
 
 # Smart Logging Criteria
 
-The `activeLogs` configuration setting contains an comma seperated list of smart criteria which activate the log statements. The  `startLogging(<criteria>);` Objective C statement does the same thing, except you can only pass one criteria at a time. 
+The `activeLogs` configuration setting contains an comma seperated list of smart criteria which activate the log statements. The  `STStartLogging(<criteria>);` Objective-C statement does the same thing, except you can only pass one criteria at a time. 
 
 So what are these criteria? Here are the options
 
@@ -137,8 +137,8 @@ So what are these criteria? Here are the options
 First up there are two special logs you can activate:
 
 ```objectivec
-startLogging(@"LogAll");
-startLogging(@"LogRoots");
+STStartLogging(@"LogAll");
+STStartLogging(@"LogRoots");
 ```
 
 *** LogAll*** activates all log statements and disregards any other logging criteira. This is literally a turn everything on option so don't expect to use it often and it's not really what Story Teller is about.
@@ -153,15 +153,15 @@ When Story Teller encounters a single value in a criteria, it makes the assumpti
 For example:
 
 ```objectivec
-log("abc", @"Log some abc stuff");
-log("GUI System", @"Log view @ %@", aRect);
-log(@(EnumValueX), @"Log related to EnumValueX");
+STLog("abc", @"Log some abc stuff");
+STLog("GUI System", @"Log view @ %@", aRect);
+STLog(@(EnumValueX), @"Log related to EnumValueX");
 ```
 
 ```objectivec
-startLogging(@"abc");
-startLogging(@"\"GUI System\"");
-startLogging(@(EnumValueX)); 
+STStartLogging(@"abc");
+STStartLogging(@"\"GUI System\"");
+STStartLogging(@(EnumValueX)); 
 ```
 
 ## Classes and Protocols 
@@ -175,12 +175,12 @@ You can log based on the type of the key used like this:
 These will search for any logging where the key is an instance of the class (or is a subclass of it), or an instance that implements the specified protocol. Here's an example:
 
 ```objectivec
-log(User, @"Log message for a user");
+STLog(User, @"Log message for a user");
 ```
 
 ```objectivec
-startLogging(@"[User]");
-startLogging(@"<Person>");    /* Assuming User implements Person */
+STStartLogging(@"[User]");
+STStartLogging(@"<Person>");    /* Assuming User implements Person */
 ```
 
 ### Runtime keys
@@ -192,13 +192,13 @@ startLogging(@"<Person>");    /* Assuming User implements Person */
 For example:
 
 ```objectivec
-log([User class], @"Log message for class");
-log(@protocol(NSCopying), @"Log message for NSCopying");
+STLog([User class], @"Log message for class");
+STLog(@protocol(NSCopying), @"Log message for NSCopying");
 ```
 
 ```objectivec
-startLogging(@"isa [User]");
-startLogging(@"isa <NSCopying>");
+STStartLogging(@"isa [User]");
+STStartLogging(@"isa <NSCopying>");
 ```
 
 ## KVC Property criteria
@@ -209,14 +209,14 @@ startLogging(@"isa <NSCopying>");
 This criteria looks for keys that matches the specified class or protocol, then examine the `keypath` on the object for the required value. Here are some examples
 
 ```objectivec
-log(user, @"Log message for user");
+STLog(user, @"Log message for user");
 ```
 
 ```objectivec
-startLogging(@"[User].account.name == \"derek's account\"");
-startLogging(@"[User].account.balance > 500");
-startLogging(@"<Banking>.active == YES");
-startLogging(@"<Banking>.active == nil");
+STStartLogging(@"[User].account.name == \"derek's account\"");
+STStartLogging(@"[User].account.balance > 500");
+STStartLogging(@"<Banking>.active == YES");
+STStartLogging(@"<Banking>.active == nil");
 ```
 As you can see there is a lot of power here to decide what gets logged. 
 
@@ -229,7 +229,7 @@ Value can also be a nil. Which is handy for logging when information is missing.
 Story Teller has another trick up it's sleeve. Often we want to run a set of statements to assemble some data before logging or even to log a number of statements at once. With other frameworks we have to manually add some boiler plate around the statements to make sure they are not always being executed. Story Teller has a statement built specifically for this purpose:
 
 ```objectivec
-executeBlock(<key>, ^(id key) {
+STExecuteBlock(<key>, ^(id key) {
      // Statements go here.
 });
 ``` 
