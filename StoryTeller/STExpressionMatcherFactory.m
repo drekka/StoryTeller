@@ -35,6 +35,12 @@ typedef NS_ENUM(NSUInteger, ExpressionValueType) {
     NSNumber *_exprNumberValue;
 }
 
+static Class __protocolClass;
+
++(void) initialize {
+    __protocolClass = objc_getClass("Protocol");
+}
+
 -(void) reset {
     _matcher = nil;
     _valueMatcher = nil;
@@ -97,34 +103,24 @@ typedef NS_ENUM(NSUInteger, ExpressionValueType) {
     _optionSet = YES;
 }
 
--(void) parser:(PKParser __nonnull *) parser didMatchIsa:(PKAssembly __nonnull *) assembly {
+-(void) parser:(PKParser __nonnull *) parser didMatchIs:(PKAssembly __nonnull *) assembly {
     [parser popToken];
     _runtimeQuery = YES;
 }
 
--(void) parser:(PKParser __nonnull *) parser didMatchProtocol:(PKAssembly __nonnull *) assembly {
-    [self parser:parser
-        didMatch:@"protocol"
-     lookupBlock:^id(const char * __nonnull objName) {
-         return objc_getProtocol(objName);
-     }
-      checkBlock:^BOOL(id __nonnull key, id __nonnull rtObj) {
-          return [key conformsToProtocol:rtObj];
-      }];
+-(void) parser:(PKParser __nonnull *) parser didMatchRuntimeType:(PKAssembly __nonnull *) assembly {
+    id runtimeObject = [self runtimeObjectFromParser:parser];
+    id<STMatcher> matcher = [self matcherForRuntimeObject:runtimeObject isExpectingRuntimeObject:_runtimeQuery];
+    if (_matcher == nil) {
+        // This is a runtime match on the key.
+        _matcher = matcher;
+    } else {
+        // Its a match on a value of a property.
+        _valueMatcher = matcher;
+    }
 }
 
--(void) parser:(PKParser __nonnull *) parser didMatchClass:(PKAssembly __nonnull *) assembly {
-    [self parser:parser
-        didMatch:@"class"
-     lookupBlock:^id(const char * __nonnull objName) {
-         return objc_lookUpClass(objName);
-     }
-      checkBlock:^BOOL(id __nonnull key, id __nonnull rtObj) {
-          return [key isKindOfClass:rtObj];
-      }];
-}
-
--(void) parser:(PKParser * __nonnull)parser didMatchLogicalExpression:(PKAssembly * __nonnull)assembly {
+-(void) parser:(PKParser * __nonnull)parser didMatchLogicalExpr:(PKAssembly * __nonnull)assembly {
 
     // Get the op.
     BOOL isEqual = [parser popToken].tokenKind == STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ;
@@ -155,7 +151,7 @@ typedef NS_ENUM(NSUInteger, ExpressionValueType) {
 
 }
 
--(void) parser:(PKParser * __nonnull)parser didMatchMathExpression:(PKAssembly * __nonnull)assembly {
+-(void) parser:(PKParser * __nonnull)parser didMatchMathExpr:(PKAssembly * __nonnull)assembly {
 
     NSNumber *expected = _exprNumberValue;
     NSInteger op = [parser popToken].tokenKind;
@@ -182,6 +178,10 @@ typedef NS_ENUM(NSUInteger, ExpressionValueType) {
                 return [actual compare:expected] != NSOrderedSame;
         }
     }];
+}
+
+-(void) parser:(PKParser * __nonnull)parser didMatchRuntimeExpr:(PKAssembly * __nonnull)assembly {
+
 }
 
 -(void) parser:(PKParser __nonnull *) parser didMatchSingleKey:(PKAssembly * __nonnull)assembly {
@@ -237,20 +237,38 @@ typedef NS_ENUM(NSUInteger, ExpressionValueType) {
 
 #pragma mark - Internal
 
--(void) parser:(PKParser __nonnull *) parser didMatch:(NSString __nonnull *) type lookupBlock:(id (^ __nonnull)(const char * __nonnull objName)) lookupBlock checkBlock:(BOOL (^ __nonnull)(id __nonnull key, id __nonnull rtObj)) checkBlock {
+-(id) runtimeObjectFromParser:(PKParser __nonnull *) parser {
 
-    NSString *rtObjName = [parser popString];
-    id rtObj = lookupBlock(rtObjName.UTF8String);
+    const char *rtObjName = [parser popString].UTF8String;
+
+    // First look for a class as this is more likely.
+    id rtObj = objc_lookUpClass(rtObjName);
     if (rtObj == NULL) {
-        [parser raise:[NSString stringWithFormat:@"Unable to find %@ %@", type, rtObjName]];
-        return;
-    }
+        // Now try for a protocol.
+        rtObj = objc_getProtocol(rtObjName);
 
-    BOOL useEquals = _runtimeQuery;
-    _matcher = [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
-        return useEquals ? key == rtObj : checkBlock(key, rtObj);
-    }];
-    
+        // Must be a typo.
+        if (rtObj == NULL) {
+            [parser raise:[NSString stringWithFormat:@"Unable to find any runtime object called %s", rtObjName]];
+            return nil;
+        }
+    }
+    return rtObj;
+}
+
+-(id<STMatcher>) matcherForRuntimeObject:(id) rtObj isExpectingRuntimeObject:(BOOL) isExpectingRuntimeObject {
+    BOOL useEquals = isExpectingRuntimeObject;
+    if ([rtObj class] == __protocolClass) {
+        Protocol *protocol = rtObj;
+        return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
+            return useEquals ? key == protocol : [key conformsToProtocol:protocol];
+        }];
+    } else {
+        Class class = rtObj;
+        return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
+            return useEquals ? key == class : [key isKindOfClass:class];
+        }];
+    }
 }
 
 @end

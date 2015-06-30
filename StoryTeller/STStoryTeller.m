@@ -102,7 +102,7 @@ static __strong STStoryTeller *__storyTeller;
 -(void) record:(id __nonnull) key method:(const char __nonnull *) methodName lineNumber:(int) lineNumber message:(NSString __nonnull *) messageTemplate, ... {
 
     // Only continue if the key is being logged.
-    if (![self isLogging:key]) {
+    if (![self shouldLogKey:key]) {
         return;
     }
 
@@ -120,19 +120,15 @@ static __strong STStoryTeller *__storyTeller;
 }
 
 -(void) execute:(id __nonnull) key block:(void (^ __nonnull)(id __nonnull)) block {
-
-    // Only continue if the key is being logged.
-    if (![self isLogging:key]) {
-        return;
+    if ([self shouldLogKey:key]) {
+        block(key);
     }
-
-    block(key);
 }
 
--(BOOL) isLogging:(id) key {
+-(BOOL) shouldLogKey:(id) key {
 
     // Check the bypass and active keys.
-    if (_logAll || [self isKeyActive:key]) {
+    if (_logAll || [self isKeyMatched:key]) {
         return YES;
     }
 
@@ -143,7 +139,7 @@ static __strong STStoryTeller *__storyTeller;
 
     // If any of the active keys are logging then we also fire.
     for (id scopeKey in _activeKeys) {
-        if ([self isKeyActive:scopeKey]) {
+        if ([self isKeyMatched:scopeKey]) {
             return YES;
         }
     }
@@ -151,7 +147,7 @@ static __strong STStoryTeller *__storyTeller;
     return NO;
 }
 
--(BOOL) isKeyActive:(id) key {
+-(BOOL) isKeyMatched:(id) key {
     for (id<STMatcher> matcher in _logMatchers) {
         if ([matcher matches:key]) {
             return YES;
