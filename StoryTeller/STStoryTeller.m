@@ -24,6 +24,7 @@ static STStoryTeller *__storyTeller;
 
 +(void) initialize {
 #ifndef DISABLE_STORY_TELLER
+    NSLog(@"Starting Story Teller ...");
     __storyTeller = [[STStoryTeller alloc] init];
 #endif
 }
