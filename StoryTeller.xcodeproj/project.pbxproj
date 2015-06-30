@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6C1085C51B3A7354009C7AB8 /* PEGKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6C8AE1961B3A3BF300DF2B9F /* PEGKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6C1085C61B3A73F4009C7AB8 /* StoryTeller.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C158E141B38269D00119725 /* StoryTeller.framework */; };
 		6C158E2B1B38277200119725 /* STConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C158DE11B38206600119725 /* STConfig.m */; };
 		6C158E2C1B38277200119725 /* STDeallocHook.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CCFFA7C1B33CB5F00D2F371 /* STDeallocHook.m */; };
@@ -52,19 +51,6 @@
 			remoteInfo = StoryTeller;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		6C1085C41B3A7334009C7AB8 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				6C1085C51B3A7354009C7AB8 /* PEGKit.framework in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		6C158DE01B38206600119725 /* STConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STConfig.h; sourceTree = "<group>"; };
@@ -281,7 +267,7 @@
 				6C158E101B38269D00119725 /* Frameworks */,
 				6C158E111B38269D00119725 /* Headers */,
 				6C158E121B38269D00119725 /* Resources */,
-				6C1085C41B3A7334009C7AB8 /* CopyFiles */,
+				6C199CD41B426FC2009BFEAD /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -361,6 +347,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		6C199CD41B426FC2009BFEAD /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/pegkit.framework",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "carthage copy-frameworks";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		6C158E0F1B38269D00119725 /* Sources */ = {
