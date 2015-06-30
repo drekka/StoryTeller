@@ -23,24 +23,16 @@ static __strong STStoryTeller *__storyTeller;
 #pragma mark - Lifecycle
 
 +(void) initialize {
-    NSLog(@"ST Starting ...");
 #ifndef DISABLE_STORY_TELLER
-    NSLog(@"ST Allocing ...");
     __storyTeller = [[STStoryTeller alloc] init];
 #endif
 }
 
 +(STStoryTeller __nonnull *) storyTeller {
-    NSLog(@"ST is %@", __storyTeller == nil ? @"NIL!": @"Present");
     return __storyTeller;
 }
 
--(void) dealloc {
-    NSLog(@"ST Deallocing");
-}
-
 -(instancetype) init {
-    NSLog(@"Initing ...");
     self = [super init];
     if (self) {
         _activeKeys = [[NSMutableSet alloc] init];
@@ -78,7 +70,7 @@ static __strong STStoryTeller *__storyTeller;
 
 -(void) startLogging:(NSString __nonnull *) keyExpression {
 
-    NSLog(@"Activating log: %@", keyExpression);
+    NSLog(@"Story Teller: Activating log: %@", keyExpression);
     NSError *error = nil;
     id<STMatcher> matcher = [_expressionMatcherFactory parseExpression:keyExpression
                                                                  error:&error];

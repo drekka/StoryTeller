@@ -70,9 +70,9 @@
 
 /**
  Starts a key Scope. 
- @discussion the Key will basically group any @c log(...) statements that occur after it's definition and until it goes out of scope. Scope follows the Objective-C scope rules in that it finishes at the end of the current function, loop or if statement. Basically when a locally declared variable would be dealloced. 
+ @discussion the Key will basically group any @c STLog(...) statements that occur after it's definition and until it goes out of scope. Scope follows the Objective-C scope rules in that it finishes at the end of the current function, loop or if statement. Basically when a locally declared variable would be dealloced. 
  
- The major difference is that this scope also applies to any @c log(...) statements that are contained within methods called whilst the scope is active. This is the main purpose of this as it allows methods which do not have access to the key to be included in the logs when that key is being logged.
+ The major difference is that this scope also applies to any @c STLog(...) statements that are contained within methods called whilst the scope is active. This is the main purpose of this as it allows methods which do not have access to the key to be included in the logs when that key is being logged.
  
  @param key the key Scope to activate.
  */
@@ -98,8 +98,8 @@
  The main method to be called to log a message in the current logger.
  @discussion This method also handled the descision making around whether to pass the message onto the current logger or not. If going ahead, it assembles the final message and passes it to the logger.
  @param key the key to log the message under.
- @param methodName the name of the method where the @c log(...) statement occurs.
- @param lineNumber the line number in the method where the @c log(...) statement occurs.
+ @param methodName the name of the method where the @c STLog(...) statement occurs.
+ @param lineNumber the line number in the method where the @c STLog(...) statement occurs.
  @param messageTemplate a standard @c NSString format message.
  @param vaList the arguments for the @c messageTemplate's placeholders.
  */

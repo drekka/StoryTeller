@@ -12,11 +12,11 @@
 #ifdef DISABLE_STORY_TELLER
 
 // Remove all logging code.
-#define startLogging(key)
-#define startScope(key)
-#define endScope(key)
-#define log(key, messageTemplate, ...)
-#define executeBlock(key, codeBlock)
+#define STStartLogging(key)
+#define STStartScope(key)
+#define STEndScope(key)
+#define STLog(key, messageTemplate, ...)
+#define STExecuteBlock(key, codeBlock)
 
 #else
 
@@ -27,25 +27,25 @@
 // means that macros such as __LINE__ can be concatinated.
 #define ST_CONCATINATE(prefix, suffix) _ST_CONCAT(prefix, suffix)
 
-#define startLogging(key) \
+#define STStartLogging(key) \
 [[STStoryTeller storyTeller] startLogging:key]
 
-#define startScope(key) \
+#define STStartScope(key) \
 _Pragma ("clang diagnostic push") \
 _Pragma ("clang diagnostic ignored \"-Wunused-variable\"") \
 NS_VALID_UNTIL_END_OF_SCOPE STDeallocHook *ST_CONCATINATE(_stHook_, __LINE__) = [[STDeallocHook alloc] initWithBlock:^{ \
-endScope(key); \
+STEndScope(key); \
 }]; \
 _Pragma ("clang diagnostic pop") \
 [[STStoryTeller storyTeller] startScope:key]
 
-#define endScope(key) \
+#define STEndScope(key) \
 [[STStoryTeller storyTeller] endScope:key]
 
-#define log(key, messageTemplate, ...) \
+#define STLog(key, messageTemplate, ...) \
 [[STStoryTeller storyTeller] record:key method: __PRETTY_FUNCTION__ lineNumber: __LINE__ message:messageTemplate, ## __VA_ARGS__]
 
-#define executeBlock(key, codeBlock) \
+#define STExecuteBlock(key, codeBlock) \
 [[STStoryTeller storyTeller] execute:key block:codeBlock]
 
 #endif
