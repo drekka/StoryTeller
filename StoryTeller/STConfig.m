@@ -43,7 +43,7 @@
     [processInfo.arguments enumerateObjectsUsingBlock:^(NSString * __nonnull arg, NSUInteger idx, BOOL * __nonnull stop) {
         NSArray __nonnull *args = [arg componentsSeparatedByString:@"="];
         if ([args count] == 2) {
-            SLNlog(@"Configuring %@", args1);
+            SLNlog(@"Configuring %@", args[0]);
             [self setValue:args[1] forKeyPath:args[0]];
         }
     }];
