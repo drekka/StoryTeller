@@ -41,10 +41,8 @@
 -(void) configurefromArgs {
     NSProcessInfo *processInfo = [NSProcessInfo processInfo];
     [processInfo.arguments enumerateObjectsUsingBlock:^(NSString * __nonnull arg, NSUInteger idx, BOOL * __nonnull stop) {
-        NSLog(@"Processing arg %@", arg);
         NSArray __nonnull *args = [arg componentsSeparatedByString:@"="];
         if ([args count] == 2) {
-            NSLog(@"Configuring %@", args[0]);
             [self setValue:args[1] forKeyPath:args[0]];
         }
     }];
