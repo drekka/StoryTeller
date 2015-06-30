@@ -70,6 +70,7 @@ static STStoryTeller *__storyTeller;
 
 -(void) startLogging:(NSString __nonnull *) keyExpression {
 
+    NSLog(@"Activating log: %@", keyExpression);
     NSError *error = nil;
     id<STMatcher> matcher = [_expressionMatcherFactory parseExpression:keyExpression
                                                                  error:&error];
