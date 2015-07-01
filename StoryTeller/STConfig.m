@@ -43,7 +43,11 @@
     [processInfo.arguments enumerateObjectsUsingBlock:^(NSString * __nonnull arg, NSUInteger idx, BOOL * __nonnull stop) {
         NSArray __nonnull *args = [arg componentsSeparatedByString:@"="];
         if ([args count] == 2) {
-            [self setValue:args[1] forKeyPath:args[0]];
+            if ([@"loggerClass" isEqualToString:args[0]]) {
+                self->_loggerClass = args[1];
+            } else if ([@"log" isEqualToString:args[0]]) {
+                self->_activeLogs = [self->_activeLogs arrayByAddingObject:args[1]];
+            }
         }
     }];
 }
@@ -54,6 +58,7 @@
     NSArray<NSBundle *> *appBundles = [NSBundle allBundles];
     NSURL *configUrl = nil;
     for (NSBundle *bundle in appBundles) {
+        NSLog(@"Story Teller: Checking: %@", bundle);
         configUrl = [bundle URLForResource:@"StoryTellerConfig" withExtension:@"json"];
         if (configUrl != nil) {
             NSError *error = nil;
@@ -89,7 +94,7 @@
 // Override KVC method to handle arrays in active logs.
 -(void) setValue:(nullable id)value forKey:(nonnull NSString *)key {
     if ([key isEqualToString:@"activeLogs"]) {
-        [super setValue:[value componentsSeparatedByString:@","] forKey:key];
+        _activeLogs = [_activeLogs arrayByAddingObjectsFromArray:value];
         return;
     }
     [super setValue:value forKey:key];

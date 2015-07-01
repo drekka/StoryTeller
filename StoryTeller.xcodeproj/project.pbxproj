@@ -19,6 +19,7 @@
 		6C158E341B38278500119725 /* STConsoleLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CD18E001B32A5B8002C9806 /* STConsoleLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6C158E351B38278500119725 /* STAbstractLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C6879971B32F49A00091F87 /* STAbstractLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6C158E361B38278500119725 /* STStoryTeller.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CE5C3E71B329BD100F0A470 /* STStoryTeller.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6C7145631B4425BE00EBC055 /* StoryTellerConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 6C158DE51B3820F100119725 /* StoryTellerConfig.json */; };
 		6C7266E51B3C37E7004B593C /* STExpressionMatcherFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C7266E41B3C37E7004B593C /* STExpressionMatcherFactoryTests.m */; };
 		6C8174321B3CDBA300342066 /* STCompareMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C8174301B3CDBA300342066 /* STCompareMatcher.h */; };
 		6C8174331B3CDBA300342066 /* STCompareMatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C8174311B3CDBA300342066 /* STCompareMatcher.m */; };
@@ -350,6 +351,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C7145631B4425BE00EBC055 /* StoryTellerConfig.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
