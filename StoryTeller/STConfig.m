@@ -58,11 +58,10 @@
     NSArray<NSBundle *> *appBundles = [NSBundle allBundles];
     NSURL *configUrl = nil;
     for (NSBundle *bundle in appBundles) {
-        NSLog(@"Story Teller: Checking: %@", bundle);
         configUrl = [bundle URLForResource:@"StoryTellerConfig" withExtension:@"json"];
         if (configUrl != nil) {
             NSError *error = nil;
-            NSLog(@"Story Teller: Reading config: %@", configUrl);
+            NSLog(@"Story Teller: Config file found ...");
             NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfURL:configUrl]
                                                                      options:NSJSONReadingAllowFragments
                                                                        error:&error];

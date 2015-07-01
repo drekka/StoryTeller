@@ -53,6 +53,7 @@ static __strong STStoryTeller *__storyTeller;
 #pragma mark - Activating logging
 
 -(void) logAll {
+    NSLog(@"Story Teller: Activating all log statements");
     _logAll = YES;
     _logRoots = NO;
     [_logMatchers removeAllObjects];
@@ -64,6 +65,7 @@ static __strong STStoryTeller *__storyTeller;
         return;
     }
 
+    NSLog(@"Story Teller: Activating root log statements");
     _logRoots = YES;
     [_logMatchers removeAllObjects];
 }
