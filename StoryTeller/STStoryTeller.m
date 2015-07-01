@@ -22,13 +22,10 @@ static __strong STStoryTeller *__storyTeller;
 
 #pragma mark - Lifecycle
 
--(void) dealloc {
-    NSLog(@"Deallocing ST");
-}
-
 +(void) initialize {
 #ifndef DISABLE_STORY_TELLER
     __storyTeller = [[STStoryTeller alloc] init];
+    [__storyTeller->_config configure:__storyTeller];
 #endif
 }
 
@@ -43,7 +40,6 @@ static __strong STStoryTeller *__storyTeller;
         _logMatchers = [[NSMutableSet alloc] init];
         _expressionMatcherFactory = [[STExpressionMatcherFactory alloc] init];
         _config = [[STConfig alloc] init];
-        [_config configure:self];
     }
     return self;
 }
