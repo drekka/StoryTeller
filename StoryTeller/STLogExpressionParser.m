@@ -75,13 +75,13 @@
 
     }];
     if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_LOGALL, STLOGEXPRESSIONPARSER_TOKEN_KIND_LOGROOT, 0]) {
-        [self logControl_]; 
-    } else if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ, STLOGEXPRESSIONPARSER_TOKEN_KIND_IS, STLOGEXPRESSIONPARSER_TOKEN_KIND_NE, 0]) {
+        [self logControlExpr_]; 
+    } else if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_IS, 0]) {
         [self runtimeExpr_]; 
     } else if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_LT_SYM, STLOGEXPRESSIONPARSER_TOKEN_KIND_OPEN_BRACKET, 0]) {
-        [self classExpr_]; 
+        [self objectExpr_]; 
     } else if ([self predicts:TOKEN_KIND_BUILTIN_NUMBER, TOKEN_KIND_BUILTIN_QUOTEDSTRING, TOKEN_KIND_BUILTIN_WORD, 0]) {
-        [self singleKey_]; 
+        [self singleKeyExpr_]; 
     } else {
         [self raise:@"No viable alternative found in rule 'expr'."];
     }
@@ -89,95 +89,108 @@
     [self fireDelegateSelector:@selector(parser:didMatchExpr:)];
 }
 
-- (void)singleKey_ {
+- (void)singleKeyExpr_ {
     
     if ([self predicts:TOKEN_KIND_BUILTIN_NUMBER, 0]) {
         [self number_]; 
     } else if ([self predicts:TOKEN_KIND_BUILTIN_QUOTEDSTRING, TOKEN_KIND_BUILTIN_WORD, 0]) {
         [self string_]; 
     } else {
-        [self raise:@"No viable alternative found in rule 'singleKey'."];
+        [self raise:@"No viable alternative found in rule 'singleKeyExpr'."];
     }
 
-    [self fireDelegateSelector:@selector(parser:didMatchSingleKey:)];
+    [self fireDelegateSelector:@selector(parser:didMatchSingleKeyExpr:)];
 }
 
-- (void)classExpr_ {
+- (void)objectExpr_ {
     
-    [self runtimeType_]; 
-    if ([self speculate:^{ [self keyPath_]; if ([self speculate:^{ [self logicalExpr_]; }]) {[self logicalExpr_]; } else if ([self speculate:^{ [self mathExpr_]; }]) {[self mathExpr_]; } else if ([self speculate:^{ [self runtimeExpr_]; }]) {[self runtimeExpr_]; } else {[self raise:@"No viable alternative found in rule 'classExpr'."];}}]) {
+    [self objectType_]; 
+    if ([self speculate:^{ [self keyPath_]; if ([self speculate:^{ [self numericCmp_]; }]) {[self numericCmp_]; } else if ([self speculate:^{ [self runtimeCmp_]; }]) {[self runtimeCmp_]; } else if ([self speculate:^{ [self objectCmp_]; }]) {[self objectCmp_]; } else {[self raise:@"No viable alternative found in rule 'objectExpr'."];}}]) {
         [self keyPath_]; 
-        if ([self speculate:^{ [self logicalExpr_]; }]) {
-            [self logicalExpr_]; 
-        } else if ([self speculate:^{ [self mathExpr_]; }]) {
-            [self mathExpr_]; 
-        } else if ([self speculate:^{ [self runtimeExpr_]; }]) {
-            [self runtimeExpr_]; 
+        if ([self speculate:^{ [self numericCmp_]; }]) {
+            [self numericCmp_]; 
+        } else if ([self speculate:^{ [self runtimeCmp_]; }]) {
+            [self runtimeCmp_]; 
+        } else if ([self speculate:^{ [self objectCmp_]; }]) {
+            [self objectCmp_]; 
         } else {
-            [self raise:@"No viable alternative found in rule 'classExpr'."];
+            [self raise:@"No viable alternative found in rule 'objectExpr'."];
         }
     }
 
-    [self fireDelegateSelector:@selector(parser:didMatchClassExpr:)];
-}
-
-- (void)logicalExpr_ {
-    
-    [self logicalOp_]; 
-    if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_FALSE, STLOGEXPRESSIONPARSER_TOKEN_KIND_NO_UPPER, STLOGEXPRESSIONPARSER_TOKEN_KIND_TRUE, STLOGEXPRESSIONPARSER_TOKEN_KIND_YES_UPPER, 0]) {
-        [self boolean_]; 
-    } else if ([self predicts:TOKEN_KIND_BUILTIN_QUOTEDSTRING, TOKEN_KIND_BUILTIN_WORD, 0]) {
-        [self string_]; 
-    } else if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_NIL, 0]) {
-        [self nil_]; 
-    } else if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_LT_SYM, STLOGEXPRESSIONPARSER_TOKEN_KIND_OPEN_BRACKET, 0]) {
-        [self runtimeType_]; 
-    } else {
-        [self raise:@"No viable alternative found in rule 'logicalExpr'."];
-    }
-
-    [self fireDelegateSelector:@selector(parser:didMatchLogicalExpr:)];
-}
-
-- (void)mathExpr_ {
-    
-    if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ, STLOGEXPRESSIONPARSER_TOKEN_KIND_NE, 0]) {
-        [self logicalOp_]; 
-    } else if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_GE, STLOGEXPRESSIONPARSER_TOKEN_KIND_GT_SYM, STLOGEXPRESSIONPARSER_TOKEN_KIND_LE, STLOGEXPRESSIONPARSER_TOKEN_KIND_LT_SYM, 0]) {
-        [self mathOp_]; 
-    } else {
-        [self raise:@"No viable alternative found in rule 'mathExpr'."];
-    }
-    [self number_]; 
-
-    [self fireDelegateSelector:@selector(parser:didMatchMathExpr:)];
+    [self fireDelegateSelector:@selector(parser:didMatchObjectExpr:)];
 }
 
 - (void)runtimeExpr_ {
     
-    if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ, STLOGEXPRESSIONPARSER_TOKEN_KIND_NE, 0]) {
-        [self logicalOp_]; 
-    } else if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_IS, 0]) {
-        [self is_]; 
-    } else {
-        [self raise:@"No viable alternative found in rule 'runtimeExpr'."];
-    }
-    [self runtimeType_]; 
+    [self runtimeOp_]; 
+    [self runtimeObject_]; 
 
     [self fireDelegateSelector:@selector(parser:didMatchRuntimeExpr:)];
 }
 
-- (void)logControl_ {
+- (void)logControlExpr_ {
     
     if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_LOGALL, 0]) {
         [self logAll_]; 
     } else if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_LOGROOT, 0]) {
         [self logRoot_]; 
     } else {
-        [self raise:@"No viable alternative found in rule 'logControl'."];
+        [self raise:@"No viable alternative found in rule 'logControlExpr'."];
     }
 
-    [self fireDelegateSelector:@selector(parser:didMatchLogControl:)];
+    [self fireDelegateSelector:@selector(parser:didMatchLogControlExpr:)];
+}
+
+- (void)objectType_ {
+    
+    [self runtimeObject_]; 
+
+    [self fireDelegateSelector:@selector(parser:didMatchObjectType:)];
+}
+
+- (void)objectCmp_ {
+    
+    [self logicalOp_]; 
+    if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_NIL, 0]) {
+        [self nil_]; 
+    } else if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_FALSE, STLOGEXPRESSIONPARSER_TOKEN_KIND_NO_UPPER, STLOGEXPRESSIONPARSER_TOKEN_KIND_TRUE, STLOGEXPRESSIONPARSER_TOKEN_KIND_YES_UPPER, 0]) {
+        [self boolean_]; 
+    } else if ([self predicts:TOKEN_KIND_BUILTIN_QUOTEDSTRING, TOKEN_KIND_BUILTIN_WORD, 0]) {
+        [self string_]; 
+    } else {
+        [self raise:@"No viable alternative found in rule 'objectCmp'."];
+    }
+
+    [self fireDelegateSelector:@selector(parser:didMatchObjectCmp:)];
+}
+
+- (void)numericCmp_ {
+    
+    if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ, STLOGEXPRESSIONPARSER_TOKEN_KIND_NE, 0]) {
+        [self logicalOp_]; 
+    } else if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_GE, STLOGEXPRESSIONPARSER_TOKEN_KIND_GT_SYM, STLOGEXPRESSIONPARSER_TOKEN_KIND_LE, STLOGEXPRESSIONPARSER_TOKEN_KIND_LT_SYM, 0]) {
+        [self mathOp_]; 
+    } else {
+        [self raise:@"No viable alternative found in rule 'numericCmp'."];
+    }
+    [self number_]; 
+
+    [self fireDelegateSelector:@selector(parser:didMatchNumericCmp:)];
+}
+
+- (void)runtimeCmp_ {
+    
+    if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ, STLOGEXPRESSIONPARSER_TOKEN_KIND_NE, 0]) {
+        [self logicalOp_]; 
+    } else if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_IS, 0]) {
+        [self runtimeOp_]; 
+    } else {
+        [self raise:@"No viable alternative found in rule 'runtimeCmp'."];
+    }
+    [self runtimeObject_]; 
+
+    [self fireDelegateSelector:@selector(parser:didMatchRuntimeCmp:)];
 }
 
 - (void)logAll_ {
@@ -219,17 +232,17 @@
     [self fireDelegateSelector:@selector(parser:didMatchPropertyName:)];
 }
 
-- (void)runtimeType_ {
+- (void)runtimeObject_ {
     
     if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_OPEN_BRACKET, 0]) {
         [self class_]; 
     } else if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_LT_SYM, 0]) {
         [self protocol_]; 
     } else {
-        [self raise:@"No viable alternative found in rule 'runtimeType'."];
+        [self raise:@"No viable alternative found in rule 'runtimeObject'."];
     }
 
-    [self fireDelegateSelector:@selector(parser:didMatchRuntimeType:)];
+    [self fireDelegateSelector:@selector(parser:didMatchRuntimeObject:)];
 }
 
 - (void)protocol_ {

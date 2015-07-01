@@ -12,15 +12,16 @@
 #import "STExpressionMatcherFactory.h"
 #import "STMatcher.h"
 
-@interface SubClass : NSObject
+@protocol AProtocol <NSObject>
+@property (nonatomic, assign) int intProperty;
+@end
+
+@interface SubClass : NSObject<AProtocol>
 @property (nonatomic, assign) BOOL boolProperty;
 @end
 
 @implementation SubClass
-@end
-
-@protocol AProtocol <NSObject>
-@property (nonatomic, assign) int intProperty;
+@synthesize intProperty = _intProperty;
 @end
 
 @interface MainClass : NSObject<AProtocol>
@@ -101,7 +102,7 @@
     NSError *error = nil;
     id<STMatcher> matcher = [_factory parseExpression:@"[Abc]" error:&error];
     XCTAssertNil(matcher);
-    XCTAssertEqualObjects(@"Unable to find any runtime object called Abc\nLine : Unknown\n", error.localizedFailureReason);
+    XCTAssertEqualObjects(@"Unable to find a class called Abc\nLine : Unknown\n", error.localizedFailureReason);
 }
 
 -(void) testClassFailsMatch {
@@ -120,7 +121,7 @@
     NSError *error = nil;
     id<STMatcher> matcher = [_factory parseExpression:@"<Abc>" error:&error];
     XCTAssertNil(matcher);
-    XCTAssertEqualObjects(@"Unable to find any runtime object called Abc\nLine : Unknown\n", error.localizedFailureReason);
+    XCTAssertEqualObjects(@"Unable to find a protocol called Abc\nLine : Unknown\n", error.localizedFailureReason);
 }
 
 -(void) testProtocolFailsMatch {
@@ -319,9 +320,19 @@
     XCTAssertTrue([matcher matches:[MainClass class]]);
 }
 
+-(void) testIsaClassFailsMatch {
+    id<STMatcher> matcher = [_factory parseExpression:@"is [MainClass]" error:NULL];
+    XCTAssertFalse([matcher matches:[NSString class]]);
+}
+
 -(void) testIsaProtocolMatches {
     id<STMatcher> matcher = [_factory parseExpression:@"is <AProtocol>" error:NULL];
     XCTAssertTrue([matcher matches:@protocol(AProtocol)]);
+}
+
+-(void) testIsaProtocolFailsMatch {
+    id<STMatcher> matcher = [_factory parseExpression:@"is <NSCopying>" error:NULL];
+    XCTAssertFalse([matcher matches:@protocol(AProtocol)]);
 }
 
 -(void) testPropertyClassMatches {
@@ -343,6 +354,14 @@
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].protocolProperty is <AProtocol>" error:NULL];
     MainClass *mainClass = [[MainClass alloc] init];
     mainClass.protocolProperty = @protocol(AProtocol);
+    XCTAssertTrue([matcher matches:mainClass]);
+}
+
+-(void) testPropertyObjectProtocolMatches {
+    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].subClassProperty == <AProtocol>" error:NULL];
+    MainClass *mainClass = [[MainClass alloc] init];
+    SubClass *subClass = [[SubClass alloc] init];
+    mainClass.subClassProperty = subClass;
     XCTAssertTrue([matcher matches:mainClass]);
 }
 

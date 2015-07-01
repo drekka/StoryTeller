@@ -16,205 +16,85 @@
 #import "STCompareMatcher.h"
 #import "STFilterMatcher.h"
 
-typedef NS_ENUM(NSUInteger, ExpressionValueType) {
-    ExpressionValueTypeNone,
-    ExpressionValueTypeBoolean,
-    ExpressionValueTypeString,
-    ExpressionValueTypeNumber,
-    ExpressionValueTypeNil
+#ifdef DEBUG_MATCHER_FACTORY
+#define mflog(template, ...) NSLog(template, ## __VA_ARGS__);
+#else
+#define mflog(template, ...)
+#endif
+
+typedef NS_ENUM(NSUInteger, ValueType) {
+    ValueTypeString,
+    ValueTypeNumber,
+    ValueTypeNil,
+    ValueTypeBoolean,
+    ValueTypeClass,
+    ValueTypeProtocol
 };
 
 @implementation STExpressionMatcherFactory {
-    id<STMatcher> _matcher;
-    id<STMatcher> _valueMatcher;
-    BOOL _runtimeQuery;
-    BOOL _optionSet;
-    ExpressionValueType _exprValueType;
-    BOOL _exprBoolValue;
-    NSString *_exprStringValue;
-    NSNumber *_exprNumberValue;
-}
-
-static Class __protocolClass;
-
-+(void) initialize {
-    __protocolClass = objc_getClass("Protocol");
+    id<STMatcher> _rootMatcher;
+    NSInteger _op;
+    id _value;
+    ValueType _valueType;
 }
 
 -(void) reset {
-    _matcher = nil;
-    _valueMatcher = nil;
-    _optionSet = NO;
-    _exprValueType = ExpressionValueTypeNone;
-}
-
--(instancetype) init {
-    self = [super init];
-    if (self) {
-        [self reset];
-    }
-    return self;
+    _rootMatcher = nil;
+    _op = STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ;
+    _value = nil;
 }
 
 -(nullable id<STMatcher>) parseExpression:(NSString __nonnull *) expression
                                     error:(NSError *__autoreleasing  __nullable * __nullable) error {
 
+    [self reset];
     STLogExpressionParser *parser = [[STLogExpressionParser alloc] initWithDelegate:self];
 
-    // Finish matching.
-    id<STMatcher> initialMatcher = nil;
+    // Failed to parse or a non-matcher command was received.
     if ([parser parseString:expression error:error] == nil) {
-        // Didn't parse
-        [self reset];
         return nil;
     }
-
-    // If log options have been set, return a nil
-    if (_optionSet) {
-        [self reset];
-        return nil;
-    }
-
-    // Add the matcher.
-    if (_matcher == nil) {
-        // Must be a single value
-        initialMatcher = _valueMatcher;
-    } else {
-        // More complex expression. Here we should have a class and keypath.
-        initialMatcher = _matcher;
-        initialMatcher.nextMatcher.nextMatcher = _valueMatcher;
-    }
-
-    [self reset];
-    return initialMatcher;
+    return _rootMatcher;
 }
 
-#pragma mark - Delegate methods
+#pragma mark - Logger control
 
 -(void) parser:(PKParser * __nonnull)parser didMatchLogAll:(PKAssembly * __nonnull)assembly {
-    [parser popToken];
     [[STStoryTeller storyTeller] logAll];
-    _optionSet = YES;
+    mflog(@"set LogAll");
+
 }
 
 -(void) parser:(PKParser * __nonnull)parser didMatchLogRoot:(PKAssembly * __nonnull)assembly {
-    [parser popToken];
     [[STStoryTeller storyTeller] logRoots];
-    _optionSet = YES;
+    mflog(@"set LogRoots");
 }
 
--(void) parser:(PKParser __nonnull *) parser didMatchIs:(PKAssembly __nonnull *) assembly {
-    [parser popToken];
-    _runtimeQuery = YES;
-}
+#pragma mark - Expressions
 
--(void) parser:(PKParser __nonnull *) parser didMatchRuntimeType:(PKAssembly __nonnull *) assembly {
-}
-
--(void) parser:(PKParser * __nonnull)parser didMatchLogicalExpr:(PKAssembly * __nonnull)assembly {
-
-    // Get the op.
-    BOOL isEqual = [parser popToken].tokenKind == STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ;
-
-    switch (_exprValueType) {
-        case ExpressionValueTypeBoolean: {
-            BOOL expected = _exprBoolValue;
-            _valueMatcher = [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
-                BOOL value = ((NSNumber *) key).boolValue;
-                return (expected == value) == isEqual;
-            }];
-            break;
-        }
-
-        case ExpressionValueTypeNil:
-            _valueMatcher = [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
-                return (key == nil) == isEqual;
-            }];
-            break;
-
-        default: {
-            NSString *expected = _exprStringValue;
-            _valueMatcher = [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
-                return [expected isEqualToString:key] == isEqual;
-            }];
-        }
-    }
-
-}
-
--(void) parser:(PKParser * __nonnull)parser didMatchMathExpr:(PKAssembly * __nonnull)assembly {
-
-    NSNumber *expected = _exprNumberValue;
-    NSInteger op = [parser popToken].tokenKind;
-    _valueMatcher =  [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
-        NSNumber *actual = (NSNumber *) key;
-        switch (op) {
-            case STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ:
-                return [actual compare:expected] == NSOrderedSame;
-
-            case STLOGEXPRESSIONPARSER_TOKEN_KIND_GT_SYM:
-                return [actual compare:expected] > NSOrderedSame;
-
-            case STLOGEXPRESSIONPARSER_TOKEN_KIND_GE:
-                return [actual compare:expected] >= NSOrderedSame;
-
-            case STLOGEXPRESSIONPARSER_TOKEN_KIND_LT_SYM:
-                return [actual compare:expected] < NSOrderedSame;
-
-            case STLOGEXPRESSIONPARSER_TOKEN_KIND_LE:
-                return [actual compare:expected] <= NSOrderedSame;
-
-            default:
-                // NE
-                return [actual compare:expected] != NSOrderedSame;
-        }
-    }];
-}
-
--(void) parser:(PKParser * __nonnull)parser didMatchRuntimeExpr:(PKAssembly * __nonnull)assembly {
-    id runtimeObject = [self runtimeObjectFromParser:parser];
-    id<STMatcher> matcher = [self matcherForRuntimeObject:runtimeObject isExpectingRuntimeObject:_runtimeQuery];
-    if (_matcher == nil) {
-        _matcher = matcher;
-    } else {
-        _valueMatcher = matcher;
-    }
-}
-
--(void) parser:(PKParser __nonnull *) parser didMatchSingleKey:(PKAssembly * __nonnull)assembly {
-    if (_exprNumberValue) {
-        NSNumber *expected = _exprNumberValue;
-        _valueMatcher = [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
+-(void) parser:(PKParser * __nonnull)parser didMatchSingleKeyExpr:(PKAssembly * __nonnull)assembly {
+    if (_valueType == ValueTypeNumber) {
+        NSNumber *expected = _value;
+        _rootMatcher = [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
             return [expected compare:key] == NSOrderedSame;
         }];
     } else {
-        NSString *expected = _exprStringValue;
-        _valueMatcher = [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
+        NSString *expected = _value;
+        _rootMatcher = [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
             return [expected isEqualToString:key];
         }];
     }
+    mflog(@"Parsed a single key expression");
 }
 
--(void) parser:(PKParser __nonnull *) parser didMatchBoolean:(PKAssembly __nonnull *) assembly {
-    _exprValueType = ExpressionValueTypeBoolean;
-    NSInteger tokenKind = [parser popToken].tokenKind;
-    _exprBoolValue = tokenKind == STLOGEXPRESSIONPARSER_TOKEN_KIND_TRUE || tokenKind == STLOGEXPRESSIONPARSER_TOKEN_KIND_YES_UPPER;
+-(void) parser:(PKParser * __nonnull)parser didMatchRuntimeExpr:(PKAssembly * __nonnull)assembly {
+    _rootMatcher = [self runtimeMatcherFromValue];
+    mflog(@"Parsed a runtime expression");
 }
 
--(void) parser:(PKParser __nonnull *) parser didMatchString:(PKAssembly __nonnull *) assembly {
-    _exprValueType = ExpressionValueTypeString;
-    PKToken *token = [parser popToken];
-    _exprStringValue = token.tokenKind == TOKEN_KIND_BUILTIN_QUOTEDSTRING ? token.quotedStringValue : token.value;
-}
-
--(void) parser:(PKParser __nonnull *) parser didMatchNumber:(PKAssembly __nonnull *) assembly {
-    _exprValueType = ExpressionValueTypeNumber;
-    _exprNumberValue = [parser popToken].value;
-}
-
--(void) parser:(PKParser __nonnull *) parser didMatchNil:(PKAssembly __nonnull *) assembly {
-    _exprValueType = ExpressionValueTypeNil;
-    [parser popToken];
+-(void) parser:(PKParser __nonnull *) parser didMatchObjectType:(PKAssembly __nonnull *) assembly {
+    _rootMatcher = [self objectTypeMatcherFromValue];
+    mflog(@"Setting a runtime matcher as the root matcher");
 }
 
 -(void) parser:(PKParser __nonnull *) parser didMatchKeyPath:(PKAssembly __nonnull *) assembly {
@@ -225,47 +105,226 @@ static Class __protocolClass;
     }
 
     NSString *keyPath = [paths componentsJoinedByString:@"."];
-
-    // Assume that there is alreadly a class or protocol matcher.
-    _matcher.nextMatcher = [[STFilterMatcher alloc] initWithFilter:^id(id  __nonnull key) {
+    _rootMatcher.nextMatcher = [[STFilterMatcher alloc] initWithFilter:^id(id  __nonnull key) {
         return [key valueForKeyPath:keyPath];
     }];
+    mflog(@"Matched a key path: %@", keyPath);
+}
+
+-(void) parser:(PKParser __nonnull *) parser didMatchNumericCmp:(PKAssembly __nonnull *) assembly {
+
+    BOOL (^comparison) (NSNumber *n1, NSNumber *n2);
+    switch (_op) {
+        case STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ:
+            comparison = ^BOOL(NSNumber *n1, NSNumber *n2) {
+                return [n1 compare:n2] == NSOrderedSame;
+            };
+            break;
+
+        case STLOGEXPRESSIONPARSER_TOKEN_KIND_GT_SYM:
+            comparison = ^BOOL(NSNumber *n1, NSNumber *n2) {
+                return [n1 compare:n2] > NSOrderedSame;
+            };
+            break;
+
+        case STLOGEXPRESSIONPARSER_TOKEN_KIND_GE:
+            comparison = ^BOOL(NSNumber *n1, NSNumber *n2) {
+                return [n1 compare:n2] >= NSOrderedSame;
+            };
+            break;
+
+        case STLOGEXPRESSIONPARSER_TOKEN_KIND_LT_SYM:
+            comparison = ^BOOL(NSNumber *n1, NSNumber *n2) {
+                return [n1 compare:n2] < NSOrderedSame;
+            };
+            break;
+
+        case STLOGEXPRESSIONPARSER_TOKEN_KIND_LE:
+            comparison = ^BOOL(NSNumber *n1, NSNumber *n2) {
+                return [n1 compare:n2] <= NSOrderedSame;
+            };
+            break;
+
+        default:
+            // NE
+            comparison = ^BOOL(NSNumber *n1, NSNumber *n2) {
+                return [n1 compare:n2] != NSOrderedSame;
+            };
+            break;
+    }
+
+    NSNumber *expected = _value;
+    [self lastMatcher].nextMatcher = [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
+        NSNumber *actual = (NSNumber *) key;
+        return comparison(actual, expected);
+    }];
+    mflog(@"Added a math matcher");
+}
+
+-(void) parser:(PKParser __nonnull *) parser didMatchRuntimeCmp:(PKAssembly __nonnull *) assembly {
+    id<STMatcher> matcher;
+    if (_op == STLOGEXPRESSIONPARSER_TOKEN_KIND_IS) {
+        [self lastMatcher].nextMatcher = [self runtimeMatcherFromValue];
+    } else {
+        [self lastMatcher].nextMatcher = [self objectTypeMatcherFromValue];
+    }
+    [self lastMatcher].nextMatcher = matcher;
+    mflog(@"Added a runtime matcher");
+}
+
+-(void) parser:(PKParser __nonnull *) parser didMatchObjectCmp:(PKAssembly __nonnull *) assembly {
+
+    // Use the op to decide the expected true/false result.
+    BOOL expectedResult = _op == STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ;
+
+    id<STMatcher> matcher;
+    switch (_valueType) {
+        case ValueTypeBoolean: {
+            BOOL expected = ((NSNumber *)_value).boolValue;
+            matcher = [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
+                BOOL value = ((NSNumber *) key).boolValue;
+                return (expected == value) == expectedResult;
+            }];
+            break;
+        }
+
+        case ValueTypeNil:
+            matcher = [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
+                return (key == nil) == expectedResult;
+            }];
+            break;
+
+        default: {
+            NSString *expected = _value;
+            matcher = [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
+                return [expected isEqualToString:key] == expectedResult;
+            }];
+        }
+    }
+
+    // Append the matcher.
+    [self lastMatcher].nextMatcher = matcher;
+    mflog(@"Added a object matcher");
+}
+
+#pragma mark - Operators
+
+-(void) parser:(PKParser __nonnull *) parser didMatchRuntimeOp:(PKAssembly __nonnull *) assembly {
+    PKToken *token = [parser popToken];
+    _op = token.tokenKind;
+    mflog(@"Matched a runtime op: %@", token.value);
+}
+
+-(void) parser:(PKParser __nonnull *) parser didMatchMathOp:(PKAssembly __nonnull *) assembly {
+    PKToken *token = [parser popToken];
+    _op = token.tokenKind;
+    mflog(@"Matched a math op: %@", token.value);
+}
+
+-(void) parser:(PKParser __nonnull *) parser didMatchLogicalOp:(PKAssembly __nonnull *) assembly {
+    PKToken *token = [parser popToken];
+    _op = token.tokenKind;
+    mflog(@"Matched a logical op: %@", token.value);
+}
+
+#pragma mark - Values
+
+-(void) parser:(PKParser __nonnull *) parser didMatchString:(PKAssembly __nonnull *) assembly {
+    _valueType = ValueTypeString;
+    _value = [self stringFromToken:[parser popToken]];
+    mflog(@"Matched a string: %@", _value);
+}
+
+-(void) parser:(PKParser __nonnull *) parser didMatchNumber:(PKAssembly __nonnull *) assembly {
+    _valueType = ValueTypeNumber;
+    _value = [parser popToken].value;
+    mflog(@"Matched a number: %@", _value);
+}
+
+-(void) parser:(PKParser __nonnull *) parser didMatchNil:(PKAssembly __nonnull *) assembly {
+    _valueType = ValueTypeNil;
+    [parser popToken];
+    mflog(@"Matched a nil");
+}
+
+-(void) parser:(PKParser __nonnull *) parser didMatchBoolean:(PKAssembly __nonnull *) assembly {
+    _valueType = ValueTypeBoolean;
+    NSInteger tokenKind = [parser popToken].tokenKind;
+    _value = @(tokenKind == STLOGEXPRESSIONPARSER_TOKEN_KIND_TRUE || tokenKind == STLOGEXPRESSIONPARSER_TOKEN_KIND_YES_UPPER);
+    mflog(@"Matched a boolean: %@", _value);
+}
+
+-(void) parser:(PKParser __nonnull *) parser didMatchClass:(PKAssembly __nonnull *) assembly {
+    _valueType = ValueTypeClass;
+    const char *name = [parser popString].UTF8String;
+    _value = objc_lookUpClass(name);
+    if (_value == NULL) {
+        [parser raise:[NSString stringWithFormat:@"Unable to find a class called %s", name]];
+    }
+    mflog(@"Matched a class: %@", _value);
+}
+
+-(void) parser:(PKParser __nonnull *) parser didMatchProtocol:(PKAssembly __nonnull *) assembly {
+    _valueType = ValueTypeProtocol;
+    const char *name = [parser popString].UTF8String;
+    _value = objc_getProtocol(name);
+    if (_value == NULL) {
+        [parser raise:[NSString stringWithFormat:@"Unable to find a protocol called %s", name]];
+    }
+    mflog(@"Matched a protocol: %@", _value);
 }
 
 #pragma mark - Internal
 
--(id) runtimeObjectFromParser:(PKParser __nonnull *) parser {
+-(id<STMatcher>) runtimeMatcherFromValue {
 
-    const char *rtObjName = [parser popString].UTF8String;
-
-    // First look for a class as this is more likely.
-    id rtObj = objc_lookUpClass(rtObjName);
-    if (rtObj == NULL) {
-        // Now try for a protocol.
-        rtObj = objc_getProtocol(rtObjName);
-
-        // Must be a typo.
-        if (rtObj == NULL) {
-            [parser raise:[NSString stringWithFormat:@"Unable to find any runtime object called %s", rtObjName]];
-            return nil;
-        }
+    if (_valueType == ValueTypeClass) {
+        Class expected = _value;
+        mflog(@"Creating a class matcher");
+        return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
+            return expected == key;
+        }];
     }
-    return rtObj;
+
+    // Must be a protocol.
+    Protocol *expected = _value;
+    mflog(@"Creating a protocol matcher");
+    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
+        return expected == key;
+    }];
 }
 
--(id<STMatcher>) matcherForRuntimeObject:(id) rtObj isExpectingRuntimeObject:(BOOL) isExpectingRuntimeObject {
-    BOOL useEquals = isExpectingRuntimeObject;
-    if ([rtObj class] == __protocolClass) {
-        Protocol *protocol = rtObj;
+-(id<STMatcher>) objectTypeMatcherFromValue {
+
+    BOOL expectedValue = _op == STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ;
+
+    if (_valueType == ValueTypeClass) {
+        Class expected = _value;
+        mflog(@"Creating an object is class matcher");
         return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
-            return useEquals ? key == protocol : [key conformsToProtocol:protocol];
-        }];
-    } else {
-        Class class = rtObj;
-        return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
-            return useEquals ? key == class : [key isKindOfClass:class];
+            return [key isKindOfClass:expected] == expectedValue;
         }];
     }
+
+    // Must be a protocol.
+    Protocol *expected = _value;
+    mflog(@"Creating an object is protocol matcher");
+    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
+        return [key conformsToProtocol:expected] == expectedValue;
+    }];
+}
+
+
+-(id<STMatcher>) lastMatcher {
+    id<STMatcher> lastMatcher = _rootMatcher;
+    while (lastMatcher.nextMatcher != nil) {
+        lastMatcher = lastMatcher.nextMatcher;
+    }
+    return lastMatcher;
+}
+
+-(NSString *) stringFromToken:(PKToken *) token {
+    return token.tokenKind == TOKEN_KIND_BUILTIN_QUOTEDSTRING ? token.quotedStringValue : token.value;
 }
 
 @end

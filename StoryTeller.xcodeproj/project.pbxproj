@@ -30,7 +30,6 @@
 		6C8AE19B1B3A481500DF2B9F /* STMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C8AE1981B3A444F00DF2B9F /* STMacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6C8E922B1B3BC41C00E6B6C4 /* STExpressionMatcherFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C8E92291B3BC41C00E6B6C4 /* STExpressionMatcherFactory.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6C8E922C1B3BC41C00E6B6C4 /* STExpressionMatcherFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C8E922A1B3BC41C00E6B6C4 /* STExpressionMatcherFactory.m */; };
-		6C8E922E1B3BCF5200E6B6C4 /* STLogExpressionParserDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C8E922D1B3BCF5200E6B6C4 /* STLogExpressionParserDelegate.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6C9B50F81B32AC770004E06D /* StoryTellerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50F71B32AC770004E06D /* StoryTellerTests.m */; };
 		6C9B50FB1B32ACB30004E06D /* InMemoryLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50FA1B32ACB30004E06D /* InMemoryLogger.m */; };
 		6C9B50FE1B32ADD80004E06D /* STTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50FD1B32ADD80004E06D /* STTestCase.m */; };
@@ -71,7 +70,6 @@
 		6C8AE1991B3A466200DF2B9F /* StoryTeller.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StoryTeller.h; sourceTree = "<group>"; };
 		6C8E92291B3BC41C00E6B6C4 /* STExpressionMatcherFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STExpressionMatcherFactory.h; sourceTree = "<group>"; };
 		6C8E922A1B3BC41C00E6B6C4 /* STExpressionMatcherFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STExpressionMatcherFactory.m; sourceTree = "<group>"; };
-		6C8E922D1B3BCF5200E6B6C4 /* STLogExpressionParserDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STLogExpressionParserDelegate.h; sourceTree = "<group>"; };
 		6C9B50F71B32AC770004E06D /* StoryTellerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StoryTellerTests.m; sourceTree = "<group>"; };
 		6C9B50F91B32ACB30004E06D /* InMemoryLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InMemoryLogger.h; sourceTree = "<group>"; };
 		6C9B50FA1B32ACB30004E06D /* InMemoryLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InMemoryLogger.m; sourceTree = "<group>"; };
@@ -146,7 +144,6 @@
 				6C8E922A1B3BC41C00E6B6C4 /* STExpressionMatcherFactory.m */,
 				6CA7DF031B3A61D7002491FF /* STLogExpressionParser.h */,
 				6CA7DF041B3A61D7002491FF /* STLogExpressionParser.m */,
-				6C8E922D1B3BCF5200E6B6C4 /* STLogExpressionParserDelegate.h */,
 			);
 			name = Internal;
 			sourceTree = "<group>";
@@ -248,7 +245,6 @@
 				6C8AE19A1B3A47B600DF2B9F /* StoryTeller.h in Headers */,
 				6C158E351B38278500119725 /* STAbstractLogger.h in Headers */,
 				6C8AE19B1B3A481500DF2B9F /* STMacros.h in Headers */,
-				6C8E922E1B3BCF5200E6B6C4 /* STLogExpressionParserDelegate.h in Headers */,
 				6C158E361B38278500119725 /* STStoryTeller.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -414,6 +410,11 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/Carthage/Build/iOS";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+					DEBUG_MATCHER_FACTORY,
+				);
 				INFOPLIST_FILE = StoryTeller/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -581,6 +582,10 @@
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/Carthage/Build/iOS";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/External/OCMock-3.1.2/iOS",
 					PrivateHeaders,

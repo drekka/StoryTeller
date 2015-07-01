@@ -7,9 +7,9 @@ Yep. Another one. But with a difference ...
 
 The idea that drives Story Teller is quite simple: ***To debug an application, developers need to see the threads of data as they weave their way through the code.***
 
-Other logging frameworks use a very crass shotgun approach (IMHO) base on assuming that the *severity* of a log statement can be used to derive useful logging output. There is no way to target the logging and usually a huge amount of useless output is produced. The real problem with these frameworks is that they are based on old Java frameworks built for systems where CPU and storage are unlimited, and where people don't care about producing millions of lines of text that no-one will read. Even on servers these frameworks are wasteful and don't work that well for debugging. 
+Other logging frameworks use a very crass shotgun approach (IMHO) base on assuming that the *severity* of a log statement can be used to derive useful logging output. There is no way to target the logging and usually a huge amount of useless output is produced. The real problem with these frameworks is that they are based on dated assumptions and designs from systems where CPU and storage are unlimited, and where producing Gigabytes of logs is thought to be useful. Mostly by people who have no idea what developers actually need. 
 
-Story Teller takes a different approch - it combines the ability to base logging on dynamic data driven *Keys* with a simply query driven logging criteria to activate the logs. This enabled the developer to target their logging on the specific data. The result is very concise logs which only contain output related to the problem at hand.
+Story Teller takes a different approch - it targets what developers acutally need by combining the ability to base logging on dynamic data driven *Keys*, with a query driven logging criteria. This enabled the developer to target their logging on the specific data relevant to the problem at hand. This produces very concise logs which contain only relevant and useful information.
 
 # Installation
 
@@ -164,7 +164,7 @@ STStartLogging(@"\"GUI System\"");
 STStartLogging(@(EnumValueX)); 
 ```
 
-## Classes and Protocols 
+## Classes or Protocol criteria 
 
 ### Instances
 
@@ -183,24 +183,6 @@ STStartLogging(@"[User]");
 STStartLogging(@"<Person>");    /* Assuming User implements Person */
 ```
 
-### Runtime keys
-
-*Rarely used, but I needed it for another project.* If you add the **isa** prefix, then Story Teller will look for where the actual class or protocol has been used as a key, rather that an instance of one.
-
-`isa [class-name] | <protocol-name>`
-
-For example:
-
-```objectivec
-STLog([User class], @"Log message for class");
-STLog(@protocol(NSCopying), @"Log message for NSCopying");
-```
-
-```objectivec
-STStartLogging(@"isa [User]");
-STStartLogging(@"isa <NSCopying>");
-```
-
 ## KVC Property criteria
 
 `[class-name].keypath op value`
@@ -209,20 +191,45 @@ STStartLogging(@"isa <NSCopying>");
 This criteria looks for keys that matches the specified class or protocol, then examine the `keypath` on the object for the required value. Here are some examples
 
 ```objectivec
-STLog(user, @"Log message for user");
-```
-
-```objectivec
 STStartLogging(@"[User].account.name == \"derek's account\"");
 STStartLogging(@"[User].account.balance > 500");
 STStartLogging(@"<Banking>.active == YES");
-STStartLogging(@"<Banking>.active == nil");
+STStartLogging(@"<Banking>.lastLogon == nil");
+STStartLogging(@"<Banking>.customer != <Banker>");
 ```
-As you can see there is a lot of power here to decide what gets logged. 
+As you can see there is a lot of power here to decide what gets logged. Values fall into several types:
 
-Operators include all the standard comparison operators: **==** ,**!=** ,**<** ,**<=** ,**>** or **>=**.
+ * **Strings** - any string. Quotes are required if it incudes whitespace.
+ * **Numbers** - Any number, integer or decimal format. Number queries can use all the standard comparison operators: **==** ,**!=** ,**<** ,**<=** ,**>** or **>=**.
+ * **nil checks** - 'nil' keyword which checks for nils exactly the same as Objective-C does. Nil checks  can only use the logical operators: **==** and **!=**.
+ * **type checks** - either a class or protocol declaration. The same way we declare the type of the key being searched.  Type checks can only use the logical operators: **==** and **!=**.
 
-Value can also be a nil. Which is handy for logging when information is missing.
+## Runtim criteria
+
+*Rarely used, but I needed it for another project.* 
+
+Sometimes you might use a Class or Protocol object for a key, or want to search on a property that returns a Class or Protocol. In those cases you can use the **is** keyword to tell Story Teller to look for the matching Class or Protocol rather than testing an object to see if it implements the type. 
+
+For example:
+
+```objectivec
+STLog([User class], @"Log message for class");
+STLog(@protocol(NSCopying), @"Log message for NSCopying");
+```
+
+Looking for Class or Protocol keys
+
+```objectivec
+STStartLogging(@"is [User]");
+STStartLogging(@"is <NSCopying>");
+```
+
+Looking for Class or Protocol values in properties
+
+```objectivec
+STStartLogging(@"[User].accountClass is [MerchantAccount]");
+STStartLogging(@"[User].bankingProtocol is <InternetBanking>");
+```
 
 # Execution blocks
 
@@ -242,12 +249,33 @@ Story Teller is very much a Debug orientated logger. Is is not designed to be pu
 
 Disable macro name: **`DISABLE_STORY_TELLER`**
 
+## Async
+
+Story Teller does not support async logging at this time. Async logging is a response to a bad idea. The only time it is needed is when the developer is logging a massive amount of information to a file, usually because they have been told it's *'necessary'*. Often by someone who is not a developer and doesn't understand programming. I've never in 30 years seen an instance where one of these sorts of logs has been of any use. But some 3rd party libraries which support async come with it configured on as it allows them to log faster and claim performance gains.
+
+When debugging a problem or a unit test, developers will invaraibly turn off async because the delay between an event occuring and the logged statements appearing in the log is too long. If they appear at all. 
+
+Developers need to see things when they occur. Not some undetermined time in the future. This is why Story Teller does not support async.
+
 ## Performance
 
-Generally speaking most loging frameworks optimize their logging decision making down to a set of booleans. This means they are fast, however it makes them relatively inflexible during the logging process. Hence the concept of log levels and class based criteria compromises but given you some basic control, but keeping this fast.
+Performance is something that is a factor when logging because logging to the console or a file is inheriantly slow. Traditional logging frameworks endevour to speed things up by using simple boolean controls or using async logging. This comes from the basic design concept which they all subscribe to - *that we want to log everything and sort it out later.* 
 
-Story Teller makes every attempt to keep things as fast as possible. But because of the more intensive decision making it does, it's unlikely to be able to compete with other loggers when dealing with large volumes of logging. But all things considered, would you really want to log that much anyway?
+This is a flawed concept. It produces a lot of logging and causes significant slow downs. And it's very wasteful. Especially in the mobile world where dumping everything into a file just on the off chance that someone might want to look at it is quite out of the question. 
 
-Finally, given the performance of today's hardware, it's unlikely they Story Teller will slow down any software enough to cause a problem.
+Because of Story Teller's smart logging, it will often be faster than traditional logging frameworks simply because the reduction in output more than compensates for the extra processing required.
 
+### Update - some bench marks
+
+I decided to get an idea of how Story Teller actually compared. So I created a test project and put both Story Teller and a *Very Popular 3rd party logging framework* into it. 
+
+I configured the project to log 1,000 lines of text to the console and store the duration of the process. I also made sure that each line of text was different. I then added further processing to do this loop  10 times and average the durations. 
+
+I then ran this with the other framework set to 'Debug', and Story Teller configured with a criteria similar to `'[Dummy].forbar = YES'` with the log key being an instance of class Dummy. Finally I turned off async logging on the other framework as no developer works with it on and Story Teller does not support it. The idea was to make sure that I was comparing oranges with oranges.
+
+The results where suprising. In a straight time run of logging Story Teller was actually **4x faster** than the competitor. This totally surprised me and the only thing I could think of was that the competitor must have a lot of compexity in it that I simply haven't added to Story Teller. But still - ***4x?***
+
+I then ran the tests again. This time the competitor easily out performed Story Teller. This was expected as the competitor was designed around very fast boolean switches and could optimize out the logging statements. Story Teller on the other hand, has to leave everything in places because the logging decisions are made at runtime. 
+
+Still, Story Teller ran the same loop of avg(1,000)x10 very fast. In the region of 0.001 sec per 1,000 log statements (not logging) and 0.1 sec when logging. So even with it's significantly more intelligent logging, it's no slouch.
 
