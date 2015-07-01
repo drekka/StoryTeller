@@ -22,10 +22,12 @@ static __strong STStoryTeller *__storyTeller;
 
 #pragma mark - Lifecycle
 
+-(void) dealloc {
+    NSLog(@"Deallocing ST");
+}
+
 +(void) initialize {
-    NSLog(@"Initialising ST");
 #ifndef DISABLE_STORY_TELLER
-    NSLog(@"Initialising ST ...");
     __storyTeller = [[STStoryTeller alloc] init];
 #endif
 }
