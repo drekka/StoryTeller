@@ -60,8 +60,8 @@ typedef NS_ENUM(NSUInteger, ValueType) {
 #pragma mark - Logger control
 
 -(void) parser:(PKParser * __nonnull)parser didMatchLogAll:(PKAssembly * __nonnull)assembly {
+    NSLog(@"st %@", [STStoryTeller storyTeller] == nil ? @"Nil": @"Created");
     [[STStoryTeller storyTeller] logAll];
-    NSLog(@"Looging evverrything");
     mflog(@"set LogAll");
 
 }
