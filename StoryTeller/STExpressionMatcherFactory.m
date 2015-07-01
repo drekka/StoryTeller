@@ -80,7 +80,7 @@ typedef NS_ENUM(NSUInteger, ValueType) {
     } else {
         NSString *expected = _value;
         _rootMatcher = [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
-            NSLog(@"Checking %@ <-> %@", key, expected);
+            NSLog(@"Checking %@ (%@) <-> %@ (%@)", key, NSStringFromClass([key class]), expected, NSStringFromClass([expected class]));
             return [expected isEqualToString:key];
         }];
     }
