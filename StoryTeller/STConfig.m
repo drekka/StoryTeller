@@ -56,20 +56,18 @@
     for (NSBundle *bundle in appBundles) {
         configUrl = [bundle URLForResource:@"StoryTellerConfig" withExtension:@"json"];
         if (configUrl != nil) {
-            break;
-        }
-    }
+            NSError *error = nil;
+            NSLog(@"Story Teller: Reading config: %@", configUrl);
+            NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfURL:configUrl]
+                                                                     options:NSJSONReadingAllowFragments
+                                                                       error:&error];
+            if (error != nil) {
+                @throw [NSException exceptionWithName:@"StoryTeller" reason:[error localizedFailureReason] userInfo:nil];
+            }
 
-    if (configUrl != nil) {
-        NSError *error = nil;
-        NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfURL:configUrl]
-                                                                 options:NSJSONReadingAllowFragments
-                                                                   error:&error];
-        if (error != nil) {
-            @throw [NSException exceptionWithName:@"StoryTeller" reason:[error localizedFailureReason] userInfo:nil];
+            [self setValuesForKeysWithDictionary:jsonData];
+            return;
         }
-
-        [self setValuesForKeysWithDictionary:jsonData];
     }
 }
 
