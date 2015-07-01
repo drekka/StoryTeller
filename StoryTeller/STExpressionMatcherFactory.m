@@ -61,6 +61,7 @@ typedef NS_ENUM(NSUInteger, ValueType) {
 
 -(void) parser:(PKParser * __nonnull)parser didMatchLogAll:(PKAssembly * __nonnull)assembly {
     [[STStoryTeller storyTeller] logAll];
+    NSLog(@"Looging evverrything");
     mflog(@"set LogAll");
 
 }
