@@ -78,9 +78,9 @@ typedef NS_ENUM(NSUInteger, ValueType) {
             return [expected compare:key] == NSOrderedSame;
         }];
     } else {
-        NSLog(@"Value class %@", NSStringFromClass([_value class]));
         NSString *expected = _value;
         _rootMatcher = [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
+            NSLog(@"Checking %@ <-> %@", key, expected);
             return [expected isEqualToString:key];
         }];
     }
