@@ -76,6 +76,11 @@
     XCTAssertTrue([matcher matches:@"abc"]);
 }
 
+-(void) testStringMatchesWhereStringIsClassName {
+    id<STMatcher> matcher = [_factory parseExpression:@"NSString" error:NULL];
+    XCTAssertTrue([matcher matches:@"NSString"]);
+}
+
 -(void) testStringFailsMatch {
     id<STMatcher> matcher = [_factory parseExpression:@"abc" error:NULL];
     XCTAssertFalse([matcher matches:@"def"]);
