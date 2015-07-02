@@ -24,7 +24,7 @@
     _factory = [[STExpressionMatcherFactory alloc] init];
 }
 
--(void) testPropertyUnknown {
+-(void) testUnknown {
     NSError *error = nil;
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].intPropertyxxx == abc" error:&error];
     MainClass *mainClass = [[MainClass alloc] init];

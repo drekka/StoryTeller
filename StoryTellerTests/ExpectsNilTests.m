@@ -26,20 +26,20 @@
 
 #pragma mark - General Properties
 
--(void) testPropertyNilMatches {
+-(void) testMatches {
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].stringProperty == nil" error:NULL];
     MainClass *mainClass = [[MainClass alloc] init];
     XCTAssertTrue([matcher matches:mainClass]);
 }
 
--(void) testPropertyNilNotEqualMatches {
+-(void) testNotEqualMatches {
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].stringProperty != nil" error:NULL];
     MainClass *mainClass = [[MainClass alloc] init];
     mainClass.stringProperty = @"def";
     XCTAssertTrue([matcher matches:mainClass]);
 }
 
--(void) testPropertyNilFailsMatch {
+-(void) testFailsMatch {
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].stringProperty == nil" error:NULL];
     MainClass *mainClass = [[MainClass alloc] init];
     mainClass.stringProperty = @"def";

@@ -13,10 +13,10 @@
 #import "SubClass.h"
 #import "AProtocol.h"
 
-@interface STExpressionMatcherFactoryTests : XCTestCase
+@interface ExpectsNumberTests : XCTestCase
 @end
 
-@implementation STExpressionMatcherFactoryTests {
+@implementation ExpectsNumberTests {
     STExpressionMatcherFactory *_factory;
 }
 
@@ -24,70 +24,70 @@
     _factory = [[STExpressionMatcherFactory alloc] init];
 }
 
--(void) testPropertyIntEqualsMatches {
+-(void) testEqualsMatches {
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].intProperty == 5" error:NULL];
     MainClass *mainClass = [[MainClass alloc] init];
     mainClass.intProperty = 5;
     XCTAssertTrue([matcher matches:mainClass]);
 }
 
--(void) testPropertyIntNotEqualsMatches {
+-(void) testNotEqualsMatches {
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].intProperty != 5" error:NULL];
     MainClass *mainClass = [[MainClass alloc] init];
     mainClass.intProperty = 1;
     XCTAssertTrue([matcher matches:mainClass]);
 }
 
--(void) testPropertyIntGTMatches {
+-(void) testGTMatches {
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].intProperty > 5" error:NULL];
     MainClass *mainClass = [[MainClass alloc] init];
     mainClass.intProperty = 6;
     XCTAssertTrue([matcher matches:mainClass]);
 }
 
--(void) testPropertyIntGTFailsMatch {
+-(void) testGTFailsMatch {
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].intProperty > 5" error:NULL];
     MainClass *mainClass = [[MainClass alloc] init];
     mainClass.intProperty = 5;
     XCTAssertFalse([matcher matches:mainClass]);
 }
 
--(void) testPropertyIntGEWhenEqualMatches {
+-(void) testGEWhenEqualMatches {
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].intProperty >= 5" error:NULL];
     MainClass *mainClass = [[MainClass alloc] init];
     mainClass.intProperty = 5;
     XCTAssertTrue([matcher matches:mainClass]);
 }
 
--(void) testPropertyIntGEMatches {
+-(void) testGEMatches {
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].intProperty >= 5" error:NULL];
     MainClass *mainClass = [[MainClass alloc] init];
     mainClass.intProperty = 6;
     XCTAssertTrue([matcher matches:mainClass]);
 }
 
--(void) testPropertyIntGEFailsMatch {
+-(void) testGEFailsMatch {
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].intProperty >= 5" error:NULL];
     MainClass *mainClass = [[MainClass alloc] init];
     mainClass.intProperty = 4;
     XCTAssertFalse([matcher matches:mainClass]);
 }
 
--(void) testPropertyIntLTMatches {
+-(void) testLTMatches {
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].intProperty < 5" error:NULL];
     MainClass *mainClass = [[MainClass alloc] init];
     mainClass.intProperty = 4;
     XCTAssertTrue([matcher matches:mainClass]);
 }
 
--(void) testPropertyIntLTFailsMatch {
+-(void) testLTFailsMatch {
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].intProperty < 5" error:NULL];
     MainClass *mainClass = [[MainClass alloc] init];
     mainClass.intProperty = 5;
     XCTAssertFalse([matcher matches:mainClass]);
 }
 
--(void) testPropertyIntLEWhenEqualMatches {
+-(void) testLEWhenEqualMatches {
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].intProperty <= 5" error:NULL];
     MainClass *mainClass = [[MainClass alloc] init];
     mainClass.intProperty = 5;

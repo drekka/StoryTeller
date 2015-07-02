@@ -31,6 +31,16 @@
     XCTAssertTrue([matcher matches:@"abc"]);
 }
 
+-(void) testStringFailsMatchWhenANumber {
+    id<STMatcher> matcher = [_factory parseExpression:@"abc" error:NULL];
+    XCTAssertFalse([matcher matches:@12]);
+}
+
+-(void) testStringFailsMatchWhenAClass {
+    id<STMatcher> matcher = [_factory parseExpression:@"abc" error:NULL];
+    XCTAssertFalse([matcher matches:[NSNumber class]]);
+}
+
 -(void) testStringMatchesWhereStringIsClassName {
     id<STMatcher> matcher = [_factory parseExpression:@"NSString" error:NULL];
     XCTAssertTrue([matcher matches:@"NSString"]);
@@ -49,6 +59,16 @@
 -(void) testNumberFailsMatch {
     id<STMatcher> matcher = [_factory parseExpression:@"12.5" error:NULL];
     XCTAssertFalse([matcher matches:@12.678]);
+}
+
+-(void) testNumberFailsMatchWhenAString {
+    id<STMatcher> matcher = [_factory parseExpression:@"12.5" error:NULL];
+    XCTAssertFalse([matcher matches:@"abc"]);
+}
+
+-(void) testNumberFailsMatchWhenAProtocol {
+    id<STMatcher> matcher = [_factory parseExpression:@"12.5" error:NULL];
+    XCTAssertFalse([matcher matches:@protocol(NSCopying)]);
 }
 
 @end

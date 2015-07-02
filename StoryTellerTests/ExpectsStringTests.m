@@ -31,17 +31,29 @@
     XCTAssertTrue([matcher matches:mainClass]);
 }
 
--(void) testUnQuotedStringMatches {
+-(void) testMatches {
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].stringProperty == abc" error:NULL];
     MainClass *mainClass = [[MainClass alloc] init];
     mainClass.stringProperty = @"abc";
     XCTAssertTrue([matcher matches:mainClass]);
 }
 
--(void) testUnQuotedStringFailsMatch {
+-(void) testFailsMatch {
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].stringProperty == abc" error:NULL];
     MainClass *mainClass = [[MainClass alloc] init];
     mainClass.stringProperty = @"def";
+    XCTAssertFalse([matcher matches:mainClass]);
+}
+
+-(void) testFailsMatchWhenAProtocolProperty {
+    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].protocolProperty == abc" error:NULL];
+    MainClass *mainClass = [[MainClass alloc] init];
+    XCTAssertFalse([matcher matches:mainClass]);
+}
+
+-(void) testFailsMatchWhenAIntProperty {
+    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].intProperty == abc" error:NULL];
+    MainClass *mainClass = [[MainClass alloc] init];
     XCTAssertFalse([matcher matches:mainClass]);
 }
 

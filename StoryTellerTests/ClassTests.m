@@ -43,6 +43,16 @@
     XCTAssertFalse([matcher matches:@12]);
 }
 
+-(void) testClassFailsMatchWhenDifferentClass {
+    id<STMatcher> matcher = [_factory parseExpression:@"[NSString]" error:NULL];
+    XCTAssertFalse([matcher matches:[NSNumber class]]);
+}
+
+-(void) testClassFailsMatchWhenClass {
+    id<STMatcher> matcher = [_factory parseExpression:@"[NSString]" error:NULL];
+    XCTAssertFalse([matcher matches:[NSString class]]);
+}
+
 -(void) testIsaClassMatches {
     id<STMatcher> matcher = [_factory parseExpression:@"is [MainClass]" error:NULL];
     XCTAssertTrue([matcher matches:[MainClass class]]);

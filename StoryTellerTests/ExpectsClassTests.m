@@ -24,14 +24,35 @@
     _factory = [[STExpressionMatcherFactory alloc] init];
 }
 
--(void) testPropertyClassMatches {
+-(void) testClassMatches {
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].classProperty is [SubClass]" error:NULL];
     MainClass *mainClass = [[MainClass alloc] init];
     mainClass.classProperty = [SubClass class];
     XCTAssertTrue([matcher matches:mainClass]);
 }
 
--(void) testPropertyObjectClassMatches {
+-(void) testClassfailsMatch {
+    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].classProperty is [SubClass]" error:NULL];
+    MainClass *mainClass = [[MainClass alloc] init];
+    mainClass.classProperty = [NSNumber class];
+    XCTAssertFalse([matcher matches:mainClass]);
+}
+
+-(void) testClassfailsMatchWhenAStringProperty {
+    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].stringProperty is [SubClass]" error:NULL];
+    MainClass *mainClass = [[MainClass alloc] init];
+    mainClass.stringProperty = @"abc";
+    XCTAssertFalse([matcher matches:mainClass]);
+}
+
+-(void) testClassfailsMatchWhenAProtocolProperty {
+    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].protocolProperty is [SubClass]" error:NULL];
+    MainClass *mainClass = [[MainClass alloc] init];
+    mainClass.protocolProperty = @protocol(NSCopying);
+    XCTAssertFalse([matcher matches:mainClass]);
+}
+
+-(void) testMatches {
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].subClassProperty == [SubClass]" error:NULL];
     MainClass *mainClass = [[MainClass alloc] init];
     SubClass *subClass = [[SubClass alloc] init];

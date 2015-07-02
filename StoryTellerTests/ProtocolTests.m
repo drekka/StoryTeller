@@ -24,31 +24,36 @@
     _factory = [[STExpressionMatcherFactory alloc] init];
 }
 
--(void) testProtocolMatches {
+-(void) testMatches {
     id<STMatcher> matcher = [_factory parseExpression:@"<NSCopying>" error:NULL];
     XCTAssertTrue([matcher matches:@"abc"]);
 }
 
--(void) testProtocolUnknown {
+-(void) testFailsMatch {
+    id<STMatcher> matcher = [_factory parseExpression:@"<NSFastEnumeration>" error:NULL];
+    XCTAssertFalse([matcher matches:@"abc"]);
+}
+
+-(void) testUnknownProtocol {
     NSError *error = nil;
     id<STMatcher> matcher = [_factory parseExpression:@"<Abc>" error:&error];
     XCTAssertNil(matcher);
     XCTAssertEqualObjects(@"Unable to find a protocol called Abc\nLine : Unknown\n", error.localizedFailureReason);
 }
 
--(void) testProtocolFailsMatch {
-    id<STMatcher> matcher = [_factory parseExpression:@"<NSFastEnumeration>" error:NULL];
-    XCTAssertFalse([matcher matches:@12]);
-}
-
--(void) testIsaProtocolMatches {
+-(void) testIsaMatches {
     id<STMatcher> matcher = [_factory parseExpression:@"is <AProtocol>" error:NULL];
     XCTAssertTrue([matcher matches:@protocol(AProtocol)]);
 }
 
--(void) testIsaProtocolFailsMatch {
+-(void) testIsaFailsMatch {
     id<STMatcher> matcher = [_factory parseExpression:@"is <NSCopying>" error:NULL];
     XCTAssertFalse([matcher matches:@protocol(AProtocol)]);
+}
+
+-(void) testIsaFailsMatchWhenNotAProtocol {
+    id<STMatcher> matcher = [_factory parseExpression:@"is <NSCopying>" error:NULL];
+    XCTAssertFalse([matcher matches:@(12)]);
 }
 
 @end

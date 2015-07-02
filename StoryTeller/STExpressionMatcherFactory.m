@@ -154,8 +154,7 @@ typedef NS_ENUM(NSUInteger, ValueType) {
 
     NSNumber *expected = _value;
     [self addMatcher:[[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
-        NSNumber *actual = (NSNumber *) key;
-        return comparison(actual, expected);
+        return [key isKindOfClass:[NSNumber class]] && comparison((NSNumber *) key, expected);
     }]];
     mflog(@"ST: Added a math matcher");
 }
@@ -178,8 +177,7 @@ typedef NS_ENUM(NSUInteger, ValueType) {
         case ValueTypeBoolean: {
             BOOL expected = ((NSNumber *)_value).boolValue;
             [self addMatcher:[[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
-                BOOL value = ((NSNumber *) key).boolValue;
-                return (expected == value) == expectedResult;
+                return [key isKindOfClass:[NSNumber class]] && (expected == ((NSNumber *) key).boolValue) == expectedResult;
             }]];
             break;
         }
@@ -193,7 +191,7 @@ typedef NS_ENUM(NSUInteger, ValueType) {
         default: {
             NSString *expected = _value;
             [self addMatcher:[[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
-                return [expected isEqualToString:key] == expectedResult;
+                return [key isKindOfClass:[NSString class]] && [expected isEqualToString:key] == expectedResult;
             }]];
         }
     }
