@@ -74,26 +74,26 @@ typedef NS_ENUM(NSUInteger, ValueType) {
 -(void) parser:(PKParser * __nonnull)parser didMatchSingleKeyExpr:(PKAssembly * __nonnull)assembly {
     if (_valueType == ValueTypeNumber) {
         NSNumber *expected = _value;
-        _rootMatcher = [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
+        [self addMatcher:[[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
             return [expected compare:key] == NSOrderedSame;
-        }];
+        }]];
     } else {
         NSString *expected = _value;
-        _rootMatcher = [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
+        [self addMatcher:[[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
             NSLog(@"Checking %@ (%@) <-> %@ (%@)", key, NSStringFromClass([key class]), expected, NSStringFromClass([expected class]));
             return [expected isEqualToString:key];
-        }];
+        }]];
     }
     mflog(@"Parsed a single key expression");
 }
 
 -(void) parser:(PKParser * __nonnull)parser didMatchRuntimeExpr:(PKAssembly * __nonnull)assembly {
-    _rootMatcher = [self runtimeMatcherFromValue];
+    [self addMatcher:[self runtimeMatcherFromValue]];
     mflog(@"Parsed a runtime expression");
 }
 
 -(void) parser:(PKParser __nonnull *) parser didMatchObjectType:(PKAssembly __nonnull *) assembly {
-    _rootMatcher = [self objectTypeMatcherFromValue];
+    [self addMatcher:[self objectTypeMatcherFromValue]];
     mflog(@"Setting a runtime matcher as the root matcher");
 }
 
@@ -105,9 +105,9 @@ typedef NS_ENUM(NSUInteger, ValueType) {
     }
 
     NSString *keyPath = [paths componentsJoinedByString:@"."];
-    _rootMatcher.nextMatcher = [[STFilterMatcher alloc] initWithFilter:^id(id  __nonnull key) {
+    [self addMatcher:[[STFilterMatcher alloc] initWithFilter:^id(id  __nonnull key) {
         return [key valueForKeyPath:keyPath];
-    }];
+    }]];
     mflog(@"Matched a key path: %@", keyPath);
 }
 
@@ -154,21 +154,19 @@ typedef NS_ENUM(NSUInteger, ValueType) {
     }
 
     NSNumber *expected = _value;
-    [self lastMatcher].nextMatcher = [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
+    [self addMatcher:[[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
         NSNumber *actual = (NSNumber *) key;
         return comparison(actual, expected);
-    }];
+    }]];
     mflog(@"Added a math matcher");
 }
 
 -(void) parser:(PKParser __nonnull *) parser didMatchRuntimeCmp:(PKAssembly __nonnull *) assembly {
-    id<STMatcher> matcher;
     if (_op == STLOGEXPRESSIONPARSER_TOKEN_KIND_IS) {
-        [self lastMatcher].nextMatcher = [self runtimeMatcherFromValue];
+        [self addMatcher:[self runtimeMatcherFromValue]];
     } else {
-        [self lastMatcher].nextMatcher = [self objectTypeMatcherFromValue];
+        [self addMatcher:[self objectTypeMatcherFromValue]];
     }
-    [self lastMatcher].nextMatcher = matcher;
     mflog(@"Added a runtime matcher");
 }
 
@@ -177,34 +175,30 @@ typedef NS_ENUM(NSUInteger, ValueType) {
     // Use the op to decide the expected true/false result.
     BOOL expectedResult = _op == STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ;
 
-    id<STMatcher> matcher;
     switch (_valueType) {
         case ValueTypeBoolean: {
             BOOL expected = ((NSNumber *)_value).boolValue;
-            matcher = [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
+            [self addMatcher:[[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
                 BOOL value = ((NSNumber *) key).boolValue;
                 return (expected == value) == expectedResult;
-            }];
+            }]];
             break;
         }
 
         case ValueTypeNil:
-            matcher = [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
+            [self addMatcher:[[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
                 return (key == nil) == expectedResult;
-            }];
+            }]];
             break;
 
         default: {
             NSString *expected = _value;
-            matcher = [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
+            [self addMatcher:[[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
                 return [expected isEqualToString:key] == expectedResult;
-            }];
+            }]];
         }
     }
-
-    // Append the matcher.
-    [self lastMatcher].nextMatcher = matcher;
-    mflog(@"Added a object matcher");
+    mflog(@"Added an object matcher");
 }
 
 #pragma mark - Operators
@@ -315,12 +309,18 @@ typedef NS_ENUM(NSUInteger, ValueType) {
 }
 
 
--(id<STMatcher>) lastMatcher {
+-(void) addMatcher:(id<STMatcher>) matcher {
+
+    if (_rootMatcher == nil) {
+        _rootMatcher = matcher;
+        return;
+    }
+
     id<STMatcher> lastMatcher = _rootMatcher;
     while (lastMatcher.nextMatcher != nil) {
         lastMatcher = lastMatcher.nextMatcher;
     }
-    return lastMatcher;
+    lastMatcher.nextMatcher = matcher;
 }
 
 -(NSString *) stringFromToken:(PKToken *) token {
