@@ -5,6 +5,7 @@
 //  Created by Derek Clarkson on 18/06/2015.
 //  Copyright © 2015 Derek Clarkson. All rights reserved.
 //
+@import ObjectiveC;
 
 #import <StoryTeller/STAbstractLogger.h>
 #import <pthread/pthread.h>
@@ -18,6 +19,12 @@
 @synthesize showThreadId = _showThreadId;
 @synthesize showTime = _showTime;
 @synthesize showKey = _showKey;
+
+static Class __protocolClass;
+
++(void) initialize {
+    __protocolClass = objc_lookUpClass("Protocol");
+}
 
 -(instancetype) init {
     self = [super init];
@@ -58,7 +65,13 @@
     }
 
     if (_showKey) {
-        [finalMessage appendFormat:@"[%@] ", [key description]];
+        if ([self keyIsClass:key]) {
+            [finalMessage appendFormat:@"[class:%s] ", class_getName(key)];
+        } else if ([self keyIsClass:key]) {
+            [finalMessage appendFormat:@"[protocol:%s] ", protocol_getName(key)];
+        } else {
+            [finalMessage appendFormat:@"[%s:%@] ", class_getName([key class]), key];
+        }
     }
 
     if (_showMethodDetails) {
@@ -71,6 +84,15 @@
 
 -(void) writeMessage:(NSString __nonnull *) message {
     [self doesNotRecognizeSelector:_cmd];
+}
+
+
+-(BOOL) keyIsClass:(id) key {
+    return class_isMetaClass(object_getClass(key));
+}
+
+-(BOOL) keyIsProtocol:(id) key {
+    return [key class] == __protocolClass;
 }
 
 @end
