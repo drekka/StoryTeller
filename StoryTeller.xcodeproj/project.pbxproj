@@ -20,7 +20,6 @@
 		6C158E351B38278500119725 /* STAbstractLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C6879971B32F49A00091F87 /* STAbstractLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6C158E361B38278500119725 /* STStoryTeller.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CE5C3E71B329BD100F0A470 /* STStoryTeller.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6C7145631B4425BE00EBC055 /* StoryTellerConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 6C158DE51B3820F100119725 /* StoryTellerConfig.json */; };
-		6C7266E51B3C37E7004B593C /* STExpressionMatcherFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C7266E41B3C37E7004B593C /* STExpressionMatcherFactoryTests.m */; };
 		6C8174321B3CDBA300342066 /* STCompareMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C8174301B3CDBA300342066 /* STCompareMatcher.h */; };
 		6C8174331B3CDBA300342066 /* STCompareMatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C8174311B3CDBA300342066 /* STCompareMatcher.m */; };
 		6C8174351B3CED7F00342066 /* STMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C8174341B3CED7F00342066 /* STMatcher.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -34,6 +33,19 @@
 		6C9B50F81B32AC770004E06D /* StoryTellerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50F71B32AC770004E06D /* StoryTellerTests.m */; };
 		6C9B50FB1B32ACB30004E06D /* InMemoryLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50FA1B32ACB30004E06D /* InMemoryLogger.m */; };
 		6C9B50FE1B32ADD80004E06D /* STTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50FD1B32ADD80004E06D /* STTestCase.m */; };
+		6C9E1A631B44CABA00763905 /* MainClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9E1A621B44CABA00763905 /* MainClass.m */; };
+		6C9E1A671B44CB5B00763905 /* SubClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9E1A661B44CB5B00763905 /* SubClass.m */; };
+		6C9E1A6A1B44CBC500763905 /* OptionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9E1A691B44CBC500763905 /* OptionsTests.m */; };
+		6C9E1A6C1B44CC2200763905 /* SimpleValueTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9E1A6B1B44CC2200763905 /* SimpleValueTests.m */; };
+		6C9E1A6E1B44CD4500763905 /* ClassTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9E1A6D1B44CD4500763905 /* ClassTests.m */; };
+		6C9E1A701B44CD7A00763905 /* ProtocolTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9E1A6F1B44CD7A00763905 /* ProtocolTests.m */; };
+		6C9E1A721B44CE0300763905 /* ExpectsStringTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9E1A711B44CE0300763905 /* ExpectsStringTests.m */; };
+		6C9E1A741B44CEB900763905 /* PropertiesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9E1A731B44CEB900763905 /* PropertiesTests.m */; };
+		6C9E1A761B44CF3900763905 /* ExpectsNumberTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9E1A751B44CF3900763905 /* ExpectsNumberTests.m */; };
+		6C9E1A781B44CF8B00763905 /* ExpectsNilTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9E1A771B44CF8B00763905 /* ExpectsNilTests.m */; };
+		6C9E1A7A1B44D00600763905 /* ExpectsBooleanTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9E1A791B44D00600763905 /* ExpectsBooleanTests.m */; };
+		6C9E1A7C1B44D05200763905 /* ExpectsClassTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9E1A7B1B44D05200763905 /* ExpectsClassTests.m */; };
+		6C9E1A7E1B44D0C100763905 /* ExpectsProtocolTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9E1A7D1B44D0C100763905 /* ExpectsProtocolTests.m */; };
 		6CA7DF051B3A61D7002491FF /* STLogExpressionParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CA7DF031B3A61D7002491FF /* STLogExpressionParser.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6CA7DF061B3A61D7002491FF /* STLogExpressionParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CA7DF041B3A61D7002491FF /* STLogExpressionParser.m */; };
 		6CA7DF071B3A64A3002491FF /* PEGKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C8AE1961B3A3BF300DF2B9F /* PEGKit.framework */; };
@@ -73,7 +85,6 @@
 		6C158E181B38269D00119725 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = StoryTeller/Info.plist; sourceTree = "<group>"; };
 		6C6879971B32F49A00091F87 /* STAbstractLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STAbstractLogger.h; sourceTree = "<group>"; };
 		6C6879981B32F49A00091F87 /* STAbstractLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STAbstractLogger.m; sourceTree = "<group>"; };
-		6C7266E41B3C37E7004B593C /* STExpressionMatcherFactoryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STExpressionMatcherFactoryTests.m; sourceTree = "<group>"; };
 		6C8174301B3CDBA300342066 /* STCompareMatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STCompareMatcher.h; sourceTree = "<group>"; };
 		6C8174311B3CDBA300342066 /* STCompareMatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STCompareMatcher.m; sourceTree = "<group>"; };
 		6C8174341B3CED7F00342066 /* STMatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STMatcher.h; sourceTree = "<group>"; };
@@ -90,6 +101,22 @@
 		6C9B50FA1B32ACB30004E06D /* InMemoryLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InMemoryLogger.m; sourceTree = "<group>"; };
 		6C9B50FC1B32ADD80004E06D /* STTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STTestCase.h; sourceTree = "<group>"; };
 		6C9B50FD1B32ADD80004E06D /* STTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STTestCase.m; sourceTree = "<group>"; };
+		6C9E1A611B44CABA00763905 /* MainClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainClass.h; sourceTree = "<group>"; };
+		6C9E1A621B44CABA00763905 /* MainClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainClass.m; sourceTree = "<group>"; };
+		6C9E1A641B44CB0A00763905 /* AProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AProtocol.h; sourceTree = "<group>"; };
+		6C9E1A651B44CB5B00763905 /* SubClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubClass.h; sourceTree = "<group>"; };
+		6C9E1A661B44CB5B00763905 /* SubClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubClass.m; sourceTree = "<group>"; };
+		6C9E1A691B44CBC500763905 /* OptionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OptionsTests.m; sourceTree = "<group>"; };
+		6C9E1A6B1B44CC2200763905 /* SimpleValueTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleValueTests.m; sourceTree = "<group>"; };
+		6C9E1A6D1B44CD4500763905 /* ClassTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassTests.m; sourceTree = "<group>"; };
+		6C9E1A6F1B44CD7A00763905 /* ProtocolTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProtocolTests.m; sourceTree = "<group>"; };
+		6C9E1A711B44CE0300763905 /* ExpectsStringTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExpectsStringTests.m; sourceTree = "<group>"; };
+		6C9E1A731B44CEB900763905 /* PropertiesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PropertiesTests.m; sourceTree = "<group>"; };
+		6C9E1A751B44CF3900763905 /* ExpectsNumberTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExpectsNumberTests.m; sourceTree = "<group>"; };
+		6C9E1A771B44CF8B00763905 /* ExpectsNilTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExpectsNilTests.m; sourceTree = "<group>"; };
+		6C9E1A791B44D00600763905 /* ExpectsBooleanTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExpectsBooleanTests.m; sourceTree = "<group>"; };
+		6C9E1A7B1B44D05200763905 /* ExpectsClassTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExpectsClassTests.m; sourceTree = "<group>"; };
+		6C9E1A7D1B44D0C100763905 /* ExpectsProtocolTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExpectsProtocolTests.m; sourceTree = "<group>"; };
 		6CA7DF031B3A61D7002491FF /* STLogExpressionParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STLogExpressionParser.h; sourceTree = "<group>"; };
 		6CA7DF041B3A61D7002491FF /* STLogExpressionParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STLogExpressionParser.m; sourceTree = "<group>"; };
 		6CCFFA7B1B33CB5F00D2F371 /* STDeallocHook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDeallocHook.h; sourceTree = "<group>"; };
@@ -163,6 +190,36 @@
 			name = Internal;
 			sourceTree = "<group>";
 		};
+		6C9E1A601B44CAA500763905 /* Test classes */ = {
+			isa = PBXGroup;
+			children = (
+				6C9E1A611B44CABA00763905 /* MainClass.h */,
+				6C9E1A621B44CABA00763905 /* MainClass.m */,
+				6C9E1A641B44CB0A00763905 /* AProtocol.h */,
+				6C9E1A651B44CB5B00763905 /* SubClass.h */,
+				6C9E1A661B44CB5B00763905 /* SubClass.m */,
+			);
+			name = "Test classes";
+			sourceTree = "<group>";
+		};
+		6C9E1A681B44CB9D00763905 /* Expression factory tests */ = {
+			isa = PBXGroup;
+			children = (
+				6C9E1A6D1B44CD4500763905 /* ClassTests.m */,
+				6C9E1A771B44CF8B00763905 /* ExpectsNilTests.m */,
+				6C9E1A751B44CF3900763905 /* ExpectsNumberTests.m */,
+				6C9E1A711B44CE0300763905 /* ExpectsStringTests.m */,
+				6C9E1A691B44CBC500763905 /* OptionsTests.m */,
+				6C9E1A731B44CEB900763905 /* PropertiesTests.m */,
+				6C9E1A6F1B44CD7A00763905 /* ProtocolTests.m */,
+				6C9E1A6B1B44CC2200763905 /* SimpleValueTests.m */,
+				6C9E1A791B44D00600763905 /* ExpectsBooleanTests.m */,
+				6C9E1A7B1B44D05200763905 /* ExpectsClassTests.m */,
+				6C9E1A7D1B44D0C100763905 /* ExpectsProtocolTests.m */,
+			);
+			name = "Expression factory tests";
+			sourceTree = "<group>";
+		};
 		6CC81B3F1B3C1C6F00E890CE /* Matchers */ = {
 			isa = PBXGroup;
 			children = (
@@ -228,6 +285,8 @@
 		6CE5C3F31B329BD100F0A470 /* StoryTellerTests */ = {
 			isa = PBXGroup;
 			children = (
+				6C9E1A681B44CB9D00763905 /* Expression factory tests */,
+				6C9E1A601B44CAA500763905 /* Test classes */,
 				6CC81B3F1B3C1C6F00E890CE /* Matchers */,
 				6CE5C3F41B329BD100F0A470 /* Info.plist */,
 				6CCFFA801B33EC3600D2F371 /* Loggers */,
@@ -236,7 +295,6 @@
 				6C9B50F71B32AC770004E06D /* StoryTellerTests.m */,
 				6C9B50FC1B32ADD80004E06D /* STTestCase.h */,
 				6C9B50FD1B32ADD80004E06D /* STTestCase.m */,
-				6C7266E41B3C37E7004B593C /* STExpressionMatcherFactoryTests.m */,
 			);
 			path = StoryTellerTests;
 			sourceTree = "<group>";
@@ -378,12 +436,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C9E1A631B44CABA00763905 /* MainClass.m in Sources */,
+				6C9E1A7E1B44D0C100763905 /* ExpectsProtocolTests.m in Sources */,
 				6C9B50FE1B32ADD80004E06D /* STTestCase.m in Sources */,
+				6C9E1A761B44CF3900763905 /* ExpectsNumberTests.m in Sources */,
 				6C9B50F81B32AC770004E06D /* StoryTellerTests.m in Sources */,
 				6CD938411B384AB5005B0B5D /* STConfigTests.m in Sources */,
+				6C9E1A6A1B44CBC500763905 /* OptionsTests.m in Sources */,
 				6C81743B1B3D204F00342066 /* STCompareMatcherTests.m in Sources */,
+				6C9E1A721B44CE0300763905 /* ExpectsStringTests.m in Sources */,
+				6C9E1A6E1B44CD4500763905 /* ClassTests.m in Sources */,
+				6C9E1A741B44CEB900763905 /* PropertiesTests.m in Sources */,
+				6C9E1A701B44CD7A00763905 /* ProtocolTests.m in Sources */,
+				6C9E1A671B44CB5B00763905 /* SubClass.m in Sources */,
 				6C9B50FB1B32ACB30004E06D /* InMemoryLogger.m in Sources */,
-				6C7266E51B3C37E7004B593C /* STExpressionMatcherFactoryTests.m in Sources */,
+				6C9E1A7A1B44D00600763905 /* ExpectsBooleanTests.m in Sources */,
+				6C9E1A7C1B44D05200763905 /* ExpectsClassTests.m in Sources */,
+				6C9E1A781B44CF8B00763905 /* ExpectsNilTests.m in Sources */,
+				6C9E1A6C1B44CC2200763905 /* SimpleValueTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
