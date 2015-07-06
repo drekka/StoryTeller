@@ -19,6 +19,7 @@
 		6C158E341B38278500119725 /* STConsoleLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CD18E001B32A5B8002C9806 /* STConsoleLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6C158E351B38278500119725 /* STAbstractLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C6879971B32F49A00091F87 /* STAbstractLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6C158E361B38278500119725 /* STStoryTeller.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CE5C3E71B329BD100F0A470 /* STStoryTeller.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6C6F63FE1B4ABF3A0075CA58 /* PEGKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C8AE1961B3A3BF300DF2B9F /* PEGKit.framework */; };
 		6C7145631B4425BE00EBC055 /* StoryTellerConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 6C158DE51B3820F100119725 /* StoryTellerConfig.json */; };
 		6C8174321B3CDBA300342066 /* STCompareMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C8174301B3CDBA300342066 /* STCompareMatcher.h */; };
 		6C8174331B3CDBA300342066 /* STCompareMatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C8174311B3CDBA300342066 /* STCompareMatcher.m */; };
@@ -48,7 +49,6 @@
 		6C9E1A7E1B44D0C100763905 /* ExpectsProtocolTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9E1A7D1B44D0C100763905 /* ExpectsProtocolTests.m */; };
 		6CA7DF051B3A61D7002491FF /* STLogExpressionParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CA7DF031B3A61D7002491FF /* STLogExpressionParser.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6CA7DF061B3A61D7002491FF /* STLogExpressionParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CA7DF041B3A61D7002491FF /* STLogExpressionParser.m */; };
-		6CA7DF071B3A64A3002491FF /* PEGKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C8AE1961B3A3BF300DF2B9F /* PEGKit.framework */; };
 		6CD938411B384AB5005B0B5D /* STConfigTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CD938401B384AB5005B0B5D /* STConfigTests.m */; };
 		6CDCEB971B38F07A007DAF3D /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CDCEB961B38F07A007DAF3D /* libOCMock.a */; };
 		6CF53ED81B43FAB6006EB021 /* PEGKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6C8AE1961B3A3BF300DF2B9F /* PEGKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -137,7 +137,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6CA7DF071B3A64A3002491FF /* PEGKit.framework in Frameworks */,
+				6C6F63FE1B4ABF3A0075CA58 /* PEGKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -486,7 +486,6 @@
 				INSTALL_PATH = "@rpath";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = au.com.derekclarkson.StoryTeller;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -510,7 +509,6 @@
 				INSTALL_PATH = "@rpath";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = au.com.derekclarkson.StoryTeller;
 				PRODUCT_NAME = "$(TARGET_NAME)";
