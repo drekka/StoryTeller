@@ -14,6 +14,31 @@ Other logging frameworks use a very crass shotgun approach (IMHO) base on assumi
 
 Story Teller takes a different approch - it targets what developers acutally need by combining the ability to base logging on dynamic data driven *Keys*, with a query driven logging criteria. This enabled the developer to target their logging on the specific data relevant to the problem at hand. This produces very concise logs which contain only relevant and useful information.
 
+# Quick start
+
+1. Install (see [below](#installation))
+
+2. Log some stuff using any key you like: 
+
+ ```objectivec
+STLog(user, "User %@ is logging", user.id);
+STLog(@(EnumValueGUI), "GUI is doing %@ with %@", aGUIValue, anotherGUIVaue);
+STLog(currentView, "GUI is doing something with %@", currentView);
+STLog(@"abc", @"ABC, ha ha ha ha ha");
+```
+
+3. Turn on targetted logging:
+
+ ```objectivec
+STStartLogging(@"[User].account.name == \"derek's account\"");
+STStartLogging(@"[User].account.balance > 500");
+STStartLogging(@"<Banking>.active == YES");
+STStartLogging(@"<UserAccount>");
+STStartLogging(@"<Banking>.customer != <Banker>");
+```
+
+4. See just what you need in the logs !
+
 # Installation
 
 ## Carthage
