@@ -66,11 +66,11 @@ static Class __protocolClass;
 
     if (_showKey) {
         if ([self keyIsClass:key]) {
-            [finalMessage appendFormat:@"[class:%s] ", class_getName(key)];
-        } else if ([self keyIsClass:key]) {
-            [finalMessage appendFormat:@"[protocol:%s] ", protocol_getName(key)];
+            [finalMessage appendFormat:@"[c:%s] ", class_getName(key)];
+        } else if ([self keyIsProtocol:key]) {
+            [finalMessage appendFormat:@"[p:%s] ", protocol_getName(key)];
         } else {
-            [finalMessage appendFormat:@"[%s:%@] ", class_getName([key class]), key];
+            [finalMessage appendFormat:@"[%@] ", key];
         }
     }
 
