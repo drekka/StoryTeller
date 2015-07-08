@@ -43,46 +43,45 @@ static Class __protocolClass;
           lineNumber:(int) lineNumber
                  key:(nonnull id) key {
 
-    NSMutableString *finalMessage = [[NSMutableString alloc] init];
+    NSMutableString *detailsMessage = [[NSMutableString alloc] init];
     if (_showTime) {
         if (_dateFormatter == nil) {
             _dateFormatter = [[NSDateFormatter alloc] init];
             _dateFormatter.dateFormat = @"HH:mm:ss.sss";
         }
-        [finalMessage appendFormat:@"%@ ", [_dateFormatter stringFromDate:[NSDate date]]];
+        [detailsMessage appendFormat:@"%@ ", [_dateFormatter stringFromDate:[NSDate date]]];
     }
 
     if (_showThreadId) {
-        [finalMessage appendFormat:@"<%x> ", pthread_mach_thread_np(pthread_self())];
+        [detailsMessage appendFormat:@"<%x> ", pthread_mach_thread_np(pthread_self())];
     }
 
     if (_showThreadName) {
         NSThread *currentThread = [NSThread currentThread];
         NSString *threadName = currentThread.name;
         if ([threadName length] > 0) {
-            [finalMessage appendFormat:@"%@ ", threadName];
+            [detailsMessage appendFormat:@"%@ ", threadName];
         }
     }
 
     if (_showKey) {
         if ([self keyIsClass:key]) {
-            [finalMessage appendFormat:@"[c:%s] ", class_getName(key)];
+            [detailsMessage appendFormat:@"[c:%s] ", class_getName(key)];
         } else if ([self keyIsProtocol:key]) {
-            [finalMessage appendFormat:@"[p:%s] ", protocol_getName(key)];
+            [detailsMessage appendFormat:@"[p:%s] ", protocol_getName(key)];
         } else {
-            [finalMessage appendFormat:@"[%@] ", key];
+            [detailsMessage appendFormat:@"[%@] ", key];
         }
     }
 
     if (_showMethodDetails) {
-        [finalMessage appendFormat:@"%s(%i) ", methodName, lineNumber];
+        [detailsMessage appendFormat:@"%s(%i) ", methodName, lineNumber];
     }
 
-    [finalMessage appendString:message];
-    [self writeMessage:finalMessage];
+    [self writeDetails: detailsMessage message:message];
 }
 
--(void) writeMessage:(NSString __nonnull *) message {
+-(void) writeDetails:(NSString __nullable *) details message:(NSString __nonnull *) message {
     [self doesNotRecognizeSelector:_cmd];
 }
 
