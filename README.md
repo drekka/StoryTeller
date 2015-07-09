@@ -1,5 +1,14 @@
 # StoryTeller 
 
+* [Quick start](#quick-start)
+* [Installation](#installation)
+* [Adding logging](#adding-logging-to-your-code)
+* [Configuration](#configuring-logging)
+* [Smart logging criteria](#smart-logging-criteria)
+* [Execution blocks](#execution-blocks)
+* [Async logging](#async)
+* [Performance](#performance)
+
 [![GitHub license](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://raw.githubusercontent.com/drekka/StoryTeller/master/LICENSE)
 
 A logging framework that promotes following data rather than functionality in logs.
@@ -32,7 +41,7 @@ STLog(@"abc", @"ABC, ha ha ha ha ha");
  ```objectivec
 STStartLogging(@"[User].account.name == \"derek's account\"");
 STStartLogging(@"[User].account.balance > 500");
-STStartLogging(@"<Banking>.active == YES");
+STStartLogging(@"GUI");
 STStartLogging(@"<UserAccount>");
 STStartLogging(@"<Banking>.customer != <Banker>");
 ```
@@ -152,6 +161,44 @@ You can also programmically enable and disable logging as well. To enable loggin
 ```objectivec
 STStartLogging(<key>);
 ```
+
+## XCodeColors & Logging templates
+
+[XCodeColors](https://github.com/robbiehanson/XcodeColors) is an excellant tool for colour coding your XCode console output. Story Teller supports using it to colour code the details and message of the output. In addition, you can also fully customise the layout of the log lines. 
+
+### [XCodeColors](https://github.com/robbiehanson/XcodeColors)
+
+If you have XcodeColors installed you can use the following setup to configure Story Tellers console logger. This *Only* works for the `STConsoleLogger`.
+
+```objectivec
+((STConsoleLogger *)[STStoryTeller storyTeller].logger).addXcodeColours = YES;
+
+// Only need these if you want to change from the default colours. Which are these colours !
+((STConsoleLogger *)[STStoryTeller storyTeller].logger).messageColour = [UIColor blackColor];
+((STConsoleLogger *)[STStoryTeller storyTeller].logger).detailsColour = [UIColor lightGrayColor];
+```
+
+### Customising the logging template.
+
+The default template for a logged line looks like this:
+
+`{{time}} {{function}}:{{line}} {{message}}`
+
+As you can see it's based on typical [Moustache templating](https://mustache.github.io) using curly brackets and keywords to define where to insert various pieces of information. Naturally you can customize this. Here's how:
+
+```objectivec
+[STStoryTeller storyTeller].logger.lineTemplate = [NSString stringWithFormat:@"%1$@\n   %2$@:%3$@", STLoggerTemplateKeyMessage, STLoggerTemplateKeyFunction, STLoggerTemplateKeyLine];
+``` 
+
+All the above example does is build a new template string using some predefined strings. This is recommended as it's less likely to trigger mistakes. The only required keyword in any template is the `STLoggerTemplateKeyMessage` (`{{message}}`). All others are optional. Here's a list of the current keywords:
+
+Built in variable  | Text value | Inserts a ...
+------------- | ------------- | ------------- 
+STLoggerTemplateKeyMessage | {{message}} | ***(Required)*** The finished message argument from `STLog(...)` with all arguments inseted. 
+STLoggerTemplateKeyFile | {{file}} | the name of the source code file.
+STLoggerTemplateKeyFunction | {{function}} | A string representation of the method name which generated the log message.
+STLoggerTemplateKeyLine | {{line}} | The line number of the `STLog(...)` command.
+DetailsDisplayThreadId | {{threadId}} | The current thread id.
 
 # Smart Logging Criteria
 
