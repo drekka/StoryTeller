@@ -10,15 +10,35 @@
 #import <StoryTeller/STAbstractLogger.h>
 #import <pthread/pthread.h>
 
+#define NBR_KEYS 8 // details + message.
+
+NSString * const STLoggerTemplateKeyThreadId = @"{{threadId}}";
+NSString * const STLoggerTemplateKeyFile = @"{{file}}";
+NSString * const STLoggerTemplateKeyFunction = @"{{function}}";
+NSString * const STLoggerTemplateKeyLine = @"{{line}}";
+NSString * const STLoggerTemplateKeyThreadName = @"{{threadName}}";
+NSString * const STLoggerTemplateKeyTime = @"{{time}}";
+NSString * const STLoggerTemplateKeyKey = @"{{key}}";
+NSString * const STLoggerTemplateKeyMessage = @"{{message}}";
+
+
+typedef NS_ENUM(int, DetailsDisplay) {
+    DetailsDisplayThreadId,
+    DetailsDisplayFile,
+    DetailsDisplayFuntion,
+    DetailsDisplayLine,
+    DetailsDisplayThreadName,
+    DetailsDisplayTime,
+    DetailsDisplayKey,
+    DetailsDisplayMessage
+};
+
 @implementation STAbstractLogger {
     NSDateFormatter *_dateFormatter;
+    NSMutableArray *_lineFragments;
 }
 
-@synthesize showMethodDetails = _showMethodDetails;
-@synthesize showThreadName = _showThreadName;
-@synthesize showThreadId = _showThreadId;
-@synthesize showTime = _showTime;
-@synthesize showKey = _showKey;
+@synthesize lineTemplate = _lineTemplate;
 
 static Class __protocolClass;
 
@@ -29,62 +49,148 @@ static Class __protocolClass;
 -(instancetype) init {
     self = [super init];
     if (self) {
-        self.showMethodDetails = YES;
-        self.showThreadId = YES;
-        self.showThreadName = YES;
-        self.showTime = YES;
-        self.showKey = NO;
+        _dateFormatter = [[NSDateFormatter alloc] init];
+        _dateFormatter.dateFormat = @"HH:mm:ss.sss";
+        self.lineTemplate = [NSString stringWithFormat:@"%@ %@:%@ %@", STLoggerTemplateKeyTime, STLoggerTemplateKeyFunction, STLoggerTemplateKeyLine, STLoggerTemplateKeyMessage];
     }
     return self;
 }
 
--(void) writeMessage:(NSString __nonnull *) message
-          fromMethod:(const char __nonnull *) methodName
-          lineNumber:(int) lineNumber
-                 key:(nonnull id) key {
+-(void) setLineTemplate:(NSString * __nonnull) lineTemplate {
 
-    NSMutableString *detailsMessage = [[NSMutableString alloc] init];
-    if (_showTime) {
-        if (_dateFormatter == nil) {
-            _dateFormatter = [[NSDateFormatter alloc] init];
-            _dateFormatter.dateFormat = @"HH:mm:ss.sss";
-        }
-        [detailsMessage appendFormat:@"%@ ", [_dateFormatter stringFromDate:[NSDate date]]];
+    if ([lineTemplate isEqualToString:_lineTemplate]) {
+        return;
     }
 
-    if (_showThreadId) {
-        [detailsMessage appendFormat:@"<%x> ", pthread_mach_thread_np(pthread_self())];
-    }
+    _lineFragments = [[NSMutableArray alloc] init];
+    _lineTemplate = lineTemplate;
 
-    if (_showThreadName) {
-        NSThread *currentThread = [NSThread currentThread];
-        NSString *threadName = currentThread.name;
-        if ([threadName length] > 0) {
-            [detailsMessage appendFormat:@"%@ ", threadName];
-        }
-    }
-
-    if (_showKey) {
-        if ([self keyIsClass:key]) {
-            [detailsMessage appendFormat:@"[c:%s] ", class_getName(key)];
-        } else if ([self keyIsProtocol:key]) {
-            [detailsMessage appendFormat:@"[p:%s] ", protocol_getName(key)];
+    // Get a scanner.
+    NSScanner *scanner = [NSScanner scannerWithString:lineTemplate];
+    scanner.charactersToBeSkipped = nil;
+    do {
+        if ([scanner scanString:STLoggerTemplateKeyThreadId intoString:nil]) {
+            [_lineFragments addObject:@(DetailsDisplayThreadId)];
+        } else if ([scanner scanString:STLoggerTemplateKeyFile intoString:nil]) {
+            [_lineFragments addObject:@(DetailsDisplayFile)];
+        } else if ([scanner scanString:STLoggerTemplateKeyFunction intoString:nil]) {
+            [_lineFragments addObject:@(DetailsDisplayFuntion)];
+        } else if ([scanner scanString:STLoggerTemplateKeyLine intoString:nil]) {
+            [_lineFragments addObject:@(DetailsDisplayLine)];
+        } else if ([scanner scanString:STLoggerTemplateKeyThreadName intoString:nil]) {
+            [_lineFragments addObject:@(DetailsDisplayThreadName)];
+        } else if ([scanner scanString:STLoggerTemplateKeyTime intoString:nil]) {
+            [_lineFragments addObject:@(DetailsDisplayTime)];
+        } else if ([scanner scanString:STLoggerTemplateKeyKey intoString:nil]) {
+            [_lineFragments addObject:@(DetailsDisplayKey)];
+        } else if ([scanner scanString:STLoggerTemplateKeyMessage intoString:nil]) {
+            [_lineFragments addObject:@(DetailsDisplayMessage)];
         } else {
-            [detailsMessage appendFormat:@"[%@] ", key];
+
+            // If the next two chars are the start chars
+            // then we are stalled at the start of a keyword.
+            // Must be unknown so error.
+            if ([scanner scanString:@"{{" intoString:nil]) {
+                NSString *keyword;
+                if (![scanner scanUpToString:@"}}" intoString:&keyword]) {
+                    keyword = [lineTemplate substringFromIndex:scanner.scanLocation];
+                }
+                @throw [NSException exceptionWithName:@"StoryTeller" reason:[NSString stringWithFormat:@"Unknown log template keyword {{%@}}", keyword] userInfo:nil];
+            }
+
+            // Must be some text so scan up to the next opening delimiters.
+            NSString *text;
+            if ([scanner scanUpToString:@"{{" intoString:&text]) {
+                if (text.length > 0) {
+                    [_lineFragments addObject:text];
+                }
+            } else {
+                // No more keywords.
+                [_lineFragments addObject:[lineTemplate substringFromIndex:scanner.scanLocation]];
+                break;
+            }
         }
-    }
 
-    if (_showMethodDetails) {
-        [detailsMessage appendFormat:@"%s(%i) ", methodName, lineNumber];
-    }
+    } while(!scanner.atEnd);
 
-    [self writeDetails: detailsMessage message:message];
 }
 
--(void) writeDetails:(NSString __nullable *) details message:(NSString __nonnull *) message {
+-(void) writeMessage:(NSString *) message
+            fromFile:(const char *) fileName
+          fromMethod:(const char *) methodName
+          lineNumber:(int) lineNumber
+                 key:(id) key {
+
+    [_lineFragments enumerateObjectsUsingBlock:^(id  __nonnull fragment, NSUInteger idx, BOOL * __nonnull stop) {
+
+        if ([fragment isKindOfClass:[NSNumber class]]) {
+            char *text;
+            switch (((NSNumber *)fragment).intValue) {
+
+                case DetailsDisplayThreadId: {
+                    asprintf(&text, "<%x>", pthread_mach_thread_np(pthread_self()));
+                    [self writeText:(const char *)text];
+                    break;
+                }
+
+                case DetailsDisplayFile: {
+                    [self writeText:fileName];
+                    break;
+                }
+
+                case DetailsDisplayFuntion: {
+                    [self writeText:methodName];
+                    break;
+                }
+
+                case DetailsDisplayLine: {
+                    asprintf(&text, "%i", lineNumber);
+                    [self writeText:text];
+                    break;
+                }
+
+                case DetailsDisplayThreadName: {
+                    NSString *threadName = [NSThread currentThread].name;
+                    if ([threadName length] > 0) {
+                        [self writeText:threadName.UTF8String];
+                    }
+                    break;
+                }
+
+                case DetailsDisplayTime: {
+                    [self writeText:[self->_dateFormatter stringFromDate:[NSDate date]].UTF8String];
+                    break;
+                }
+
+                case DetailsDisplayKey: {
+                    if ([self keyIsClass:key]) {
+                        asprintf(&text, "c:[%s]", class_getName(key));
+                    } else if ([self keyIsProtocol:key]) {
+                        asprintf(&text, "p:<%s>", protocol_getName(key));
+                    } else {
+                        text = (char *)[NSString stringWithFormat:@"k:%@", key].UTF8String;
+                    }
+                    [self writeText:text];
+                    break;
+                }
+
+                default: { // Message
+                    [self writeText:message.UTF8String];
+                }
+            }
+        } else {
+            // Text fragment so just write it
+            [self writeText:((NSString *)fragment).UTF8String];
+        }
+    }];
+
+    // Write a final line feed.
+    [self writeText:"\n"];
+}
+
+-(void) writeText:(const char __nonnull *) text {
     [self doesNotRecognizeSelector:_cmd];
 }
-
 
 -(BOOL) keyIsClass:(id) key {
     return class_isMetaClass(object_getClass(key));

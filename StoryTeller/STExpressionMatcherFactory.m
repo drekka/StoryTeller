@@ -16,12 +16,6 @@
 #import "STCompareMatcher.h"
 #import "STFilterMatcher.h"
 
-#ifdef DEBUG_MATCHER_FACTORY
-#define mflog(template, ...) NSLog(template, ## __VA_ARGS__);
-#else
-#define mflog(template, ...)
-#endif
-
 typedef NS_ENUM(NSUInteger, ValueType) {
     ValueTypeString,
     ValueTypeNumber,
@@ -61,12 +55,10 @@ typedef NS_ENUM(NSUInteger, ValueType) {
 
 -(void) parser:(PKParser * __nonnull)parser didMatchLogAll:(PKAssembly * __nonnull)assembly {
     [[STStoryTeller storyTeller] logAll];
-    mflog(@"ST: set LogAll");
 }
 
 -(void) parser:(PKParser * __nonnull)parser didMatchLogRoot:(PKAssembly * __nonnull)assembly {
     [[STStoryTeller storyTeller] logRoots];
-    mflog(@"ST: set LogRoots");
 }
 
 #pragma mark - Expressions
@@ -83,17 +75,14 @@ typedef NS_ENUM(NSUInteger, ValueType) {
             return [key isKindOfClass:[NSString class]] && [expected isEqualToString:key];
         }]];
     }
-    mflog(@"ST: Parsed a single key expression");
 }
 
 -(void) parser:(PKParser * __nonnull)parser didMatchRuntimeExpr:(PKAssembly * __nonnull)assembly {
     [self addMatcher:[self runtimeMatcherFromValue]];
-    mflog(@"ST: Parsed a runtime expression");
 }
 
 -(void) parser:(PKParser __nonnull *) parser didMatchObjectType:(PKAssembly __nonnull *) assembly {
     [self addMatcher:[self objectTypeMatcherFromValue]];
-    mflog(@"ST: Setting a runtime matcher as the root matcher");
 }
 
 -(void) parser:(PKParser __nonnull *) parser didMatchKeyPath:(PKAssembly __nonnull *) assembly {
@@ -107,7 +96,6 @@ typedef NS_ENUM(NSUInteger, ValueType) {
     [self addMatcher:[[STFilterMatcher alloc] initWithFilter:^id(id  __nonnull key) {
         return [key valueForKeyPath:keyPath];
     }]];
-    mflog(@"ST: Matched a key path: %@", keyPath);
 }
 
 -(void) parser:(PKParser __nonnull *) parser didMatchNumericCmp:(PKAssembly __nonnull *) assembly {
@@ -156,7 +144,6 @@ typedef NS_ENUM(NSUInteger, ValueType) {
     [self addMatcher:[[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
         return [key isKindOfClass:[NSNumber class]] && comparison((NSNumber *) key, expected);
     }]];
-    mflog(@"ST: Added a math matcher");
 }
 
 -(void) parser:(PKParser __nonnull *) parser didMatchRuntimeCmp:(PKAssembly __nonnull *) assembly {
@@ -165,7 +152,6 @@ typedef NS_ENUM(NSUInteger, ValueType) {
     } else {
         [self addMatcher:[self objectTypeMatcherFromValue]];
     }
-    mflog(@"ST: Added a runtime matcher");
 }
 
 -(void) parser:(PKParser __nonnull *) parser didMatchObjectCmp:(PKAssembly __nonnull *) assembly {
@@ -195,7 +181,6 @@ typedef NS_ENUM(NSUInteger, ValueType) {
             }]];
         }
     }
-    mflog(@"ST: Added an object matcher");
 }
 
 #pragma mark - Operators
@@ -203,19 +188,16 @@ typedef NS_ENUM(NSUInteger, ValueType) {
 -(void) parser:(PKParser __nonnull *) parser didMatchRuntimeOp:(PKAssembly __nonnull *) assembly {
     PKToken *token = [parser popToken];
     _op = token.tokenKind;
-    mflog(@"ST: Matched a runtime op: %@", token.value);
 }
 
 -(void) parser:(PKParser __nonnull *) parser didMatchMathOp:(PKAssembly __nonnull *) assembly {
     PKToken *token = [parser popToken];
     _op = token.tokenKind;
-    mflog(@"ST: Matched a math op: %@", token.value);
 }
 
 -(void) parser:(PKParser __nonnull *) parser didMatchLogicalOp:(PKAssembly __nonnull *) assembly {
     PKToken *token = [parser popToken];
     _op = token.tokenKind;
-    mflog(@"ST: Matched a logical op: %@", token.value);
 }
 
 #pragma mark - Values
@@ -223,26 +205,22 @@ typedef NS_ENUM(NSUInteger, ValueType) {
 -(void) parser:(PKParser __nonnull *) parser didMatchString:(PKAssembly __nonnull *) assembly {
     _valueType = ValueTypeString;
     _value = [self stringFromToken:[parser popToken]];
-    mflog(@"ST: Matched a string: %@", _value);
 }
 
 -(void) parser:(PKParser __nonnull *) parser didMatchNumber:(PKAssembly __nonnull *) assembly {
     _valueType = ValueTypeNumber;
     _value = [parser popToken].value;
-    mflog(@"ST: Matched a number: %@", _value);
 }
 
 -(void) parser:(PKParser __nonnull *) parser didMatchNil:(PKAssembly __nonnull *) assembly {
     _valueType = ValueTypeNil;
     [parser popToken];
-    mflog(@"ST: Matched a nil");
 }
 
 -(void) parser:(PKParser __nonnull *) parser didMatchBoolean:(PKAssembly __nonnull *) assembly {
     _valueType = ValueTypeBoolean;
     NSInteger tokenKind = [parser popToken].tokenKind;
     _value = @(tokenKind == STLOGEXPRESSIONPARSER_TOKEN_KIND_TRUE || tokenKind == STLOGEXPRESSIONPARSER_TOKEN_KIND_YES_UPPER);
-    mflog(@"ST: Matched a boolean: %@", _value);
 }
 
 -(void) parser:(PKParser __nonnull *) parser didMatchClass:(PKAssembly __nonnull *) assembly {
@@ -252,7 +230,6 @@ typedef NS_ENUM(NSUInteger, ValueType) {
     if (_value == NULL) {
         [parser raise:[NSString stringWithFormat:@"Unable to find a class called %s", name]];
     }
-    mflog(@"ST: Matched a class: %@", _value);
 }
 
 -(void) parser:(PKParser __nonnull *) parser didMatchProtocol:(PKAssembly __nonnull *) assembly {
@@ -262,7 +239,6 @@ typedef NS_ENUM(NSUInteger, ValueType) {
     if (_value == NULL) {
         [parser raise:[NSString stringWithFormat:@"Unable to find a protocol called %s", name]];
     }
-    mflog(@"ST: Matched a protocol: %@", _value);
 }
 
 #pragma mark - Internal
@@ -271,7 +247,6 @@ typedef NS_ENUM(NSUInteger, ValueType) {
 
     if (_valueType == ValueTypeClass) {
         Class expected = _value;
-        mflog(@"ST: Creating a class matcher");
         return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
             return expected == key;
         }];
@@ -279,7 +254,6 @@ typedef NS_ENUM(NSUInteger, ValueType) {
 
     // Must be a protocol.
     Protocol *expected = _value;
-    mflog(@"ST: Creating a protocol matcher");
     return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
         return expected == key;
     }];
@@ -291,7 +265,6 @@ typedef NS_ENUM(NSUInteger, ValueType) {
 
     if (_valueType == ValueTypeClass) {
         Class expected = _value;
-        mflog(@"ST: Creating an object is class matcher");
         return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
             return [key isKindOfClass:expected] == expectedValue;
         }];
@@ -299,7 +272,6 @@ typedef NS_ENUM(NSUInteger, ValueType) {
 
     // Must be a protocol.
     Protocol *expected = _value;
-    mflog(@"ST: Creating an object is protocol matcher");
     return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
         return [key conformsToProtocol:expected] == expectedValue;
     }];

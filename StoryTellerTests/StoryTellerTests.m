@@ -90,7 +90,7 @@
                     methodName:(const char __nonnull *) methodName
                     lineNumber:(int) lineNumber
                        message:(NSString __nonnull *) message {
-    NSString *expected = [NSString stringWithFormat:@"<a07> %s(%i) %@", methodName, lineNumber, message];
+    NSString *expected = [NSString stringWithFormat:@"%s:%i %@", methodName, lineNumber, message];
     XCTAssertEqualObjects(expected, [self.inMemoryLogger.log[idx] substringFromIndex:13]);
 }
 

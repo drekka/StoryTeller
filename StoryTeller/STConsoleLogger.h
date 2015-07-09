@@ -15,7 +15,7 @@
 @interface STConsoleLogger : STAbstractLogger
 
 @property (nonatomic, assign) BOOL addXcodeColours;
-@property (nonatomic, strong, nonnull) UIColor *lineDetailsColour;
+@property (nonatomic, strong, nonnull) UIColor *detailsColour;
 @property (nonatomic, strong, nonnull) UIColor *messageColour;
 
 @end

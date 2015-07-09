@@ -98,12 +98,17 @@
  The main method to be called to log a message in the current logger.
  @discussion This method also handled the descision making around whether to pass the message onto the current logger or not. If going ahead, it assembles the final message and passes it to the logger.
  @param key the key to log the message under.
+ @param fileName the name of the file where the @c STLog(...) statement occurs.
  @param methodName the name of the method where the @c STLog(...) statement occurs.
  @param lineNumber the line number in the method where the @c STLog(...) statement occurs.
  @param messageTemplate a standard @c NSString format message.
  @param vaList the arguments for the @c messageTemplate's placeholders.
  */
--(void) record:(id __nonnull) key method:(const char __nonnull *) methodName lineNumber:(int) lineNumber message:(NSString __nonnull *) messageTemplate, ...;
+-(void) record:(id __nonnull) key
+          file:(const char __nonnull *) fileName
+        method:(const char __nonnull *) methodName
+    lineNumber:(int) lineNumber
+       message:(NSString __nonnull *) messageTemplate, ...;
 
 /**
  Useful helper method which executes a block of code if the key is active.

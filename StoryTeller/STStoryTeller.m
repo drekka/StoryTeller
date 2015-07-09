@@ -101,7 +101,11 @@ static __strong STStoryTeller *__storyTeller;
 
 #pragma mark - Logging
 
--(void) record:(id __nonnull) key method:(const char __nonnull *) methodName lineNumber:(int) lineNumber message:(NSString __nonnull *) messageTemplate, ... {
+-(void) record:(id __nonnull) key
+          file:(const char __nonnull *) fileName
+        method:(const char __nonnull *) methodName
+    lineNumber:(int) lineNumber
+       message:(NSString __nonnull *) messageTemplate, ... {
 
     // Only continue if the key is being logged.
     if (![self shouldLogKey:key]) {
@@ -116,6 +120,7 @@ static __strong STStoryTeller *__storyTeller;
 
     // And give it to the scribe.
     [self.logger writeMessage:msg
+                     fromFile:fileName
                    fromMethod:methodName
                    lineNumber:lineNumber
                           key:key];

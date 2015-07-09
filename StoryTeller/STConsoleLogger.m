@@ -7,36 +7,89 @@
 //
 
 #import <StoryTeller/STConsoleLogger.h>
-#define XCODE_COLOURS_TEMPLATE @"\033[fg:%i,%i,%i; %@\n   \033[fg:%i,%i,%i;%@\033[;"
 
-@implementation STConsoleLogger
+#define XCODE_COLORS_ESCAPE "\033["
+#define XCODE_COLORS_SET_TEMPLATE @"%s%s%i,%i,%i;"
+#define XCODE_COLORS_RESET     @XCODE_COLORS_ESCAPE ";"   // Clear any foreground or background color
 
--(nonnull instancetype) init {
+NS_ASSUME_NONNULL_BEGIN
+
+@implementation STConsoleLogger {
+    int _detailsR, _detailsG, _detailsB;
+    int _messageR, _messageG, _messageB;
+    NSString *_originalLineTemplate;
+}
+
+-(instancetype) init {
     self = [super init];
     if (self) {
-        _lineDetailsColour = [UIColor lightGrayColor];
-        _messageColour = [UIColor blackColor];
+        self.detailsColour = [UIColor lightGrayColor];
+        self.messageColour = [UIColor blackColor];
     }
     return self;
 }
 
--(void) writeDetails:(NSString * __nullable)details message:(NSString * __nonnull)message {
-    NSString *finalString;
-    if (_addXcodeColours) {
-        CGFloat detailsR;
-        CGFloat detailsG;
-        CGFloat detailsB;
-        CGFloat messageR;
-        CGFloat messageG;
-        CGFloat messageB;
-        [_lineDetailsColour getRed:&detailsR green:&detailsG blue:&detailsB alpha:NULL];
-        [_messageColour getRed:&messageR green:&messageG blue:&messageB alpha:NULL];
-        finalString = [NSString stringWithFormat:XCODE_COLOURS_TEMPLATE, (int)(detailsR *255.0), (int)(detailsG *255.0), (int)(detailsB *255.0), details,
-               (int)(messageR *255.0), (int)(messageG *255.0), (int)(messageB *255.0), message];
-    } else {
-        finalString = [details stringByAppendingString:message];
-    }
-    printf("%s\n", [finalString UTF8String]);
+-(void) setAddXcodeColours:(BOOL)addXcodeColours {
+    _addXcodeColours = addXcodeColours;
+    // rescan the template as ranges may have changed.
+    self.lineTemplate = _originalLineTemplate;
 }
+
+-(void) setDetailsColour:(UIColor *)detailsColour {
+    _detailsColour = detailsColour;
+    [self setRed:&_detailsR green:&_detailsG blue:&_detailsB fromColour:detailsColour];
+}
+
+-(void) setMessageColour:(UIColor *)messageColour {
+    _messageColour = messageColour;
+    [self setRed:&_messageR green:&_messageG blue:&_messageB fromColour:messageColour];
+}
+
+-(void) setRed:(int *) redVariable
+         green:(int *) greenVariable
+          blue:(int *) blueVariable
+    fromColour:(UIColor *) sourceColour {
+    CGFloat r, g, b;
+    [sourceColour getRed:&r green:&g blue:&b alpha:NULL];
+    *redVariable = (int)(r * 255.0);
+    *greenVariable = (int)(g * 255.0);
+    *blueVariable = (int)(b * 255.0);
+
+    // rescan the template as ranges may have changed.
+    self.lineTemplate = _originalLineTemplate;
+}
+
+-(void) setLineTemplate:(NSString * __nonnull)lineTemplate {
+
+    _originalLineTemplate = lineTemplate;
+
+    if (!_addXcodeColours) {
+        [super setLineTemplate:lineTemplate];
+        return;
+    }
+
+    // Figure out where the message is.
+    NSMutableString *colourizedLineTemplate = [lineTemplate mutableCopy];
+    NSRange messageRange = [colourizedLineTemplate rangeOfString:STLoggerTemplateKeyMessage];
+
+    // Build colour strings.
+    NSString *messageColour = [NSString stringWithFormat:XCODE_COLORS_SET_TEMPLATE, XCODE_COLORS_ESCAPE, "fg", _messageR, _messageG, _messageB];
+    NSString *detailsColour = [NSString stringWithFormat: XCODE_COLORS_SET_TEMPLATE, XCODE_COLORS_ESCAPE, "fg", _detailsR, _detailsG, _detailsB];
+
+    NSString *newMsg = [NSString stringWithFormat:@"%@%@%@", messageColour, STLoggerTemplateKeyMessage, detailsColour];
+    [colourizedLineTemplate replaceCharactersInRange:messageRange withString:newMsg];
+
+    [super setLineTemplate:[NSString stringWithFormat:@"%@%@%@", detailsColour, colourizedLineTemplate, XCODE_COLORS_RESET]];
+}
+
+-(NSString *) lineTemplate {
+    return _originalLineTemplate;
+}
+
+-(void) writeText:(const char __nonnull *) text {
+    printf("%s", text);
+}
+
+NS_ASSUME_NONNULL_END
 
 @end

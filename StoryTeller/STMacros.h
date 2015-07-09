@@ -43,7 +43,7 @@ _Pragma ("clang diagnostic pop") \
 [[STStoryTeller storyTeller] endScope:key]
 
 #define STLog(key, messageTemplate, ...) \
-[[STStoryTeller storyTeller] record:key method: __PRETTY_FUNCTION__ lineNumber: __LINE__ message:messageTemplate, ## __VA_ARGS__]
+[[STStoryTeller storyTeller] record:key file:__FILE__ method: __func__ lineNumber: __LINE__ message:messageTemplate, ## __VA_ARGS__]
 
 #define STExecuteBlock(key, codeBlock) \
 [[STStoryTeller storyTeller] execute:key block:codeBlock]
