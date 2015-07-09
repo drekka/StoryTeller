@@ -190,7 +190,13 @@ As you can see it's based on typical [Moustache templating](https://mustache.git
 [STStoryTeller storyTeller].logger.lineTemplate = [NSString stringWithFormat:@"%1$@\n   %2$@:%3$@", STLoggerTemplateKeyMessage, STLoggerTemplateKeyFunction, STLoggerTemplateKeyLine];
 ``` 
 
-All the above example does is build a new template string using some predefined strings. This is recommended as it's less likely to trigger mistakes. The only required keyword in any template is the `STLoggerTemplateKeyMessage` (`{{message}}`). All others are optional. Here's a list of the current keywords:
+All the above example does is build a new template string using some predefined strings. This is recommended as it's less likely to trigger mistakes. The only required keyword in any template is the `STLoggerTemplateKeyMessage` (`{{message}}`). All others are optional. Here's an example of the output from the above setup:
+
+![Log output](./Example log.png)
+
+
+
+#### Template keywords
 
 Built in variable  | Text value | Inserts a ...
 ------------- | ------------- | ------------- 
@@ -198,7 +204,10 @@ STLoggerTemplateKeyMessage | {{message}} | ***(Required)*** The finished message
 STLoggerTemplateKeyFile | {{file}} | the name of the source code file.
 STLoggerTemplateKeyFunction | {{function}} | A string representation of the method name which generated the log message.
 STLoggerTemplateKeyLine | {{line}} | The line number of the `STLog(...)` command.
-DetailsDisplayThreadId | {{threadId}} | The current thread id.
+STLoggerTemplateKeyThreadId | {{threadId}} | The current thread id.
+STLoggerTemplateKeyThreadName | {{threadName}} | he current thread's name.
+STLoggerTemplateKeyTime | {{time}} | The current time.
+STLoggerTemplateKeyTime | {{key}} | The Story Teller *key* associated with the `STLog(...)` command.
 
 # Smart Logging Criteria
 
@@ -216,7 +225,7 @@ STStartLogging(@"LogAll");
 STStartLogging(@"LogRoots");
 ```
 
-*** LogAll*** activates all log statements and disregards any other logging criteira. This is literally a turn everything on option so don't expect to use it often and it's not really what Story Teller is about.
+***LogAll*** activates all log statements and disregards any other logging criteira. This is literally a turn everything on option so don't expect to use it often and it's not really what Story Teller is about.
 
 ***LogRoots*** is similar to *LogAll* except that it only logs when there are not scopes active. The idea is to get a log showing the highlevel activity in the system. So how well it works depends on how well you setup you log statements. LogRoots will also be overridden by LogAll if it is turned on.
 
