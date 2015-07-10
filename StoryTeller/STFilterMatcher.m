@@ -22,7 +22,7 @@
     return self;
 }
 
--(BOOL) matches:(id __nonnull) key {
+-(BOOL) matches:(id __nullable) key {
     NSAssert(_nextMatcher != NULL, @"Must have a next matcher");
     return [self.nextMatcher matches:_filterBlock(key)];
 }

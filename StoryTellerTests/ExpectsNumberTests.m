@@ -41,7 +41,7 @@
 }
 
 -(void) testWhenProtocolProperty {
-    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].propertyProperty == 5" error:NULL];
+    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].protocolProperty == 5" error:NULL];
     MainClass *mainClass = [[MainClass alloc] init];
     mainClass.protocolProperty = @protocol(NSCopying);
     XCTAssertFalse([matcher matches:mainClass]);

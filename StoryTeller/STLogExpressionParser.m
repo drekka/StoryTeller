@@ -77,7 +77,7 @@
     if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_LOGALL, STLOGEXPRESSIONPARSER_TOKEN_KIND_LOGROOT, 0]) {
         [self logControlExpr_]; 
     } else if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_IS, 0]) {
-        [self runtimeExpr_]; 
+        [self runtimeCmp_]; 
     } else if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_LT_SYM, STLOGEXPRESSIONPARSER_TOKEN_KIND_OPEN_BRACKET, 0]) {
         [self objectExpr_]; 
     } else if ([self predicts:TOKEN_KIND_BUILTIN_NUMBER, TOKEN_KIND_BUILTIN_QUOTEDSTRING, TOKEN_KIND_BUILTIN_WORD, 0]) {
@@ -121,14 +121,6 @@
     [self fireDelegateSelector:@selector(parser:didMatchObjectExpr:)];
 }
 
-- (void)runtimeExpr_ {
-    
-    [self runtimeOp_]; 
-    [self runtimeObject_]; 
-
-    [self fireDelegateSelector:@selector(parser:didMatchRuntimeExpr:)];
-}
-
 - (void)logControlExpr_ {
     
     if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_LOGALL, 0]) {
@@ -158,6 +150,8 @@
         [self boolean_]; 
     } else if ([self predicts:TOKEN_KIND_BUILTIN_QUOTEDSTRING, TOKEN_KIND_BUILTIN_WORD, 0]) {
         [self string_]; 
+    } else if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_LT_SYM, STLOGEXPRESSIONPARSER_TOKEN_KIND_OPEN_BRACKET, 0]) {
+        [self runtimeObject_]; 
     } else {
         [self raise:@"No viable alternative found in rule 'objectCmp'."];
     }
@@ -181,14 +175,8 @@
 
 - (void)runtimeCmp_ {
     
-    if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ, STLOGEXPRESSIONPARSER_TOKEN_KIND_NE, 0]) {
-        [self logicalOp_]; 
-    } else if ([self predicts:STLOGEXPRESSIONPARSER_TOKEN_KIND_IS, 0]) {
-        [self runtimeOp_]; 
-    } else {
-        [self raise:@"No viable alternative found in rule 'runtimeCmp'."];
-    }
-    [self runtimeObject_]; 
+    [self runtimeOp_]; 
+    [self class_]; 
 
     [self fireDelegateSelector:@selector(parser:didMatchRuntimeCmp:)];
 }

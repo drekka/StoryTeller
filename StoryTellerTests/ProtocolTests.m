@@ -41,19 +41,4 @@
     XCTAssertEqualObjects(@"Unable to find a protocol called Abc\nLine : Unknown\n", error.localizedFailureReason);
 }
 
--(void) testIsaMatches {
-    id<STMatcher> matcher = [_factory parseExpression:@"is <AProtocol>" error:NULL];
-    XCTAssertTrue([matcher matches:@protocol(AProtocol)]);
-}
-
--(void) testIsaFailsMatch {
-    id<STMatcher> matcher = [_factory parseExpression:@"is <NSCopying>" error:NULL];
-    XCTAssertFalse([matcher matches:@protocol(AProtocol)]);
-}
-
--(void) testIsaFailsMatchWhenNotAProtocol {
-    id<STMatcher> matcher = [_factory parseExpression:@"is <NSCopying>" error:NULL];
-    XCTAssertFalse([matcher matches:@(12)]);
-}
-
 @end

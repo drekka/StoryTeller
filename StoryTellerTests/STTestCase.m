@@ -10,8 +10,6 @@
 #import <StoryTeller/STStoryTeller.h>
 #import "InMemoryLogger.h"
 
-@import ObjectiveC;
-
 @implementation STTestCase
 
 -(void) setUp {
@@ -21,11 +19,6 @@
 
 -(InMemoryLogger *) inMemoryLogger {
     return (InMemoryLogger *) [STStoryTeller storyTeller].logger;
-}
-
--(void) testProtocol {
-    Protocol *copying = @protocol(NSCopying);
-    [copying isKindOfClass:[NSString class]];
 }
 
 @end

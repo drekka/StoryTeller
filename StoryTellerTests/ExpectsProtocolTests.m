@@ -24,27 +24,6 @@
     _factory = [[STLogExpressionParserDelegate alloc] init];
 }
 
--(void) testProtocolMatches {
-    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].protocolProperty is <AProtocol>" error:NULL];
-    MainClass *mainClass = [[MainClass alloc] init];
-    mainClass.protocolProperty = @protocol(AProtocol);
-    XCTAssertTrue([matcher matches:mainClass]);
-}
-
--(void) testWhenAStringProperty {
-    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].stringProperty is <AProtocol>" error:NULL];
-    MainClass *mainClass = [[MainClass alloc] init];
-    mainClass.stringProperty = @"abc";
-    XCTAssertFalse([matcher matches:mainClass]);
-}
-
--(void) testWhenAClassProperty {
-    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].classProperty is <AProtocol>" error:NULL];
-    MainClass *mainClass = [[MainClass alloc] init];
-    mainClass.classProperty = [NSString class];
-    XCTAssertFalse([matcher matches:mainClass]);
-}
-
 -(void) testMatches {
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].subClassProperty == <AProtocol>" error:NULL];
     MainClass *mainClass = [[MainClass alloc] init];
