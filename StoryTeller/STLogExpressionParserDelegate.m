@@ -66,10 +66,6 @@ typedef NS_ENUM(NSUInteger, ValueType) {
     [self addMatcher:_valueType == ValueTypeNumber ? [STMatcherFactory eqNumberMatcher:_value] : [STMatcherFactory eqStringMatcher:_value]];
 }
 
--(void) parser:(PKParser * __nonnull)parser didMatchRuntimeExpr:(PKAssembly * __nonnull)assembly {
-    [self addMatcher:[STMatcherFactory isaClassMatcher:_value]];
-}
-
 -(void) parser:(PKParser __nonnull *) parser didMatchObjectType:(PKAssembly __nonnull *) assembly {
     [self addMatcher:[self objectTypeMatcherFromValue]];
 }
@@ -116,12 +112,8 @@ typedef NS_ENUM(NSUInteger, ValueType) {
 
 }
 
--(void) parser:(PKParser __nonnull *) parser didMatchRuntimeCmp:(PKAssembly __nonnull *) assembly {
-    if (_op == STLOGEXPRESSIONPARSER_TOKEN_KIND_IS) {
-        [self addMatcher:[STMatcherFactory isaClassMatcher:_value]];
-    } else {
-        [self addMatcher:[self objectTypeMatcherFromValue]];
-    }
+-(void) parser:(PKParser * __nonnull)parser didMatchRuntimeCmp:(PKAssembly * __nonnull)assembly {
+    [self addMatcher:[STMatcherFactory isaClassMatcher:_value]];
 }
 
 -(void) parser:(PKParser __nonnull *) parser didMatchObjectCmp:(PKAssembly __nonnull *) assembly {
@@ -130,6 +122,15 @@ typedef NS_ENUM(NSUInteger, ValueType) {
     BOOL isEqual = _op == STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ;
 
     switch (_valueType) {
+
+        case ValueTypeClass:
+            [self addMatcher:isEqual ? [STMatcherFactory isKindOfClassMatcher:_value] : [STMatcherFactory isNotKindOfClassMatcher:_value]];
+            break;
+
+        case ValueTypeProtocol:
+            [self addMatcher:isEqual ? [STMatcherFactory conformsToProtocolMatcher:_value] : [STMatcherFactory notConformsToProtocolMatcher:_value]];
+            break;
+
         case ValueTypeBoolean: {
             if (isEqual) {
                 [self addMatcher:((NSNumber *)_value).boolValue ? [STMatcherFactory isTrueMatcher] : [STMatcherFactory isFalseMatcher]];

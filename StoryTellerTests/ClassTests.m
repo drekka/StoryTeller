@@ -50,7 +50,7 @@
 
 -(void) testClassFailsMatchWhenClass {
     id<STMatcher> matcher = [_factory parseExpression:@"[NSString]" error:NULL];
-    XCTAssertFalse([matcher matches:[NSString class]]);
+    XCTAssertTrue([matcher matches:[NSString class]]);
 }
 
 -(void) testIsaClassMatches {
