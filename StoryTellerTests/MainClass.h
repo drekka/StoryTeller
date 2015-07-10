@@ -13,6 +13,6 @@
 @interface MainClass : NSObject<AProtocol>
 @property (nonatomic, strong) NSString *stringProperty;
 @property (nonatomic, strong) SubClass *subClassProperty;
-@property (nonatomic, assign) Class classProperty;
+@property (nonatomic, strong) Class classProperty;
 @property (nonatomic, strong) Protocol *protocolProperty;
 @end

@@ -9,13 +9,13 @@
 #import <StoryTeller/STStoryTeller.h>
 #import <StoryTeller/STConfig.h>
 #import "STMatcher.h"
-#import "STExpressionMatcherFactory.h"
+#import "STLogExpressionParserDelegate.h"
 
 @implementation STStoryTeller {
     NSMutableSet *_activeKeys;
     NSMutableSet<id<STMatcher>> *_logMatchers;
     STConfig *_config;
-    STExpressionMatcherFactory *_expressionMatcherFactory;
+    STLogExpressionParserDelegate *_expressionMatcherFactory;
 }
 
 static __strong STStoryTeller *__storyTeller;
@@ -38,7 +38,7 @@ static __strong STStoryTeller *__storyTeller;
     if (self) {
         _activeKeys = [[NSMutableSet alloc] init];
         _logMatchers = [[NSMutableSet alloc] init];
-        _expressionMatcherFactory = [[STExpressionMatcherFactory alloc] init];
+        _expressionMatcherFactory = [[STLogExpressionParserDelegate alloc] init];
         _config = [[STConfig alloc] init];
     }
     return self;

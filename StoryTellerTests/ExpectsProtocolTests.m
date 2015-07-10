@@ -1,5 +1,5 @@
 //
-//  STExpressionMatcherFactoryTests.m
+//  STLogExpressionParserDelegateTests.m
 //  StoryTeller
 //
 //  Created by Derek Clarkson on 25/06/2015.
@@ -7,7 +7,7 @@
 //
 
 @import XCTest;
-#import "STExpressionMatcherFactory.h"
+#import "STLogExpressionParserDelegate.h"
 #import "STMatcher.h"
 #import "MainClass.h"
 #import "SubClass.h"
@@ -17,11 +17,11 @@
 @end
 
 @implementation ExpectsProtocolTests {
-    STExpressionMatcherFactory *_factory;
+    STLogExpressionParserDelegate *_factory;
 }
 
 -(void) setUp {
-    _factory = [[STExpressionMatcherFactory alloc] init];
+    _factory = [[STLogExpressionParserDelegate alloc] init];
 }
 
 -(void) testProtocolMatches {
@@ -31,10 +31,17 @@
     XCTAssertTrue([matcher matches:mainClass]);
 }
 
--(void) testProtocolFailsMatchWhenAStringProperty {
+-(void) testWhenAStringProperty {
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].stringProperty is <AProtocol>" error:NULL];
     MainClass *mainClass = [[MainClass alloc] init];
     mainClass.stringProperty = @"abc";
+    XCTAssertFalse([matcher matches:mainClass]);
+}
+
+-(void) testWhenAClassProperty {
+    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].classProperty is <AProtocol>" error:NULL];
+    MainClass *mainClass = [[MainClass alloc] init];
+    mainClass.classProperty = [NSString class];
     XCTAssertFalse([matcher matches:mainClass]);
 }
 

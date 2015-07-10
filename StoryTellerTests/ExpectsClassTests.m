@@ -1,5 +1,5 @@
 //
-//  STExpressionMatcherFactoryTests.m
+//  STLogExpressionParserDelegateTests.m
 //  StoryTeller
 //
 //  Created by Derek Clarkson on 25/06/2015.
@@ -7,7 +7,7 @@
 //
 
 @import XCTest;
-#import "STExpressionMatcherFactory.h"
+#import "STLogExpressionParserDelegate.h"
 #import "STMatcher.h"
 #import "MainClass.h"
 #import "SubClass.h"
@@ -17,12 +17,14 @@
 @end
 
 @implementation ExpectsClassTests {
-    STExpressionMatcherFactory *_factory;
+    STLogExpressionParserDelegate *_factory;
 }
 
 -(void) setUp {
-    _factory = [[STExpressionMatcherFactory alloc] init];
+    _factory = [[STLogExpressionParserDelegate alloc] init];
 }
+
+#pragma mark - Class objects
 
 -(void) testClassMatches {
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].classProperty is [SubClass]" error:NULL];
@@ -38,19 +40,40 @@
     XCTAssertFalse([matcher matches:mainClass]);
 }
 
--(void) testClassfailsMatchWhenAStringProperty {
+#pragma mark - Type checking
+
+-(void) testWhenAStringProperty {
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].stringProperty is [SubClass]" error:NULL];
     MainClass *mainClass = [[MainClass alloc] init];
     mainClass.stringProperty = @"abc";
     XCTAssertFalse([matcher matches:mainClass]);
 }
 
--(void) testClassfailsMatchWhenAProtocolProperty {
+-(void) testWhenAProtocolProperty {
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].protocolProperty is [SubClass]" error:NULL];
     MainClass *mainClass = [[MainClass alloc] init];
     mainClass.protocolProperty = @protocol(NSCopying);
     XCTAssertFalse([matcher matches:mainClass]);
 }
+
+-(void) testWhenAIntProperty {
+    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].intProperty is [SubClass]" error:NULL];
+    MainClass *mainClass = [[MainClass alloc] init];
+    mainClass.intProperty = 5;
+    XCTAssertFalse([matcher matches:mainClass]);
+}
+
+#pragma mark - Op tests
+
+-(void) testWhenAIntPropertyEquals {
+    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].intProperty == [SubClass]" error:NULL];
+    MainClass *mainClass = [[MainClass alloc] init];
+    mainClass.intProperty = 5;
+    XCTAssertFalse([matcher matches:mainClass]);
+}
+
+
+#pragma mark - Path tests
 
 -(void) testMatches {
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].subClassProperty == [SubClass]" error:NULL];

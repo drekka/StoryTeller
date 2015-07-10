@@ -1,5 +1,5 @@
 //
-//  STExpressionMatcherFactory.m
+//  STLogExpressionParserDelegate.m
 //  StoryTeller
 //
 //  Created by Derek Clarkson on 25/06/2015.
@@ -10,11 +10,10 @@
 #import <PEGKit/PEGKit.h>
 
 #import <StoryTeller/STStoryTeller.h>
-#import "STExpressionMatcherFactory.h"
+#import "STLogExpressionParserDelegate.h"
 
 #import "STLogExpressionParser.h"
-#import "STCompareMatcher.h"
-#import "STFilterMatcher.h"
+#import "STMatcherFactory.h"
 
 typedef NS_ENUM(NSUInteger, ValueType) {
     ValueTypeString,
@@ -25,7 +24,7 @@ typedef NS_ENUM(NSUInteger, ValueType) {
     ValueTypeProtocol
 };
 
-@implementation STExpressionMatcherFactory {
+@implementation STLogExpressionParserDelegate {
     id<STMatcher> _rootMatcher;
     NSInteger _op;
     id _value;
@@ -64,21 +63,11 @@ typedef NS_ENUM(NSUInteger, ValueType) {
 #pragma mark - Expressions
 
 -(void) parser:(PKParser * __nonnull)parser didMatchSingleKeyExpr:(PKAssembly * __nonnull)assembly {
-    if (_valueType == ValueTypeNumber) {
-        NSNumber *expected = _value;
-        [self addMatcher:[[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
-            return [key isKindOfClass:[NSNumber class]] && [expected compare:key] == NSOrderedSame;
-        }]];
-    } else {
-        NSString *expected = _value;
-        [self addMatcher:[[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
-            return [key isKindOfClass:[NSString class]] && [expected isEqualToString:key];
-        }]];
-    }
+    [self addMatcher:_valueType == ValueTypeNumber ? [STMatcherFactory eqNumberMatcher:_value] : [STMatcherFactory eqStringMatcher:_value]];
 }
 
 -(void) parser:(PKParser * __nonnull)parser didMatchRuntimeExpr:(PKAssembly * __nonnull)assembly {
-    [self addMatcher:[self runtimeMatcherFromValue]];
+    [self addMatcher:[STMatcherFactory isaClassMatcher:_value]];
 }
 
 -(void) parser:(PKParser __nonnull *) parser didMatchObjectType:(PKAssembly __nonnull *) assembly {
@@ -93,62 +82,43 @@ typedef NS_ENUM(NSUInteger, ValueType) {
     }
 
     NSString *keyPath = [paths componentsJoinedByString:@"."];
-    [self addMatcher:[[STFilterMatcher alloc] initWithFilter:^id(id  __nonnull key) {
-        return [key valueForKeyPath:keyPath];
-    }]];
+    [self addMatcher:[STMatcherFactory keyPathFilter:keyPath]];
 }
 
 -(void) parser:(PKParser __nonnull *) parser didMatchNumericCmp:(PKAssembly __nonnull *) assembly {
 
-    BOOL (^comparison) (NSNumber *n1, NSNumber *n2);
     switch (_op) {
         case STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ:
-            comparison = ^BOOL(NSNumber *n1, NSNumber *n2) {
-                return [n1 compare:n2] == NSOrderedSame;
-            };
+            [self addMatcher:[STMatcherFactory eqNumberMatcher:_value]];
             break;
 
         case STLOGEXPRESSIONPARSER_TOKEN_KIND_GT_SYM:
-            comparison = ^BOOL(NSNumber *n1, NSNumber *n2) {
-                return [n1 compare:n2] > NSOrderedSame;
-            };
+            [self addMatcher:[STMatcherFactory gtNumberMatcher:_value]];
             break;
 
         case STLOGEXPRESSIONPARSER_TOKEN_KIND_GE:
-            comparison = ^BOOL(NSNumber *n1, NSNumber *n2) {
-                return [n1 compare:n2] >= NSOrderedSame;
-            };
+            [self addMatcher:[STMatcherFactory geNumberMatcher:_value]];
             break;
 
         case STLOGEXPRESSIONPARSER_TOKEN_KIND_LT_SYM:
-            comparison = ^BOOL(NSNumber *n1, NSNumber *n2) {
-                return [n1 compare:n2] < NSOrderedSame;
-            };
+            [self addMatcher:[STMatcherFactory ltNumberMatcher:_value]];
             break;
 
         case STLOGEXPRESSIONPARSER_TOKEN_KIND_LE:
-            comparison = ^BOOL(NSNumber *n1, NSNumber *n2) {
-                return [n1 compare:n2] <= NSOrderedSame;
-            };
+            [self addMatcher:[STMatcherFactory leNumberMatcher:_value]];
             break;
 
         default:
             // NE
-            comparison = ^BOOL(NSNumber *n1, NSNumber *n2) {
-                return [n1 compare:n2] != NSOrderedSame;
-            };
+            [self addMatcher:[STMatcherFactory neNumberMatcher:_value]];
             break;
     }
 
-    NSNumber *expected = _value;
-    [self addMatcher:[[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
-        return [key isKindOfClass:[NSNumber class]] && comparison((NSNumber *) key, expected);
-    }]];
 }
 
 -(void) parser:(PKParser __nonnull *) parser didMatchRuntimeCmp:(PKAssembly __nonnull *) assembly {
     if (_op == STLOGEXPRESSIONPARSER_TOKEN_KIND_IS) {
-        [self addMatcher:[self runtimeMatcherFromValue]];
+        [self addMatcher:[STMatcherFactory isaClassMatcher:_value]];
     } else {
         [self addMatcher:[self objectTypeMatcherFromValue]];
     }
@@ -157,28 +127,24 @@ typedef NS_ENUM(NSUInteger, ValueType) {
 -(void) parser:(PKParser __nonnull *) parser didMatchObjectCmp:(PKAssembly __nonnull *) assembly {
 
     // Use the op to decide the expected true/false result.
-    BOOL expectedResult = _op == STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ;
+    BOOL isEqual = _op == STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ;
 
     switch (_valueType) {
         case ValueTypeBoolean: {
-            BOOL expected = ((NSNumber *)_value).boolValue;
-            [self addMatcher:[[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
-                return [key isKindOfClass:[NSNumber class]] && (expected == ((NSNumber *) key).boolValue) == expectedResult;
-            }]];
+            if (isEqual) {
+                [self addMatcher:((NSNumber *)_value).boolValue ? [STMatcherFactory isTrueMatcher] : [STMatcherFactory isFalseMatcher]];
+            } else {
+                [self addMatcher:((NSNumber *)_value).boolValue ? [STMatcherFactory isFalseMatcher] : [STMatcherFactory isTrueMatcher]];
+            }
             break;
         }
 
         case ValueTypeNil:
-            [self addMatcher:[[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
-                return (key == nil) == expectedResult;
-            }]];
+            [self addMatcher:isEqual ? [STMatcherFactory eqNilMatcher] : [STMatcherFactory neNilMatcher]];
             break;
 
         default: {
-            NSString *expected = _value;
-            [self addMatcher:[[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
-                return [key isKindOfClass:[NSString class]] && [expected isEqualToString:key] == expectedResult;
-            }]];
+            [self addMatcher:isEqual ? [STMatcherFactory eqStringMatcher:_value] : [STMatcherFactory neStringMatcher:_value]];
         }
     }
 }
@@ -243,38 +209,12 @@ typedef NS_ENUM(NSUInteger, ValueType) {
 
 #pragma mark - Internal
 
--(id<STMatcher>) runtimeMatcherFromValue {
-
-    if (_valueType == ValueTypeClass) {
-        Class expected = _value;
-        return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
-            return expected == key;
-        }];
-    }
-
-    // Must be a protocol.
-    Protocol *expected = _value;
-    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
-        return expected == key;
-    }];
-}
-
 -(id<STMatcher>) objectTypeMatcherFromValue {
-
-    BOOL expectedValue = _op == STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ;
-
+    BOOL isEqual = _op == STLOGEXPRESSIONPARSER_TOKEN_KIND_EQ;
     if (_valueType == ValueTypeClass) {
-        Class expected = _value;
-        return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
-            return [key isKindOfClass:expected] == expectedValue;
-        }];
+        return isEqual ? [STMatcherFactory isKindOfClassMatcher:_value] : [STMatcherFactory isNotKindOfClassMatcher:_value];
     }
-
-    // Must be a protocol.
-    Protocol *expected = _value;
-    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
-        return [key conformsToProtocol:expected] == expectedValue;
-    }];
+    return isEqual ? [STMatcherFactory conformsToProtocolMatcher:_value] : [STMatcherFactory notConformsToProtocolMatcher:_value];
 }
 
 

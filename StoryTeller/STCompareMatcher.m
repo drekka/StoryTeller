@@ -9,20 +9,20 @@
 #import "STCompareMatcher.h"
 
 @implementation STCompareMatcher {
-    BOOL (^ __nonnull _compareBlock)(__nonnull id key);
+    BOOL (^ __nonnull _compareBlock)(__nullable id key);
 }
 
 @synthesize nextMatcher = _nextMatcher;
 
--(nonnull instancetype) initWithCompare:(BOOL (^ __nonnull)(__nonnull id key)) compareBlock {
+-(nonnull instancetype) initWithCompare:(BOOL (^ __nonnull)(__nullable id key)) compareBlock {
     self = [super init];
     if (self) {
-        _compareBlock = [compareBlock copy];
+        _compareBlock = compareBlock;
     }
     return self;
 }
 
--(BOOL) matches:(id __nonnull) key {
+-(BOOL) matches:(id __nullable) key {
     return _compareBlock(key)
     && (self.nextMatcher == nil ? YES : [self.nextMatcher matches:key]);
 }

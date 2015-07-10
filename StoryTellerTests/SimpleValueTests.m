@@ -1,5 +1,5 @@
 //
-//  STExpressionMatcherFactoryTests.m
+//  STLogExpressionParserDelegateTests.m
 //  StoryTeller
 //
 //  Created by Derek Clarkson on 25/06/2015.
@@ -7,7 +7,7 @@
 //
 
 @import XCTest;
-#import "STExpressionMatcherFactory.h"
+#import "STLogExpressionParserDelegate.h"
 #import "STMatcher.h"
 #import "MainClass.h"
 #import "SubClass.h"
@@ -17,11 +17,11 @@
 @end
 
 @implementation SimpleValueTests {
-    STExpressionMatcherFactory *_factory;
+    STLogExpressionParserDelegate *_factory;
 }
 
 -(void) setUp {
-    _factory = [[STExpressionMatcherFactory alloc] init];
+    _factory = [[STLogExpressionParserDelegate alloc] init];
 }
 
 #pragma mark - Simple values

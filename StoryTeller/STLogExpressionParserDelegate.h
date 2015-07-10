@@ -1,5 +1,5 @@
 //
-//  STExpressionMatcherFactory.h
+//  STLogExpressionParserDelegate.h
 //  StoryTeller
 //
 //  Created by Derek Clarkson on 25/06/2015.
@@ -11,7 +11,7 @@
 @class STStoryTeller;
 #import "STMatcher.h"
 
-@interface STExpressionMatcherFactory : NSObject
+@interface STLogExpressionParserDelegate : NSObject
 
 -(nullable id<STMatcher>) parseExpression:(NSString __nonnull *) expression
                                     error:(NSError *__autoreleasing  __nullable * __nullable) error;

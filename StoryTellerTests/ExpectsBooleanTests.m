@@ -1,5 +1,5 @@
 //
-//  STExpressionMatcherFactoryTests.m
+//  STLogExpressionParserDelegateTests.m
 //  StoryTeller
 //
 //  Created by Derek Clarkson on 25/06/2015.
@@ -7,7 +7,7 @@
 //
 
 @import XCTest;
-#import "STExpressionMatcherFactory.h"
+#import "STLogExpressionParserDelegate.h"
 #import "STMatcher.h"
 #import "MainClass.h"
 #import "SubClass.h"
@@ -17,11 +17,11 @@
 @end
 
 @implementation ExpectsBooleanTests {
-    STExpressionMatcherFactory *_factory;
+    STLogExpressionParserDelegate *_factory;
 }
 
 -(void) setUp {
-    _factory = [[STExpressionMatcherFactory alloc] init];
+    _factory = [[STLogExpressionParserDelegate alloc] init];
 }
 
 
@@ -68,7 +68,9 @@
     XCTAssertTrue([matcher matches:mainClass]);
 }
 
--(void) testFailsMatchWhenAInstanceProperty {
+#pragma mark - Type checking
+
+-(void) testWhenInstanceProperty {
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].subClassProperty == YES" error:NULL];
     MainClass *mainClass = [[MainClass alloc] init];
     SubClass *subClass = [[SubClass alloc] init];
@@ -76,7 +78,7 @@
     XCTAssertFalse([matcher matches:mainClass]);
 }
 
--(void) testFailsMatchWhenAStringProperty {
+-(void) testWhenAStringProperty {
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].stringProperty == YES" error:NULL];
     MainClass *mainClass = [[MainClass alloc] init];
     SubClass *subClass = [[SubClass alloc] init];
@@ -84,7 +86,7 @@
     XCTAssertFalse([matcher matches:mainClass]);
 }
 
--(void) testFailsMatchWhenAProtocolProperty {
+-(void) testWhenAProtocolProperty {
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].protocolProperty == YES" error:NULL];
     MainClass *mainClass = [[MainClass alloc] init];
     SubClass *subClass = [[SubClass alloc] init];
@@ -92,13 +94,15 @@
     XCTAssertFalse([matcher matches:mainClass]);
 }
 
--(void) testFailsMatchWhenAIntProperty {
+-(void) testWhenAIntProperty {
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].intProperty == YES" error:NULL];
     MainClass *mainClass = [[MainClass alloc] init];
     SubClass *subClass = [[SubClass alloc] init];
     mainClass.subClassProperty = subClass;
     XCTAssertFalse([matcher matches:mainClass]);
 }
+
+#pragma mark - Op checking
 
 -(void) testInvalidOp {
     NSError *error = nil;

@@ -27,6 +27,4 @@
     return [self.nextMatcher matches:_filterBlock(key)];
 }
 
-
-
 @end

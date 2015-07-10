@@ -1,5 +1,5 @@
 //
-//  STExpressionMatcherFactoryTests.m
+//  STLogExpressionParserDelegateTests.m
 //  StoryTeller
 //
 //  Created by Derek Clarkson on 25/06/2015.
@@ -9,19 +9,19 @@
 @import XCTest;
 #import <OCMock/OCMock.h>
 #import <StoryTeller/StoryTeller.h>
-#import "STExpressionMatcherFactory.h"
+#import "STLogExpressionParserDelegate.h"
 #import "STMatcher.h"
 
 @interface OptionsTests : XCTestCase
 @end
 
 @implementation OptionsTests {
-    STExpressionMatcherFactory *_factory;
+    STLogExpressionParserDelegate *_factory;
     id _mockStoryTeller;
 }
 
 -(void) setUp {
-    _factory = [[STExpressionMatcherFactory alloc] init];
+    _factory = [[STLogExpressionParserDelegate alloc] init];
 
     // Mock out story teller.
     _mockStoryTeller = OCMClassMock([STStoryTeller class]);
