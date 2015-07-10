@@ -248,7 +248,7 @@ typedef NS_ENUM(NSUInteger, ValueType) {
     if (_valueType == ValueTypeClass) {
         Class expected = _value;
         return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nonnull key) {
-            return [(Class)key isSubclassOfClass:expected];
+            return expected == key;
         }];
     }
 
