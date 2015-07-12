@@ -290,29 +290,26 @@ As you can see there is a lot of power here to decide what gets logged. Values f
 
 ## Runtim criteria
 
-*Rarely used, but I needed it for another project.* 
-
-Sometimes you might use a Class or Protocol object for a key, or want to search on a property that returns a Class or Protocol. In those cases you can use the **is** keyword to tell Story Teller to look for the matching Class or Protocol rather than testing an object to see if it implements the type. 
+Sometimes the best object o use for a key is a `Class` object. Or (rarely) you want to search on a property that returns a Class. In those cases you can use the **is** keyword to tell Story Teller to look for a Class rather than testing an object. 
 
 For example:
 
 ```objectivec
 STLog([User class], @"Log message for class");
-STLog(@protocol(NSCopying), @"Log message for NSCopying");
 ```
 
 Looking for Class or Protocol keys
 
 ```objectivec
 STStartLogging(@"is [User]");
-STStartLogging(@"is <NSCopying>");
 ```
 
-Looking for Class or Protocol values in properties
+This difference here is that Story Teller looks for a Class object rather than an instance of the class.
+
+Looking for Class values in properties
 
 ```objectivec
 STStartLogging(@"[User].accountClass is [MerchantAccount]");
-STStartLogging(@"[User].bankingProtocol is <InternetBanking>");
 ```
 
 # Execution blocks
