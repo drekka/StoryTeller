@@ -26,11 +26,6 @@ NS_ASSUME_NONNULL_BEGIN
         self.detailsColour = [UIColor lightGrayColor];
         self.messageColour = [UIColor blackColor];
 
-        [[NSProcessInfo processInfo].environment enumerateKeysAndObjectsUsingBlock:^(NSString * __nonnull key, NSString * __nonnull obj, BOOL * __nonnull stop) {
-            NSLog(@">>>>> %@ = %@", key, obj)
-            ;        }];
-
-
         // CHeck for xcode colours.
         char *xcode_colors = getenv("XcodeColors");
         [self setAddXcodeColours:xcode_colors && (strcmp(xcode_colors, "YES") == 0) ];
