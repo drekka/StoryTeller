@@ -1,4 +1,16 @@
-# StoryTeller
+# StoryTeller 
+
+* [Quick start](#quick-start)
+* [Installation](#installation)
+* [Adding logging](#adding-logging-to-your-code)
+* [Configuration](#configuring-logging)
+* [Smart logging criteria](#smart-logging-criteria)
+* [Execution blocks](#execution-blocks)
+* [Async logging](#async)
+* [Performance](#performance)
+
+[![GitHub license](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://raw.githubusercontent.com/drekka/StoryTeller/master/LICENSE)
+
 A logging framework that promotes following data rather than functionality in logs.
 
 ### WTF - Another logging framework!!!
@@ -7,9 +19,34 @@ Yep. Another one. But with a difference ...
 
 The idea that drives Story Teller is quite simple: ***To debug an application, developers need to see the threads of data as they weave their way through the code.***
 
-Other logging frameworks use a very crass shotgun approach (IMHO) base on assuming that the *severity* of a log statement can be used to derive useful logging output. There is no way to target the logging and usually a huge amount of useless output is produced. The real problem with these frameworks is that they are based on old Java frameworks built for systems where CPU and storage are unlimited, and where people don't care about producing millions of lines of text that no-one will read. Even on servers these frameworks are wasteful and don't work that well for debugging. 
+Other logging frameworks use a very crass shotgun approach (IMHO) base on assuming that the *severity* of a log statement can be used to derive useful logging output. There is no way to target the logging and usually a huge amount of useless output is produced. The real problem with these frameworks is that they are based on dated assumptions and designs from systems where CPU and storage are unlimited, and where producing Gigabytes of logs is thought to be useful. Mostly by people who have no idea what developers actually need. 
 
-Story Teller takes a different approch - it combines the ability to base logging on dynamic data driven *Keys* with a simply query driven logging criteria to activate the logs. This enabled the developer to target their logging on the specific data. The result is very concise logs which only contain output related to the problem at hand.
+Story Teller takes a different approch - it targets what developers acutally need by combining the ability to base logging on dynamic data driven *Keys*, with a query driven logging criteria. This enabled the developer to target their logging on the specific data relevant to the problem at hand. This produces very concise logs which contain only relevant and useful information.
+
+# Quick start
+
+1. Install (see [below](#installation))
+
+2. Log some stuff using any key you like: 
+
+ ```objectivec
+STLog(user, "User %@ is logging", user.id);
+STLog(@(EnumValueGUI), "GUI is doing %@ with %@", aGUIValue, anotherGUIVaue);
+STLog(currentView, "GUI is doing something with %@", currentView);
+STLog(@"abc", @"ABC, ha ha ha ha ha");
+```
+
+3. Turn on targetted logging:
+
+ ```objectivec
+STStartLogging(@"[User].account.name == \"derek's account\"");
+STStartLogging(@"[User].account.balance > 500");
+STStartLogging(@"GUI");
+STStartLogging(@"<UserAccount>");
+STStartLogging(@"<Banking>.customer != <Banker>");
+```
+
+4. See just what you need in the logs !
 
 # Installation
 
@@ -49,7 +86,7 @@ Another fine way to include Story Teller is to use [Git Submodules](https://chri
 Story Teller has one basic logging statement:
 
 ```objectivec
-log(<key>, <message-template>, <args ...>); 
+STLog(<key>, <message-template>, <args ...>); 
 ```
 This looks very similar to other logging frameworks. Except that they would either having `key` replaced with a severity level, or have multiple statements such as `logDebug`, `logInfo`, etc. 
 
@@ -58,10 +95,10 @@ This looks very similar to other logging frameworks. Except that they would eith
 Story Teller's ***Key*** is the important differentiator between it and these other logging frameworks. With Story Teller, *the key can be anything you want !"* An account number, a user id, a class, or any object you want to be able to base a search on when debugging and whatever makes sense in your app. Here are some examples:
 
 ```objectivec
-log(user, "User %@ is logging", user.id);
-log(@(EnumValueGUI), "GUI is doing %@ with %@", aGUIValue, anotherGUIVaue);
-log(currentView, "GUI is doing something with %@", currentView);
-log(@"abc", @"ABC, ha ha ha ha ha");
+STLog(user, "User %@ is logging", user.id);
+STLog(@(EnumValueGUI), "GUI is doing %@ with %@", aGUIValue, anotherGUIVaue);
+STLog(currentView, "GUI is doing something with %@", currentView);
+STLog(@"abc", @"ABC, ha ha ha ha ha");
 ```
 
 ## What if I don't have an accessible key?
@@ -69,19 +106,19 @@ log(@"abc", @"ABC, ha ha ha ha ha");
 Often you might want to log based on something , but be in some method that doesn't have access to that data. Story Teller solves this with the concept of **Key Scopes**. You can tell it to make a specific key cover a range of log statements any log statements that are in that scope are regarded as being logged under the scope's key. Here's an example:
 
 ```objectivec
-log(user.id, "User %@ is logging", user.id);
-startScope(user.id);
+STLog(user, "User %@ is logging", user.id);
+STStartScope(user.id);
 /// ...  do stuff
-log(account.id, "User %@'s account: %@", user.id, account.id); 
+STLog(account, "User %@'s account: %@", user.id, account.id); 
 [self goDoSomethingWithAccount:account];
 ```
 
-When reporting based on user, the second log statement ( `key:account.id` ) will also be printed because it's within the scope of user.
+When reporting based on user, the second log statement (key:account) will also be printed because it's within the scope of user.
 
-Scopes follow the normal Objective-C rules plus a few more: 
+Scopes follow these rules: 
 
- * They will continue until the end of the current variable scope. Normally this is the end of the current method, loop or if statement. 
- * Story Teller's scopes also include any code called. So any logging within a method or API is also included with the scope. This enables logging across a wide range of classes to be accessed using one key without having to specifically pass that key around.  
+ * Normal Objective-C scopes for variables. This is because under the hood, Story Teller is using a dynamically added variable to detect when the scope ends. Normally this is the end of the current method, loop or if statement. Assume a `STScopeStart(...)` is a variable declaration and you will ge the idea. 
+ * Story Teller's then includes any called code. So any logging within a method or API is also included with the scope. This enables logging across a wide range of classes to be accessed using one key without having to specifically pass that key around.  
 
  In the above example, any logging with in `goDoSomethingWithAccount:` will also be logged when logging for the user.
 
@@ -115,19 +152,66 @@ Current the Json file has two settings and looks something like this:
 Key  | Value
 ------------- | -------------
 activeLogs | A comma separated list of keys to activate. This is the main setting for turning on logging.
-loggerClass | If you want to set a different class for the, use this setting to specify the class. The class must implement `STLogger` and have a no-arg constructor. You only need to put the class name in this setting. Story Teller will handle the rest. By default, Story Teller uses a simple console logger.
+loggerClass | If you want to set a different class for the, use this setting to specify the class. The class must implement `<STLogger>` and have a no-arg constructor. You only need to put the class name in this setting. Story Teller will handle the rest. By default, Story Teller uses a simple console logger.
 
 ## Programmatically
 
 You can also programmically enable and disable logging as well. To enable logging, use this statement:
 
 ```objectivec
-startLogging(<key>);
+STStartLogging(<key>);
 ```
+
+## XCodeColors & Logging templates
+
+[XCodeColors](https://github.com/robbiehanson/XcodeColors) is an excellant tool for colour coding your XCode console output. Story Teller supports using it to colour code the details and message of the output. In addition, you can also fully customise the layout of the log lines. 
+
+### [XCodeColors](https://github.com/robbiehanson/XcodeColors)
+
+If you have XcodeColors installed you can use the following setup to configure Story Tellers console logger. This *Only* works for the `STConsoleLogger`.
+
+```objectivec
+((STConsoleLogger *)[STStoryTeller storyTeller].logger).addXcodeColours = YES;
+
+// Only need these if you want to change from the default colours. Which are these colours !
+((STConsoleLogger *)[STStoryTeller storyTeller].logger).messageColour = [UIColor blackColor];
+((STConsoleLogger *)[STStoryTeller storyTeller].logger).detailsColour = [UIColor lightGrayColor];
+```
+
+### Customising the logging template.
+
+The default template for a logged line looks like this:
+
+`{{time}} {{function}}:{{line}} {{message}}`
+
+As you can see it's based on typical [Moustache templating](https://mustache.github.io) using curly brackets and keywords to define where to insert various pieces of information. Naturally you can customize this. Here's how:
+
+```objectivec
+[STStoryTeller storyTeller].logger.lineTemplate = [NSString stringWithFormat:@"%1$@\n   %2$@:%3$@", STLoggerTemplateKeyMessage, STLoggerTemplateKeyFunction, STLoggerTemplateKeyLine];
+``` 
+
+All the above example does is build a new template string using some predefined strings. This is recommended as it's less likely to trigger mistakes. The only required keyword in any template is the `STLoggerTemplateKeyMessage` (`{{message}}`). All others are optional. Here's an example of the output from the above setup:
+
+![Log output](./Example log.png)
+
+
+
+#### Template keywords
+
+Built in variable  | Text value | Inserts a ...
+------------- | ------------- | ------------- 
+STLoggerTemplateKeyMessage | {{message}} | ***(Required)*** The finished message argument from `STLog(...)` with all arguments inseted. 
+STLoggerTemplateKeyFile | {{file}} | the name of the source code file.
+STLoggerTemplateKeyFunction | {{function}} | A string representation of the method name which generated the log message.
+STLoggerTemplateKeyLine | {{line}} | The line number of the `STLog(...)` command.
+STLoggerTemplateKeyThreadId | {{threadId}} | The current thread id.
+STLoggerTemplateKeyThreadName | {{threadName}} | he current thread's name.
+STLoggerTemplateKeyTime | {{time}} | The current time.
+STLoggerTemplateKeyTime | {{key}} | The Story Teller *key* associated with the `STLog(...)` command.
 
 # Smart Logging Criteria
 
-The `activeLogs` configuration setting contains an comma seperated list of smart criteria which activate the log statements. The  `startLogging(<criteria>);` Objective C statement does the same thing, except you can only pass one criteria at a time. 
+The `activeLogs` configuration setting contains an comma seperated list of smart criteria which activate the log statements. The  `STStartLogging(<criteria>);` Objective-C statement does the same thing, except you can only pass one criteria at a time. 
 
 So what are these criteria? Here are the options
 
@@ -137,11 +221,11 @@ So what are these criteria? Here are the options
 First up there are two special logs you can activate:
 
 ```objectivec
-startLogging(@"LogAll");
-startLogging(@"LogRoots");
+STStartLogging(@"LogAll");
+STStartLogging(@"LogRoots");
 ```
 
-*** LogAll*** activates all log statements and disregards any other logging criteira. This is literally a turn everything on option so don't expect to use it often and it's not really what Story Teller is about.
+***LogAll*** activates all log statements and disregards any other logging criteira. This is literally a turn everything on option so don't expect to use it often and it's not really what Story Teller is about.
 
 ***LogRoots*** is similar to *LogAll* except that it only logs when there are not scopes active. The idea is to get a log showing the highlevel activity in the system. So how well it works depends on how well you setup you log statements. LogRoots will also be overridden by LogAll if it is turned on.
 
@@ -153,18 +237,18 @@ When Story Teller encounters a single value in a criteria, it makes the assumpti
 For example:
 
 ```objectivec
-log("abc", @"Log some abc stuff");
-log("GUI System", @"Log view @ %@", aRect);
-log(@(EnumValueX), @"Log related to EnumValueX");
+STLog("abc", @"Log some abc stuff");
+STLog("GUI System", @"Log view @ %@", aRect);
+STLog(@(EnumValueX), @"Log related to EnumValueX");
 ```
 
 ```objectivec
-startLogging(@"abc");
-startLogging(@"\"GUI System\"");
-startLogging(@(EnumValueX)); 
+STStartLogging(@"abc");
+STStartLogging(@"\"GUI System\"");
+STStartLogging(@(EnumValueX)); 
 ```
 
-## Classes and Protocols 
+## Classes or Protocol criteria 
 
 ### Instances
 
@@ -175,30 +259,12 @@ You can log based on the type of the key used like this:
 These will search for any logging where the key is an instance of the class (or is a subclass of it), or an instance that implements the specified protocol. Here's an example:
 
 ```objectivec
-log(User, @"Log message for a user");
+STLog(User, @"Log message for a user");
 ```
 
 ```objectivec
-startLogging(@"[User]");
-startLogging(@"<Person>");    /* Assuming User implements Person */
-```
-
-### Runtime keys
-
-*Rarely used, but I needed it for another project.* If you add the **isa** prefix, then Story Teller will look for where the actual class or protocol has been used as a key, rather that an instance of one.
-
-`isa [class-name] | <protocol-name>`
-
-For example:
-
-```objectivec
-log([User class], @"Log message for class");
-log(@protocol(NSCopying), @"Log message for NSCopying");
-```
-
-```objectivec
-startLogging(@"isa [User]");
-startLogging(@"isa <NSCopying>");
+STStartLogging(@"[User]");
+STStartLogging(@"<Person>");    /* Assuming User implements Person */
 ```
 
 ## KVC Property criteria
@@ -209,27 +275,49 @@ startLogging(@"isa <NSCopying>");
 This criteria looks for keys that matches the specified class or protocol, then examine the `keypath` on the object for the required value. Here are some examples
 
 ```objectivec
-log(user, @"Log message for user");
+STStartLogging(@"[User].account.name == \"derek's account\"");
+STStartLogging(@"[User].account.balance > 500");
+STStartLogging(@"<Banking>.active == YES");
+STStartLogging(@"<Banking>.lastLogon == nil");
+STStartLogging(@"<Banking>.customer != <Banker>");
 ```
+As you can see there is a lot of power here to decide what gets logged. Values fall into several types:
+
+ * **Strings** - any string. Quotes are required if it incudes whitespace.
+ * **Numbers** - Any number, integer or decimal format. Number queries can use all the standard comparison operators: **==** ,**!=** ,**<** ,**<=** ,**>** or **>=**.
+ * **nil checks** - 'nil' keyword which checks for nils exactly the same as Objective-C does. Nil checks  can only use the logical operators: **==** and **!=**.
+ * **type checks** - either a class or protocol declaration. The same way we declare the type of the key being searched.  Type checks can only use the logical operators: **==** and **!=**.
+
+## Runtim criteria
+
+Sometimes the best object o use for a key is a `Class` object. Or (rarely) you want to search on a property that returns a Class. In those cases you can use the **is** keyword to tell Story Teller to look for a Class rather than testing an object. 
+
+For example:
 
 ```objectivec
-startLogging(@"[User].account.name == \"derek's account\"");
-startLogging(@"[User].account.balance > 500");
-startLogging(@"<Banking>.active == YES");
-startLogging(@"<Banking>.active == nil");
+STLog([User class], @"Log message for class");
 ```
-As you can see there is a lot of power here to decide what gets logged. 
 
-Operators include all the standard comparison operators: **==** ,**!=** ,**<** ,**<=** ,**>** or **>=**.
+Looking for Class or Protocol keys
 
-Value can also be a nil. Which is handy for logging when information is missing.
+```objectivec
+STStartLogging(@"is [User]");
+```
+
+This difference here is that Story Teller looks for a Class object rather than an instance of the class.
+
+Looking for Class values in properties
+
+```objectivec
+STStartLogging(@"[User].accountClass is [MerchantAccount]");
+```
 
 # Execution blocks
 
 Story Teller has another trick up it's sleeve. Often we want to run a set of statements to assemble some data before logging or even to log a number of statements at once. With other frameworks we have to manually add some boiler plate around the statements to make sure they are not always being executed. Story Teller has a statement built specifically for this purpose:
 
 ```objectivec
-executeBlock(<key>, ^(id key) {
+STExecuteBlock(<key>, ^(id key) {
      // Statements go here.
 });
 ``` 
@@ -242,12 +330,33 @@ Story Teller is very much a Debug orientated logger. Is is not designed to be pu
 
 Disable macro name: **`DISABLE_STORY_TELLER`**
 
+## Async
+
+Story Teller does not support async logging at this time. Async logging is a response to a bad idea. The only time it is needed is when the developer is logging a massive amount of information to a file, usually because they have been told it's *'necessary'*. Often by someone who is not a developer and doesn't understand programming. I've never in 30 years seen an instance where one of these sorts of logs has been of any use. But some 3rd party libraries which support async come with it configured on as it allows them to log faster and claim performance gains.
+
+When debugging a problem or a unit test, developers will invaraibly turn off async because the delay between an event occuring and the logged statements appearing in the log is too long. If they appear at all. 
+
+Developers need to see things when they occur. Not some undetermined time in the future. This is why Story Teller does not support async.
+
 ## Performance
 
-Generally speaking most loging frameworks optimize their logging decision making down to a set of booleans. This means they are fast, however it makes them relatively inflexible during the logging process. Hence the concept of log levels and class based criteria compromises but given you some basic control, but keeping this fast.
+Performance is something that is a factor when logging because logging to the console or a file is inheriantly slow. Traditional logging frameworks endevour to speed things up by using simple boolean controls or using async logging. This comes from the basic design concept which they all subscribe to - *that we want to log everything and sort it out later.* 
 
-Story Teller makes every attempt to keep things as fast as possible. But because of the more intensive decision making it does, it's unlikely to be able to compete with other loggers when dealing with large volumes of logging. But all things considered, would you really want to log that much anyway?
+This is a flawed concept. It produces a lot of logging and causes significant slow downs. And it's very wasteful. Especially in the mobile world where dumping everything into a file just on the off chance that someone might want to look at it is quite out of the question. 
 
-Finally, given the performance of today's hardware, it's unlikely they Story Teller will slow down any software enough to cause a problem.
+Because of Story Teller's smart logging, it will often be faster than traditional logging frameworks simply because the reduction in output more than compensates for the extra processing required.
 
+### Update - some bench marks
+
+I decided to get an idea of how Story Teller actually compared. So I created a test project and put both Story Teller and a *Very Popular 3rd party logging framework* into it. 
+
+I configured the project to log 1,000 lines of text to the console and store the duration of the process. I also made sure that each line of text was different. I then added further processing to do this loop  10 times and average the durations. 
+
+I then ran this with the other framework set to 'Debug', and Story Teller configured with a criteria similar to `'[Dummy].forbar = YES'` with the log key being an instance of class Dummy. Finally I turned off async logging on the other framework as no developer works with it on and Story Teller does not support it. The idea was to make sure that I was comparing oranges with oranges.
+
+The results where suprising. In a straight time run of logging Story Teller was actually **4x faster** than the competitor. This totally surprised me and the only thing I could think of was that the competitor must have a lot of compexity in it that I simply haven't added to Story Teller. But still - ***4x?***
+
+I then ran the tests again. This time with all logging turned off. The idea being to see how the embedded code impacted performance of the main code. This time the competitor easily out performed Story Teller. This was expected as the competitor was designed around very fast boolean switches and could optimize out the logging statements. Story Teller on the other hand, has to leave everything in places because the logging decisions are made at runtime and therefore cannot be avoided, even if no logging is actually done. 
+
+Still, Story Teller ran the same loop of avg(1,000)x10 very fast. In the region of 0.001 sec per 1,000 log statements (testing the decision making). When logging, it was around 0.1 sec. So even with it's significantly more intelligent logging, it's no slouch.
 

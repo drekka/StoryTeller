@@ -9,22 +9,23 @@
 #import <StoryTeller/STStoryTeller.h>
 #import <StoryTeller/STConfig.h>
 #import "STMatcher.h"
-#import "STExpressionMatcherFactory.h"
+#import "STLogExpressionParserDelegate.h"
 
 @implementation STStoryTeller {
     NSMutableSet *_activeKeys;
     NSMutableSet<id<STMatcher>> *_logMatchers;
     STConfig *_config;
-    STExpressionMatcherFactory *_expressionMatcherFactory;
+    STLogExpressionParserDelegate *_expressionMatcherFactory;
 }
 
-static STStoryTeller *__storyTeller;
+static __strong STStoryTeller *__storyTeller;
 
 #pragma mark - Lifecycle
 
 +(void) initialize {
 #ifndef DISABLE_STORY_TELLER
     __storyTeller = [[STStoryTeller alloc] init];
+    [__storyTeller->_config configure:__storyTeller];
 #endif
 }
 
@@ -37,9 +38,8 @@ static STStoryTeller *__storyTeller;
     if (self) {
         _activeKeys = [[NSMutableSet alloc] init];
         _logMatchers = [[NSMutableSet alloc] init];
-        _expressionMatcherFactory = [[STExpressionMatcherFactory alloc] init];
+        _expressionMatcherFactory = [[STLogExpressionParserDelegate alloc] init];
         _config = [[STConfig alloc] init];
-        [_config configure:self];
     }
     return self;
 }
@@ -53,6 +53,7 @@ static STStoryTeller *__storyTeller;
 #pragma mark - Activating logging
 
 -(void) logAll {
+    NSLog(@"Story Teller: Activating all log statements");
     _logAll = YES;
     _logRoots = NO;
     [_logMatchers removeAllObjects];
@@ -64,12 +65,14 @@ static STStoryTeller *__storyTeller;
         return;
     }
 
+    NSLog(@"Story Teller: Activating root log statements");
     _logRoots = YES;
     [_logMatchers removeAllObjects];
 }
 
 -(void) startLogging:(NSString __nonnull *) keyExpression {
 
+    NSLog(@"Story Teller: Activating log: %@", keyExpression);
     NSError *error = nil;
     id<STMatcher> matcher = [_expressionMatcherFactory parseExpression:keyExpression
                                                                  error:&error];
@@ -98,10 +101,14 @@ static STStoryTeller *__storyTeller;
 
 #pragma mark - Logging
 
--(void) record:(id __nonnull) key method:(const char __nonnull *) methodName lineNumber:(int) lineNumber message:(NSString __nonnull *) messageTemplate, ... {
+-(void) record:(id __nonnull) key
+          file:(const char __nonnull *) fileName
+        method:(const char __nonnull *) methodName
+    lineNumber:(int) lineNumber
+       message:(NSString __nonnull *) messageTemplate, ... {
 
     // Only continue if the key is being logged.
-    if (![self isLogging:key]) {
+    if (![self shouldLogKey:key]) {
         return;
     }
 
@@ -113,25 +120,22 @@ static STStoryTeller *__storyTeller;
 
     // And give it to the scribe.
     [self.logger writeMessage:msg
+                     fromFile:fileName
                    fromMethod:methodName
                    lineNumber:lineNumber
                           key:key];
 }
 
 -(void) execute:(id __nonnull) key block:(void (^ __nonnull)(id __nonnull)) block {
-
-    // Only continue if the key is being logged.
-    if (![self isLogging:key]) {
-        return;
+    if ([self shouldLogKey:key]) {
+        block(key);
     }
-
-    block(key);
 }
 
--(BOOL) isLogging:(id) key {
+-(BOOL) shouldLogKey:(id) key {
 
     // Check the bypass and active keys.
-    if (_logAll || [self isKeyActive:key]) {
+    if (_logAll || [self isKeyMatched:key]) {
         return YES;
     }
 
@@ -142,7 +146,7 @@ static STStoryTeller *__storyTeller;
 
     // If any of the active keys are logging then we also fire.
     for (id scopeKey in _activeKeys) {
-        if ([self isKeyActive:scopeKey]) {
+        if ([self isKeyMatched:scopeKey]) {
             return YES;
         }
     }
@@ -150,7 +154,7 @@ static STStoryTeller *__storyTeller;
     return NO;
 }
 
--(BOOL) isKeyActive:(id) key {
+-(BOOL) isKeyMatched:(id) key {
     for (id<STMatcher> matcher in _logMatchers) {
         if ([matcher matches:key]) {
             return YES;

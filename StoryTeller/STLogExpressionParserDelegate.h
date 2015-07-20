@@ -7,26 +7,13 @@
 //
 
 @import Foundation;
-#import <PEGKit/PEGKit.h>
 
-@protocol STLogExpressionParserDelegate <NSObject>
+@class STStoryTeller;
+#import "STMatcher.h"
 
--(void) parser:(PKParser __nonnull *) parser didMatchClass:(PKAssembly __nonnull *) assembly;
--(void) parser:(PKParser __nonnull *) parser didMatchProtocol:(PKAssembly __nonnull *) assembly;
+@interface STLogExpressionParserDelegate : NSObject
 
--(void) parser:(PKParser __nonnull *) parser didMatchKeyPath:(PKAssembly __nonnull *) assembly;
-
--(void) parser:(PKParser __nonnull *) parser didMatchLogicalExpression:(PKAssembly __nonnull *) assembly;
--(void) parser:(PKParser __nonnull *) parser didMatchMathExpression:(PKAssembly __nonnull *) assembly;
--(void) parser:(PKParser __nonnull *) parser didMatchSingleKey:(PKAssembly __nonnull *) assembly;
-
--(void) parser:(PKParser __nonnull *) parser didMatchBoolean:(PKAssembly __nonnull *) assembly;
--(void) parser:(PKParser __nonnull *) parser didMatchString:(PKAssembly __nonnull *) assembly;
--(void) parser:(PKParser __nonnull *) parser didMatchNumber:(PKAssembly __nonnull *) assembly;
--(void) parser:(PKParser __nonnull *) parser didMatchNil:(PKAssembly __nonnull *) assembly;
-
--(void) parser:(PKParser __nonnull *) parser didMatchIsa:(PKAssembly __nonnull *) assembly;
--(void) parser:(PKParser __nonnull *) parser didMatchLogAll:(PKAssembly __nonnull *) assembly;
--(void) parser:(PKParser __nonnull *) parser didMatchLogRoot:(PKAssembly __nonnull *) assembly;
+-(nullable id<STMatcher>) parseExpression:(NSString __nonnull *) expression
+                                    error:(NSError *__autoreleasing  __nullable * __nullable) error;
 
 @end

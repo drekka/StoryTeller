@@ -1,4 +1,0 @@
-
-# Forked version of PEGKit
-github "drekka/pegkit" "develop"
-github "CocoaLumberjack/CocoaLumberjack" >= 2.0.0

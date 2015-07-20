@@ -18,6 +18,6 @@
  Writes the passed text to the output.
  @discussion This method @b MUST be overridden.
  */
--(void) writeMessage:(NSString __nonnull *) message;
+-(void) writeText:(const char __nonnull *) text;
 
 @end

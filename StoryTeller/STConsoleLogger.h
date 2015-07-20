@@ -7,10 +7,15 @@
 //
 
 #import <StoryTeller/STAbstractLogger.h>
+@import UIKit;
 
 /**
  A simple class that logs all message to the XCode console.
  */
 @interface STConsoleLogger : STAbstractLogger
+
+@property (nonatomic, assign) BOOL addXcodeColours;
+@property (nonatomic, strong, nonnull) UIColor *detailsColour;
+@property (nonatomic, strong, nonnull) UIColor *messageColour;
 
 @end

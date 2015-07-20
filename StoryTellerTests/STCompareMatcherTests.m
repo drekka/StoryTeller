@@ -35,12 +35,4 @@
     
 }
 
--(void) testHandlesNilNextMatcher {
-
-}
-
--(void) testDoesntCallNextMatcherWhenMatchFails {
-
-}
-
 @end

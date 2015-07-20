@@ -8,45 +8,37 @@
 
 @import Foundation;
 
+NS_ASSUME_NONNULL_BEGIN
+
+extern NSString * const STLoggerTemplateKeyThreadId;
+extern NSString * const STLoggerTemplateKeyFile;
+extern NSString * const STLoggerTemplateKeyFunction;
+extern NSString * const STLoggerTemplateKeyLine;
+extern NSString * const STLoggerTemplateKeyThreadName;
+extern NSString * const STLoggerTemplateKeyTime;
+extern NSString * const STLoggerTemplateKeyKey;
+extern NSString * const STLoggerTemplateKeyMessage;
+
 /**
  Defines the public interface of classes which can act as loggers.
  */
 @protocol STLogger <NSObject>
 
-/**
- If @c YES, prints the log key on each line.
- */
-@property (nonatomic, assign) BOOL showKey;
-
-/**
- If @c YES, prints the thread id on each line.
- */
-@property (nonatomic, assign) BOOL showThreadId;
-
-/**
- If @c YES, prints the thread name on each line.
- */
-@property (nonatomic, assign) BOOL showThreadName;
-
-/**
- If @c YES, prints the current time on each line.
- */
-@property (nonatomic, assign) BOOL showTime;
-
-/**
- If @c YES, prints the class, method name and line number on each line.
- */
-@property (nonatomic, assign) BOOL showMethodDetails;
+@property (nonatomic, strong) NSString *lineTemplate;
 
 /**
  Tells the logger to write the passed string.
  @discussion This is the main method to call in order to write to the log. The calling class is responsible for deciding whether to call this or not.
  @param message the string to be written to the output.
+ @param fileName the name of the file which triggered this call.
  @param methodName the name of the method which triggered this call.
  @param lineNumber the line number in the method which triggered this call.
  */
--(void) writeMessage:(NSString __nonnull *) message
-          fromMethod:(const char __nonnull *) methodName
+-(void) writeMessage:(NSString *) message
+            fromFile:(const char *) fileName
+          fromMethod:(const char *) methodName
           lineNumber:(int) lineNumber
-                 key:(id __nonnull) key;
+                 key:(id) key;
 @end
+
+NS_ASSUME_NONNULL_END

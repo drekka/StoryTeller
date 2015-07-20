@@ -10,6 +10,7 @@
 
 @implementation InMemoryLogger {
     NSMutableArray<NSString *> *_log;
+    NSMutableString *_cache;
 }
 
 -(instancetype) init {
@@ -20,9 +21,22 @@
     return self;
 }
 
--(void)writeMessage:(NSString *)message {
-    [_log addObject:message];
-    printf("%s\n", [message UTF8String]);
+-(void)writeText:(const char * __nonnull)text {
+
+    if (_cache == nil) {
+        _cache = [[NSMutableString alloc] init];
+    }
+
+    NSString *fragment = [NSString stringWithUTF8String:text];
+    if ([@"\n" isEqualToString:fragment]) {
+        // end of line.
+        printf("%s\n", [_cache UTF8String]);
+        [_log addObject:_cache];
+        _cache = nil;
+    } else {
+        [_cache appendString:fragment];
+    }
+
 }
 
 -(NSArray *) log {
