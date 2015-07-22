@@ -29,7 +29,7 @@ static __strong STStoryTeller *__storyTeller;
 #endif
 }
 
-+(STStoryTeller __nonnull *) storyTeller {
++(STStoryTeller * _Nonnull) storyTeller {
     return __storyTeller;
 }
 
@@ -70,7 +70,7 @@ static __strong STStoryTeller *__storyTeller;
     [_logMatchers removeAllObjects];
 }
 
--(void) startLogging:(NSString __nonnull *) keyExpression {
+-(void) startLogging:(NSString * _Nonnull) keyExpression {
 
     NSLog(@"Story Teller: Activating log: %@", keyExpression);
     NSError *error = nil;
@@ -87,25 +87,25 @@ static __strong STStoryTeller *__storyTeller;
     return (int)[_activeKeys count];
 }
 
--(void) startScope:(id __nonnull) key {
+-(void) startScope:(id _Nonnull) key {
     [_activeKeys addObject:key];
 }
 
--(void) endScope:(id __nonnull) key {
+-(void) endScope:(id _Nonnull) key {
     [_activeKeys removeObject:key];
 }
 
--(BOOL) isScopeActive:(id __nonnull) key {
+-(BOOL) isScopeActive:(id _Nonnull) key {
     return [_activeKeys containsObject:key];
 }
 
 #pragma mark - Logging
 
--(void) record:(id __nonnull) key
-          file:(const char __nonnull *) fileName
-        method:(const char __nonnull *) methodName
+-(void) record:(id _Nonnull) key
+          file:(const char * _Nonnull) fileName
+        method:(const char * _Nonnull) methodName
     lineNumber:(int) lineNumber
-       message:(NSString __nonnull *) messageTemplate, ... {
+       message:(NSString * _Nonnull) messageTemplate, ... {
 
     // Only continue if the key is being logged.
     if (![self shouldLogKey:key]) {
@@ -126,7 +126,7 @@ static __strong STStoryTeller *__storyTeller;
                           key:key];
 }
 
--(void) execute:(id __nonnull) key block:(void (^ __nonnull)(id __nonnull)) block {
+-(void) execute:(id _Nonnull) key block:(void (^ _Nonnull)(id _Nonnull)) block {
     if ([self shouldLogKey:key]) {
         block(key);
     }

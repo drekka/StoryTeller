@@ -21,7 +21,7 @@
     return self;
 }
 
--(void)writeText:(const char * __nonnull)text {
+-(void)writeText:(const char * _Nonnull)text {
 
     if (_cache == nil) {
         _cache = [[NSMutableString alloc] init];

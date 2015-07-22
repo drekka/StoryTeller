@@ -14,6 +14,8 @@
 #import <StoryTeller/STStoryTeller.h>
 #import <StoryTeller/STConsoleLogger.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface STConfig ()
 @property (nonatomic, strong) NSArray<NSString *> *activeLogs;
 @property (nonatomic, strong) NSString *loggerClass;
@@ -40,8 +42,8 @@
 
 -(void) configurefromArgs {
     NSProcessInfo *processInfo = [NSProcessInfo processInfo];
-    [processInfo.arguments enumerateObjectsUsingBlock:^(NSString * __nonnull arg, NSUInteger idx, BOOL * __nonnull stop) {
-        NSArray __nonnull *args = [arg componentsSeparatedByString:@"="];
+    [processInfo.arguments enumerateObjectsUsingBlock:^(NSString * _Nonnull arg, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSArray *args = [arg componentsSeparatedByString:@"="];
         if ([args count] == 2) {
             if ([@"loggerClass" isEqualToString:args[0]]) {
                 self->_loggerClass = args[1];
@@ -75,7 +77,7 @@
     }
 }
 
--(void) configure:(STStoryTeller __nonnull *) storyTeller {
+-(void) configure:(STStoryTeller *) storyTeller {
 
     Class loggerClass = objc_lookUpClass([_loggerClass UTF8String]);
     id<STLogger> newLogger = [[loggerClass alloc] init];
@@ -85,13 +87,13 @@
     storyTeller.logger = newLogger;
     _currentLogger = newLogger;
 
-    [_activeLogs enumerateObjectsUsingBlock:^(NSString * __nonnull expression, NSUInteger idx, BOOL * __nonnull stop) {
+    [_activeLogs enumerateObjectsUsingBlock:^(NSString * _Nonnull expression, NSUInteger idx, BOOL * _Nonnull stop) {
         [storyTeller startLogging:expression];
     }];
 }
 
 // Override KVC method to handle arrays in active logs.
--(void) setValue:(nullable id)value forKey:(nonnull NSString *)key {
+-(void) setValue:(nullable id)value forKey:(NSString *)key {
     if ([key isEqualToString:@"activeLogs"]) {
         _activeLogs = [_activeLogs arrayByAddingObjectsFromArray:value];
         return;
@@ -100,7 +102,9 @@
 }
 
 // DIsabled default so we can load settings without having to check the names of properties.
--(void) setValue:(nullable id)value forUndefinedKey:(nonnull NSString *)key {
+-(void) setValue:(id _Nullable) value forUndefinedKey:(NSString *) key {
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

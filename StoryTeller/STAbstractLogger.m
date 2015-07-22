@@ -56,7 +56,7 @@ static Class __protocolClass;
     return self;
 }
 
--(void) setLineTemplate:(NSString * __nonnull) lineTemplate {
+-(void) setLineTemplate:(NSString * _Nonnull) lineTemplate {
 
     if ([lineTemplate isEqualToString:_lineTemplate]) {
         return;
@@ -121,7 +121,7 @@ static Class __protocolClass;
           lineNumber:(int) lineNumber
                  key:(id) key {
 
-    [_lineFragments enumerateObjectsUsingBlock:^(id  __nonnull fragment, NSUInteger idx, BOOL * __nonnull stop) {
+    [_lineFragments enumerateObjectsUsingBlock:^(id  _Nonnull fragment, NSUInteger idx, BOOL * _Nonnull stop) {
 
         if ([fragment isKindOfClass:[NSNumber class]]) {
             char *text;
@@ -188,7 +188,7 @@ static Class __protocolClass;
     [self writeText:"\n"];
 }
 
--(void) writeText:(const char __nonnull *) text {
+-(void) writeText:(const char * _Nonnull) text {
     [self doesNotRecognizeSelector:_cmd];
 }
 

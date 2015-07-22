@@ -20,111 +20,111 @@ static Class __protocolClass;
 }
 
 +(id<STMatcher>) isaClassMatcher:(Class) expected {
-    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nullable key) {
+    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  _Nullable key) {
         return [self isAClass:key] && [(Class)key isSubclassOfClass:expected];
     }];
 }
 
 +(id<STMatcher>) isKindOfClassMatcher:(Class) expected {
-    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nullable key) {
+    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  _Nullable key) {
         return [self isAClass:key] ? [(Class)key isSubclassOfClass:expected] : [key isKindOfClass:expected];
     }];
 }
 
 +(id<STMatcher>) isNotKindOfClassMatcher:(Class) expected {
-    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nullable key) {
+    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  _Nullable key) {
         return [self isAClass:key] ? ! [(Class)key isSubclassOfClass:expected] : ! [key isKindOfClass:expected];
     }];
 }
 
 +(id<STMatcher>) conformsToProtocolMatcher:(Protocol *) expected {
-    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nullable key) {
+    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  _Nullable key) {
         return [key conformsToProtocol:expected];
     }];
 }
 
 +(id<STMatcher>) notConformsToProtocolMatcher:(Protocol *) expected {
-    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nullable key) {
+    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  _Nullable key) {
         return ! [key conformsToProtocol:expected];
     }];
 }
 
 +(id<STMatcher>) eqStringMatcher:(NSString *) expected {
-    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nullable key) {
+    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  _Nullable key) {
         return [key isKindOfClass:[NSString class]]
         && [expected isEqualToString:key];
     }];
 }
 
 +(id<STMatcher>) neStringMatcher:(NSString *) expected {
-    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nullable key) {
+    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  _Nullable key) {
         return [key isKindOfClass:[NSString class]]
         && ! [expected isEqualToString:key];
     }];
 }
 
 +(id<STMatcher>) eqNumberMatcher:(NSNumber *) expected {
-    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nullable key) {
+    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  _Nullable key) {
         return [key isKindOfClass:[NSNumber class]]
         && [expected compare:key] == NSOrderedSame;
     }];
 }
 
 +(id<STMatcher>) neNumberMatcher:(NSNumber *) expected {
-    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nullable key) {
+    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  _Nullable key) {
         return [key isKindOfClass:[NSNumber class]]
         && [expected compare:key] != NSOrderedSame;
     }];
 }
 
 +(id<STMatcher>) gtNumberMatcher:(NSNumber *) expected {
-    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nullable key) {
+    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  _Nullable key) {
         return [key isKindOfClass:[NSNumber class]]
         && [expected compare:key] < NSOrderedSame;
     }];
 }
 
 +(id<STMatcher>) geNumberMatcher:(NSNumber *) expected {
-    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nullable key) {
+    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  _Nullable key) {
         return [key isKindOfClass:[NSNumber class]]
         && [expected compare:key] <= NSOrderedSame;
     }];
 }
 
 +(id<STMatcher>) ltNumberMatcher:(NSNumber *) expected {
-    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nullable key) {
+    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  _Nullable key) {
         return [key isKindOfClass:[NSNumber class]]
         && [expected compare:key] > NSOrderedSame;
     }];
 }
 
 +(id<STMatcher>) leNumberMatcher:(NSNumber *) expected {
-    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nullable key) {
+    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  _Nullable key) {
         return [key isKindOfClass:[NSNumber class]]
         && [expected compare:key] >= NSOrderedSame;
     }];
 }
 
 +(id<STMatcher>) isTrueMatcher {
-    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nullable key) {
+    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  _Nullable key) {
         return [key isKindOfClass:[NSNumber class]] && [(NSNumber *)key boolValue];
     }];
 }
 
 +(id<STMatcher>) isFalseMatcher {
-    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nullable key) {
+    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  _Nullable key) {
         return [key isKindOfClass:[NSNumber class]] && ! [(NSNumber *)key boolValue];
     }];
 }
 
 +(id<STMatcher>) eqNilMatcher {
-    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nullable key) {
+    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  _Nullable key) {
         return key == nil;
     }];
 }
 
 +(id<STMatcher>) neNilMatcher {
-    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  __nullable key) {
+    return [[STCompareMatcher alloc] initWithCompare:^BOOL(id  _Nullable key) {
         return key != nil;
     }];
 }
@@ -132,7 +132,7 @@ static Class __protocolClass;
 #pragma mark - Filters
 
 +(id<STMatcher>) keyPathFilter:(NSString *) keypath {
-    return [[STFilterMatcher alloc] initWithFilter:^id(id  __nullable key) {
+    return [[STFilterMatcher alloc] initWithFilter:^id(id  _Nullable key) {
         return [key valueForKeyPath:keypath];
     }];
 }

@@ -8,11 +8,13 @@
 
 #import "STDeallocHook.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @implementation STDeallocHook {
-    __nonnull void (^_deallocBlock)(void);
+	void (^_deallocBlock)(void);
 }
 
--(nonnull instancetype) initWithBlock:(__nonnull void (^)(void)) simpleBlock {
+-(instancetype) initWithBlock:(void (^)(void)) simpleBlock {
     self = [super init];
     if (self) {
         _deallocBlock = simpleBlock;
@@ -25,3 +27,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

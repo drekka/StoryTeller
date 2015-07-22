@@ -10,7 +10,7 @@
 
 @protocol STMatcher <NSObject>
 
--(BOOL) matches:(id __nullable) key;
+-(BOOL) matches:(id _Nullable) key;
 
 @property (nonatomic, strong, nullable) id<STMatcher> nextMatcher;
 

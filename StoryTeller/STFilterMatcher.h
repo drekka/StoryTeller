@@ -13,6 +13,6 @@
 
 @property (nonatomic, strong, nonnull) id<STMatcher> nextMatcher;
 
--(nonnull instancetype) initWithFilter:(__nullable id (^ __nonnull)(__nonnull id key)) filterBlock;
+-(nonnull instancetype) initWithFilter:(_Nullable id (^ _Nonnull)(_Nonnull id key)) filterBlock;
 
 @end

@@ -50,7 +50,7 @@
     NSMutableArray<NSNumber *> *logLineNumbers = [@[] mutableCopy];
 
     __block const char *blockMethodName;
-    [keys enumerateObjectsUsingBlock:^(NSString * __nonnull key, NSUInteger idx, BOOL * __nonnull stop) {
+    [keys enumerateObjectsUsingBlock:^(NSString * _Nonnull key, NSUInteger idx, BOOL * _Nonnull stop) {
         blockMethodName = __PRETTY_FUNCTION__;
         STStartScope(key);
         logLineNumbers[idx] = @(__LINE__ + 1);
@@ -87,9 +87,9 @@
 }
 
 -(void) validateLogLineAtIndex:(unsigned long) idx
-                    methodName:(const char __nonnull *) methodName
+                    methodName:(const char * _Nonnull) methodName
                     lineNumber:(int) lineNumber
-                       message:(NSString __nonnull *) message {
+                       message:(NSString * _Nonnull) message {
     NSString *expected = [NSString stringWithFormat:@"%s:%i %@", methodName, lineNumber, message];
     XCTAssertEqualObjects(expected, [self.inMemoryLogger.log[idx] substringFromIndex:13]);
 }

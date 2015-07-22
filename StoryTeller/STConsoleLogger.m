@@ -63,7 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
     self.lineTemplate = _originalLineTemplate;
 }
 
--(void) setLineTemplate:(NSString * __nonnull)lineTemplate {
+-(void) setLineTemplate:(NSString * _Nonnull)lineTemplate {
 
     _originalLineTemplate = lineTemplate;
 
@@ -90,7 +90,7 @@ NS_ASSUME_NONNULL_BEGIN
     return _originalLineTemplate;
 }
 
--(void) writeText:(const char __nonnull *) text {
+-(void) writeText:(const char * _Nonnull) text {
     printf("%s", text);
 }
 

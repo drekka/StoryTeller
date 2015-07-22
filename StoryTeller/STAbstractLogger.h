@@ -18,6 +18,6 @@
  Writes the passed text to the output.
  @discussion This method @b MUST be overridden.
  */
--(void) writeText:(const char __nonnull *) text;
+-(void) writeText:(const char * _Nonnull) text;
 
 @end

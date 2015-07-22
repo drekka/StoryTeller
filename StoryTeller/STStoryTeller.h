@@ -10,6 +10,8 @@
 
 #import <StoryTeller/STLogger.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  The main StoryTeller class.
  @discussion This class brings together all the configuration and processing for Story Teller. At the moment it's all in one class because it's not very big. Most of the functionality commonly needed is wrapped up in macros defined above.
@@ -21,7 +23,7 @@
 /**
  Accessor for accessing the Story teller singleton instance. All interactions with Story Teller should go through this method.
  */
-+(STStoryTeller __nonnull *) storyTeller;
++(STStoryTeller *) storyTeller;
 
 /**
  Used mostly for debugging and testing.
@@ -34,7 +36,7 @@
 @discussion By defaul this is an instance of @c STConsoleLogger. However if you want, you can simple create and set a different class as long as it conforms to the @c STLogger protocol.
  @see STLogger
  */
-@property (nonatomic, strong, nonnull) id<STLogger> logger;
+@property (nonatomic, strong) id<STLogger> logger;
 
 @property (nonatomic, assign, readonly, getter=isLoggingAll) BOOL logAll;
 @property (nonatomic, assign, readonly, getter=isLoggingRoots) BOOL logRoots;
@@ -58,7 +60,7 @@
  Start logging for the passed key.
  @param the key to log.
  */
--(void) startLogging:(NSString __nonnull *) keyExpression;
+-(void) startLogging:(NSString *) keyExpression;
 
 #pragma mark - Stories
 
@@ -76,7 +78,7 @@
  
  @param key the key Scope to activate.
  */
--(void) startScope:(id __nonnull) key;
+-(void) startScope:(id) key;
 
 /**
  Removes a specific Key Scope.
@@ -84,13 +86,13 @@
 
  @param key the key Scope to de-activate.
 */
--(void) endScope:(id __nonnull) key;
+-(void) endScope:(id) key;
 
 /**
  Can be used to query if a Key Scope is active.
  @param key the key Scope to query.
  */
--(BOOL) isScopeActive:(id __nonnull) key;
+-(BOOL) isScopeActive:(id) key;
 
 #pragma mark - Logging
 
@@ -104,18 +106,20 @@
  @param messageTemplate a standard @c NSString format message.
  @param vaList the arguments for the @c messageTemplate's placeholders.
  */
--(void) record:(id __nonnull) key
-          file:(const char __nonnull *) fileName
-        method:(const char __nonnull *) methodName
+-(void) record:(id) key
+          file:(const char *) fileName
+        method:(const char *) methodName
     lineNumber:(int) lineNumber
-       message:(NSString __nonnull *) messageTemplate, ...;
+       message:(NSString *) messageTemplate, ...;
 
 /**
  Useful helper method which executes a block of code if the key is active.
  @discussion Mainly used for wrapping up lines of code that involve more than just logging statements.
  @param block the block to execute. The @c key argument is the key that was checked.
  */
--(void) execute:(id __nonnull) key block:(__nonnull void (^)(id __nonnull key)) block;
+-(void) execute:(id) key block:(void (^)(id key)) block;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

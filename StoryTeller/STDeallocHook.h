@@ -8,6 +8,8 @@
 
 @import Foundation;
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  Simple class that is designed to execute a block when a variable goes out of scope.
  @discussion To use it, do something like the following
@@ -25,6 +27,8 @@
 /**
  Default initialiser.
  */
--(nonnull instancetype) initWithBlock:(__nonnull void (^)(void)) simpleBlock;
+-(instancetype) initWithBlock:(void (^)(void)) simpleBlock;
 
 @end
+
+NS_ASSUME_NONNULL_END

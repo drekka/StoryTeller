@@ -11,6 +11,6 @@
 
 @interface STCompareMatcher : NSObject<STMatcher>
 
--(nonnull instancetype) initWithCompare:(BOOL (^ __nonnull)(__nonnull id key)) compareBlock;
+-(nonnull instancetype) initWithCompare:(BOOL (^ _Nonnull)(_Nonnull id key)) compareBlock;
 
 @end

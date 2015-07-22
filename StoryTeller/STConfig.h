@@ -9,6 +9,8 @@
 @import Foundation;
 @class STStoryTeller;
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  Reads and configures @c StoryTeller with config data from a variety of places.
  @discussion Story Teller's configuration starts with a hard wired internal setup. This is then overlaid with any settings from the @cStoryTellerConfig.json file (if it exists). After that, arguments passed to the process are checked and loaded. This give the developer the ability to provide settings via XCode schemes.
@@ -19,6 +21,8 @@
  After loading, configures the passed instance of @c StoryTeller.
  @param storyTeller the instance to configure.
  */
--(void) configure:(STStoryTeller __nonnull *) storyTeller;
+-(void) configure:(STStoryTeller *) storyTeller;
 
 @end
+
+NS_ASSUME_NONNULL_END

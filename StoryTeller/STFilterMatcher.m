@@ -9,12 +9,12 @@
 #import "STFilterMatcher.h"
 
 @implementation STFilterMatcher {
-    __nullable id (^ __nonnull _filterBlock)(__nonnull id key);
+    _Nullable id (^ _Nonnull _filterBlock)(_Nonnull id key);
 }
 
 @synthesize nextMatcher = _nextMatcher;
 
--(nonnull instancetype) initWithFilter:(__nullable id (^ __nonnull)(__nonnull id key)) filterBlock {
+-(nonnull instancetype) initWithFilter:(_Nullable id (^ _Nonnull)(_Nonnull id key)) filterBlock {
     self = [super init];
     if (self) {
         _filterBlock = [filterBlock copy];
@@ -22,7 +22,7 @@
     return self;
 }
 
--(BOOL) matches:(id __nullable) key {
+-(BOOL) matches:(id _Nullable) key {
     NSAssert(_nextMatcher != NULL, @"Must have a next matcher");
     return [self.nextMatcher matches:_filterBlock(key)];
 }

@@ -11,9 +11,13 @@
 @class STStoryTeller;
 #import "STMatcher.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface STLogExpressionParserDelegate : NSObject
 
--(nullable id<STMatcher>) parseExpression:(NSString __nonnull *) expression
-                                    error:(NSError *__autoreleasing  __nullable * __nullable) error;
+-(id<STMatcher>) parseExpression:(NSString *) expression
+									error:(NSError * __autoreleasing  *) error;
 
 @end
+
+NS_ASSUME_NONNULL_END
