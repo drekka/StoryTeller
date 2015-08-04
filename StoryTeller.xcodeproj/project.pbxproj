@@ -341,6 +341,7 @@
 				6C158E111B38269D00119725 /* Headers */,
 				6C158E121B38269D00119725 /* Resources */,
 				6CF53ED71B43FAAB006EB021 /* CopyFiles */,
+				6CFF3BD31B709D7E00538BA1 /* Appledoc */,
 			);
 			buildRules = (
 			);
@@ -421,6 +422,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		6CFF3BD31B709D7E00538BA1 /* Appledoc */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = Appledoc;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "$PROJECT_DIR/External/appledoc/appledoc \\\n--project-name \"Story Teller\" \\\n--project-company \"Derek Clarkson\" \\\n--company-id au.com.derekclarkson \\\n--output ~/help \\\n--logformat xcode \\\n--keep-undocumented-objects \\\n--keep-undocumented-members \\\n--search-undocumented-doc \\\n--exit-threshold 2 \\\nStoryTeller\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		6C158E0F1B38269D00119725 /* Sources */ = {
