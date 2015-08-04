@@ -24,6 +24,9 @@ extern NSString * const STLoggerTemplateKeyMessage;
  */
 @protocol STLogger <NSObject>
 
+/**
+ A NSString stringWithFormat: template which defines the format of each log line.
+ */
 @property (nonatomic, strong) NSString *lineTemplate;
 
 /**
@@ -33,6 +36,7 @@ extern NSString * const STLoggerTemplateKeyMessage;
  @param fileName the name of the file which triggered this call.
  @param methodName the name of the method which triggered this call.
  @param lineNumber the line number in the method which triggered this call.
+ @param key the key to log under.
  */
 -(void) writeMessage:(NSString *) message
             fromFile:(const char *) fileName

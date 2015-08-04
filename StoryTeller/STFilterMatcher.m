@@ -8,13 +8,15 @@
 
 #import "STFilterMatcher.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @implementation STFilterMatcher {
-    _Nullable id (^ _Nonnull _filterBlock)(_Nonnull id key);
+    id (^_filterBlock)(id key);
 }
 
 @synthesize nextMatcher = _nextMatcher;
 
--(nonnull instancetype) initWithFilter:(_Nullable id (^ _Nonnull)(_Nonnull id key)) filterBlock {
+-(instancetype) initWithFilter:(id (^)(id key)) filterBlock {
     self = [super init];
     if (self) {
         _filterBlock = [filterBlock copy];
@@ -22,9 +24,12 @@
     return self;
 }
 
--(BOOL) matches:(id _Nullable) key {
+-(BOOL) matches:(nullable id) key {
     NSAssert(_nextMatcher != NULL, @"Must have a next matcher");
     return [self.nextMatcher matches:_filterBlock(key)];
 }
 
 @end
+
+NS_ASSUME_NONNULL_END
+

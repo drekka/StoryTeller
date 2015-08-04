@@ -13,8 +13,19 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ The delegate for the STLogExpressionParser class generated PEGKit.
+ 
+ @discussion To receive information from the PEGKit parsing of a string, a class can receive messages via delegate calls. This class manages the parsing of a string containing a message and responding to the callbacks from PEGKit. 
+ */
 @interface STLogExpressionParserDelegate : NSObject
 
+/**
+ Call to parse a string containing an expression and generate a STMatcher which can validate objects based on that expression.
+ 
+ @param expression the expression to be parsed.
+ @param error a pointer to a NSError variable where an error can be set if there is a problem.
+ */
 -(id<STMatcher>) parseExpression:(NSString *) expression
 									error:(NSError * __autoreleasing  *) error;
 

@@ -9,10 +9,29 @@
 @import Foundation;
 #import "STMatcher.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
+/**
+ A matcher implementation that can be used to change the value of the key being checked. 
+ 
+ @discussion It works by calling a block that takes in the current key and returns a new key to be passed to the next matcher in the chain.
+ */
 @interface STFilterMatcher : NSObject<STMatcher>
 
-@property (nonatomic, strong, nonnull) id<STMatcher> nextMatcher;
+/**
+ The next matcher in the chain.
+ */
+@property (nonatomic, strong) id<STMatcher> nextMatcher;
 
--(nonnull instancetype) initWithFilter:(_Nullable id (^ _Nonnull)(_Nonnull id key)) filterBlock;
+/**
+ Default initializer.
+
+ @param filterBlock a block that returns YES if the logging key should be passed
+
+ @return an instance of this class.
+ */
+-(instancetype) initWithFilter:(id (^)(id key)) filterBlock;
 
 @end
+
+NS_ASSUME_NONNULL_END

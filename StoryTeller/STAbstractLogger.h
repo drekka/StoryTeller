@@ -19,9 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Writes the passed text to the output.
 
- This method @b MUST be overridden.
- 
+ @discussion This method **MUST** be overridden.
 
+ @param text the text to be written.
  */
 -(void) writeText:(const char *) text;
 

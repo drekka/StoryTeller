@@ -9,8 +9,20 @@
 @import Foundation;
 #import "STMatcher.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
+/**
+ A matcher that compares the current key with a value and matches if the compare block matches them.
+ */
 @interface STCompareMatcher : NSObject<STMatcher>
 
--(nonnull instancetype) initWithCompare:(BOOL (^ _Nonnull)(_Nonnull id key)) compareBlock;
+/**
+ Default initializer.
+ 
+ @param compareBlock The block that will be used to compare the key with a value.
+ */
+-(instancetype) initWithCompare:(BOOL (^)(id key)) compareBlock;
 
 @end
+
+NS_ASSUME_NONNULL_END
