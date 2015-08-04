@@ -9,6 +9,8 @@
 @import Foundation;
 #import <StoryTeller/STLogger.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  An abstract class that implements the core logic for formatting and writing text to output destinations.
  */
@@ -16,8 +18,13 @@
 
 /**
  Writes the passed text to the output.
- @discussion This method @b MUST be overridden.
+
+ This method @b MUST be overridden.
+ 
+
  */
--(void) writeText:(const char * _Nonnull) text;
+-(void) writeText:(const char *) text;
 
 @end
+
+NS_ASSUME_NONNULL_END
