@@ -130,13 +130,13 @@ NS_ASSUME_NONNULL_BEGIN
  @param methodName the name of the method where the `STLog(...)` statement occurs.
  @param lineNumber the line number in the method where the `STLog(...)` statement occurs.
  @param messageTemplate a standard NSString format message.
- @param ... a list of values for the message template. This must be nil terminated
+ @param ... a list of values for the message template.
  */
 -(void) record:(id) key
           file:(const char *) fileName
         method:(const char *) methodName
     lineNumber:(int) lineNumber
-       message:(NSString *) messageTemplate, ... NS_REQUIRES_NIL_TERMINATION;
+       message:(NSString *) messageTemplate, ...;
 
 /**
  Useful helper method which executes a block of code if the key is active.
