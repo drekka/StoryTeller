@@ -30,6 +30,7 @@
 #define STStartLogging(key) \
 [[STStoryTeller storyTeller] startLogging:key]
 
+// Note the NS_VALID_UNTIL_END_OF_SCOPE macro. This ensures that the variable does not immediately dealloc.
 #define STStartScope(key) \
 _Pragma ("clang diagnostic push") \
 _Pragma ("clang diagnostic ignored \"-Wunused-variable\"") \
