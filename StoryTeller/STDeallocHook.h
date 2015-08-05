@@ -15,9 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 
  @discussion To use it, do something like the following
 
-    id hook = [[STDeallocHook alloc] initWithBlock:^{
-        // Do something when 'hook' is dealloced
-    }];
+	id hook = [[STDeallocHook alloc] initWithBlock:^{
+		// Do something when 'hook' is dealloced
+	}];
 
  When `hook` goes out of scope and is deallocated, the code block will be executed. STDeallocHook is used to detect when a `STStartScope(...)` macro should end the scope of the key. The `STStartScope(...)` macro declares a local variable with a unique name and sets a STDeallocHook as it's value. When the hook deallocs, it calls endScope: in Story Teller and tells it to remove the key from the active list.
  */
