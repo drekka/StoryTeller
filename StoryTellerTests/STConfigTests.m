@@ -38,7 +38,7 @@
 
 -(void) testConfigReadsCommandLineArgs {
 
-    [self stubProcessInfoArguments:@[@"loggerClass=InMemoryLogger", @"log=abc log=def"]];
+    [self stubProcessInfoArguments:@[@"loggerClass=InMemoryLogger", @"log=abc log=def", @"logLineFormat=xyz"]];
 
     // Test
     STConfig *config = [[STConfig alloc] init];
