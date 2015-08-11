@@ -33,6 +33,8 @@ typedef NS_ENUM(int, DetailsDisplay) {
     DetailsDisplayMessage
 };
 
+NS_ASSUME_NONNULL_BEGIN
+
 @implementation STAbstractLogger {
     NSDateFormatter *_dateFormatter;
     NSMutableArray *_lineFragments;
@@ -121,71 +123,71 @@ static Class __protocolClass;
           lineNumber:(int) lineNumber
                  key:(id) key {
 
-    [_lineFragments enumerateObjectsUsingBlock:^(id  _Nonnull fragment, NSUInteger idx, BOOL * _Nonnull stop) {
+	NSMutableString *line = [[NSMutableString alloc] init];
+    [_lineFragments enumerateObjectsUsingBlock:^(id fragment, NSUInteger idx, BOOL *stop) {
 
         if ([fragment isKindOfClass:[NSNumber class]]) {
-            char *text;
-            switch (((NSNumber *)fragment).intValue) {
+			  switch (((NSNumber *)fragment).intValue) {
 
                 case DetailsDisplayThreadId: {
-                    asprintf(&text, "<%x>", pthread_mach_thread_np(pthread_self()));
-                    [self writeText:(const char *)text];
+                    [line appendFormat:@"<%x>", pthread_mach_thread_np(pthread_self())];
                     break;
                 }
 
                 case DetailsDisplayFile: {
-                    [self writeText:fileName];
+						 [line appendString:[NSString stringWithUTF8String:fileName]];
                     break;
                 }
 
                 case DetailsDisplayFuntion: {
-                    [self writeText:methodName];
+						 [line appendString:[NSString stringWithUTF8String:methodName]];
                     break;
                 }
 
                 case DetailsDisplayLine: {
-                    asprintf(&text, "%i", lineNumber);
-                    [self writeText:text];
+						 [line appendFormat:@"%i", lineNumber];
                     break;
                 }
 
                 case DetailsDisplayThreadName: {
                     NSString *threadName = [NSThread currentThread].name;
                     if ([threadName length] > 0) {
-                        [self writeText:threadName.UTF8String];
+							  [line appendString:threadName];
                     }
                     break;
                 }
 
                 case DetailsDisplayTime: {
-                    [self writeText:[self->_dateFormatter stringFromDate:[NSDate date]].UTF8String];
+						 [line appendString:[self->_dateFormatter stringFromDate:[NSDate date]]];
                     break;
                 }
 
                 case DetailsDisplayKey: {
                     if ([self keyIsClass:key]) {
-                        asprintf(&text, "c:[%s]", class_getName(key));
+							  [line appendFormat:@"c:[%@]", NSStringFromClass(key)];
                     } else if ([self keyIsProtocol:key]) {
-                        asprintf(&text, "p:<%s>", protocol_getName(key));
+							  [line appendFormat:@"p:<%@>", NSStringFromProtocol(key)];
                     } else {
-                        text = (char *)[NSString stringWithFormat:@"k:%@", key].UTF8String;
+							  [line appendFormat:@"k:'%@'", key];
                     }
-                    [self writeText:text];
                     break;
                 }
 
                 default: { // Message
-                    [self writeText:message.UTF8String];
+                    [line appendString:message];
                 }
             }
         } else {
             // Text fragment so just write it
-            [self writeText:((NSString *)fragment).UTF8String];
+			  [line appendString:(NSString *)fragment];
         }
     }];
 
     // Write a final line feed.
-    [self writeText:"\n"];
+	[line appendString:@"\n"];
+
+	[self writeText:line.UTF8String];
+
 }
 
 -(void) writeText:(const char * _Nonnull) text {
@@ -201,3 +203,5 @@ static Class __protocolClass;
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

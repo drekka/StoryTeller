@@ -143,7 +143,8 @@ Current the Json file has two settings and looks something like this:
         12,                              /* A numeric (Enum?) key */
         "[User].account.balance > 500"   /* Any account over $500 */
     ],
-    "loggerClass": "STConsoleLogger"  /* Optional */
+    "loggerClass": "STConsoleLogger",  /* Optional */
+    "logLineTemplate": "{{file}}:{{line}} {{message}}" /* Optional */
 }
 ```
 
@@ -153,6 +154,13 @@ Key  | Value
 ------------- | -------------
 activeLogs | A comma separated list of keys to activate. This is the main setting for turning on logging.
 loggerClass | If you want to set a different class for the, use this setting to specify the class. The class must implement `<STLogger>` and have a no-arg constructor. You only need to put the class name in this setting. Story Teller will handle the rest. By default, Story Teller uses a simple console logger.
+logLineTemplate | The template of each line in the log. See [XcodeColors & Logging Templates](#xcodecolors-&-logging-templates) below for details of this value.
+
+## Envirnoment variables
+
+You can also pass the settings via enviroment variables. For example, you could set them up in an Xcode schema for running the app.
+
+**loggerClass** and **logLineTemplate** are settable. To activate a log you use one or more **log** settings. 
 
 ## Programmatically
 
