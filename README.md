@@ -368,3 +368,11 @@ I then ran the tests again. This time with all logging turned off. The idea bein
 
 Still, Story Teller ran the same loop of avg(1,000)x10 very fast. In the region of 0.001 sec per 1,000 log statements (testing the decision making). When logging, it was around 0.1 sec. So even with it's significantly more intelligent logging, it's no slouch.
 
+# Credits
+
+ * Thanks to Todd Ditchendorf for [PEGKit](https://github.com/itod/pegkit). I've learned a lot from working with it.
+ * Big Thanks to the guys behind [Carthage](https://github.com/Carthage/Carthage) for writing a dependency tool that actual works well with XCode and Git.
+ * Thanks to Mulle Cybernetik for [OCMock](ocmock.org). An outstanding mocking framework for Objective-C that has enabled me to test the un-testable many times.
+
+ 
+ 
