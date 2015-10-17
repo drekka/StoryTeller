@@ -7,6 +7,8 @@
 //
 
 @import XCTest;
+@import ObjectiveC;
+
 #import "STLogExpressionParserDelegate.h"
 #import "STMatcher.h"
 #import "MainClass.h"
@@ -22,6 +24,10 @@
 
 -(void) setUp {
     _factory = [[STLogExpressionParserDelegate alloc] init];
+}
+
+-(void) testRuntimeConforms {
+    XCTAssertFalse(class_conformsToProtocol([NSString class], @protocol(NSObject)));
 }
 
 #pragma mark - Classes

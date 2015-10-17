@@ -19,6 +19,7 @@
 		6C158E341B38278500119725 /* STConsoleLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CD18E001B32A5B8002C9806 /* STConsoleLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6C158E351B38278500119725 /* STAbstractLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C6879971B32F49A00091F87 /* STAbstractLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6C158E361B38278500119725 /* STStoryTeller.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CE5C3E71B329BD100F0A470 /* STStoryTeller.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6C3F85281BD20D73006CC6C7 /* PEGKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6C8AE1961B3A3BF300DF2B9F /* PEGKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6C7145631B4425BE00EBC055 /* StoryTellerConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 6C158DE51B3820F100119725 /* StoryTellerConfig.json */; };
 		6C8174321B3CDBA300342066 /* STCompareMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C8174301B3CDBA300342066 /* STCompareMatcher.h */; };
 		6C8174331B3CDBA300342066 /* STCompareMatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C8174311B3CDBA300342066 /* STCompareMatcher.m */; };
@@ -65,6 +66,19 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		6C3F85271BD20D67006CC6C7 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				6C3F85281BD20D73006CC6C7 /* PEGKit.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		6C158DE01B38206600119725 /* STConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STConfig.h; sourceTree = "<group>"; };
 		6C158DE11B38206600119725 /* STConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STConfig.m; sourceTree = "<group>"; };
@@ -79,7 +93,7 @@
 		6C8174361B3CEDDD00342066 /* STFilterMatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFilterMatcher.h; sourceTree = "<group>"; };
 		6C8174371B3CEDDD00342066 /* STFilterMatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFilterMatcher.m; sourceTree = "<group>"; };
 		6C81743A1B3D204F00342066 /* STCompareMatcherTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STCompareMatcherTests.m; sourceTree = "<group>"; };
-		6C8AE1961B3A3BF300DF2B9F /* PEGKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PEGKit.framework; path = Carthage/Build/iOS/PEGKit.framework; sourceTree = "<group>"; };
+		6C8AE1961B3A3BF300DF2B9F /* PEGKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PEGKit.framework; path = ../../Build/iOS/PEGKit.framework; sourceTree = "<group>"; };
 		6C8AE1981B3A444F00DF2B9F /* STMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STMacros.h; sourceTree = "<group>"; };
 		6C8AE1991B3A466200DF2B9F /* StoryTeller.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StoryTeller.h; sourceTree = "<group>"; };
 		6C8E92291B3BC41C00E6B6C4 /* STLogExpressionParserDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STLogExpressionParserDelegate.h; sourceTree = "<group>"; };
@@ -343,6 +357,7 @@
 				6CE5C3EB1B329BD100F0A470 /* Sources */,
 				6CE5C3EC1B329BD100F0A470 /* Frameworks */,
 				6CE5C3ED1B329BD100F0A470 /* Resources */,
+				6C3F85271BD20D67006CC6C7 /* CopyFiles */,
 			);
 			buildRules = (
 			);

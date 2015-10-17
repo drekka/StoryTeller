@@ -59,14 +59,14 @@ static Class __protocolClass;
 }
 
 -(void) setLineTemplate:(NSString * _Nonnull) lineTemplate {
-
+    
     if ([lineTemplate isEqualToString:_lineTemplate]) {
         return;
     }
-
+    
     _lineFragments = [[NSMutableArray alloc] init];
     _lineTemplate = lineTemplate;
-
+    
     // Get a scanner.
     NSScanner *scanner = [NSScanner scannerWithString:lineTemplate];
     scanner.charactersToBeSkipped = nil;
@@ -88,7 +88,7 @@ static Class __protocolClass;
         } else if ([scanner scanString:STLoggerTemplateKeyMessage intoString:nil]) {
             [_lineFragments addObject:@(DetailsDisplayMessage)];
         } else {
-
+            
             // If the next two chars are the start chars
             // then we are stalled at the start of a keyword.
             // Must be unknown so error.
@@ -99,7 +99,7 @@ static Class __protocolClass;
                 }
                 @throw [NSException exceptionWithName:@"StoryTeller" reason:[NSString stringWithFormat:@"Unknown log template keyword {{%@}}", keyword] userInfo:nil];
             }
-
+            
             // Must be some text so scan up to the next opening delimiters.
             NSString *text;
             if ([scanner scanUpToString:@"{{" intoString:&text]) {
@@ -112,9 +112,9 @@ static Class __protocolClass;
                 break;
             }
         }
-
+        
     } while(!scanner.atEnd);
-
+    
 }
 
 -(void) writeMessage:(NSString *) message
@@ -122,72 +122,75 @@ static Class __protocolClass;
           fromMethod:(const char *) methodName
           lineNumber:(int) lineNumber
                  key:(id) key {
-
-	NSMutableString *line = [[NSMutableString alloc] init];
+    
     [_lineFragments enumerateObjectsUsingBlock:^(id fragment, NSUInteger idx, BOOL *stop) {
-
+        
         if ([fragment isKindOfClass:[NSNumber class]]) {
-			  switch (((NSNumber *)fragment).intValue) {
-
+            switch (((NSNumber *)fragment).intValue) {
+                    
                 case DetailsDisplayThreadId: {
-                    [line appendFormat:@"<%x>", pthread_mach_thread_np(pthread_self())];
+                    [self writeText:[NSString stringWithFormat:@"<%x>", pthread_mach_thread_np(pthread_self())].UTF8String];
                     break;
                 }
-
+                    
                 case DetailsDisplayFile: {
-						 [line appendString:[NSString stringWithUTF8String:fileName]];
+                    [self writeText:fileName];
                     break;
                 }
-
+                    
                 case DetailsDisplayFuntion: {
-						 [line appendString:[NSString stringWithUTF8String:methodName]];
+                    [self writeText:methodName];
                     break;
                 }
-
+                    
                 case DetailsDisplayLine: {
-						 [line appendFormat:@"%i", lineNumber];
+                    [self writeText:[NSString stringWithFormat:@"%i", lineNumber].UTF8String];
                     break;
                 }
-
+                    
                 case DetailsDisplayThreadName: {
                     NSString *threadName = [NSThread currentThread].name;
                     if ([threadName length] > 0) {
-							  [line appendString:threadName];
+                        [self writeText:threadName.UTF8String];
                     }
                     break;
                 }
-
+                    
                 case DetailsDisplayTime: {
-						 [line appendString:[self->_dateFormatter stringFromDate:[NSDate date]]];
+                    [self writeText:[self->_dateFormatter stringFromDate:[NSDate date]].UTF8String];
                     break;
                 }
-
+                    
                 case DetailsDisplayKey: {
                     if ([self keyIsClass:key]) {
-							  [line appendFormat:@"c:[%@]", NSStringFromClass(key)];
+                        [self writeText:"c:["];
+                        [self writeText:NSStringFromClass(key).UTF8String];
+                        [self writeText:"]"];
                     } else if ([self keyIsProtocol:key]) {
-							  [line appendFormat:@"p:<%@>", NSStringFromProtocol(key)];
+                        [self writeText:"p:<"];
+                        [self writeText:NSStringFromProtocol(key).UTF8String];
+                        [self writeText:">"];
                     } else {
-							  [line appendFormat:@"k:'%@'", key];
+                        [self writeText:"k:'"];
+                        [self writeText:[key description].UTF8String];
+                        [self writeText:"'"];
                     }
                     break;
                 }
-
+                    
                 default: { // Message
-                    [line appendString:message];
+                    [self writeText:message.UTF8String];
                 }
             }
         } else {
             // Text fragment so just write it
-			  [line appendString:(NSString *)fragment];
+            [self writeText:((NSString *)fragment).UTF8String];
         }
     }];
-
+    
     // Write a final line feed.
-	[line appendString:@"\n"];
-
-	[self writeText:line.UTF8String];
-
+    [self writeText:"\n"];
+    
 }
 
 -(void) writeText:(const char * _Nonnull) text {
