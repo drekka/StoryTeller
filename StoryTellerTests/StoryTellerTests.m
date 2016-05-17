@@ -86,14 +86,6 @@
     XCTAssertTrue(blockCalled);
 }
 
--(void) validateLogLineAtIndex:(unsigned long) idx
-                    methodName:(const char * _Nonnull) methodName
-                    lineNumber:(int) lineNumber
-                       message:(NSString * _Nonnull) message {
-    NSString *expected = [NSString stringWithFormat:@"%s:%i %@", methodName, lineNumber, message];
-    XCTAssertEqualObjects(expected, [self.inMemoryLogger.log[idx] substringFromIndex:13]);
-}
-
 -(void) testLogAll {
 
     [[STStoryTeller storyTeller] logAll];
@@ -134,6 +126,15 @@
     _helloAgainMethodName = __PRETTY_FUNCTION__;
     _helloAgainLogLine = __LINE__ + 1;
     STLog(@"def", @"hello world 2");
+}
+
+-(void) validateLogLineAtIndex:(unsigned long) idx
+                    methodName:(const char * _Nonnull) methodName
+                    lineNumber:(int) lineNumber
+                       message:(NSString * _Nonnull) message {
+    NSString *lastPathComponent = [NSString stringWithCString:__FILE__ encoding:NSUTF8StringEncoding].lastPathComponent;
+    NSString *expected = [NSString stringWithFormat:@"%@:%i %@", lastPathComponent, lineNumber, message];
+    XCTAssertEqualObjects(expected, [self.inMemoryLogger.log[idx] substringFromIndex:13]);
 }
 
 @end

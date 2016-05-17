@@ -21,7 +21,6 @@ NSString * const STLoggerTemplateKeyTime = @"{{time}}";
 NSString * const STLoggerTemplateKeyKey = @"{{key}}";
 NSString * const STLoggerTemplateKeyMessage = @"{{message}}";
 
-
 typedef NS_ENUM(int, DetailsDisplay) {
     DetailsDisplayThreadId,
     DetailsDisplayFile,
@@ -53,7 +52,7 @@ static Class __protocolClass;
     if (self) {
         _dateFormatter = [[NSDateFormatter alloc] init];
         _dateFormatter.dateFormat = @"HH:mm:ss.sss";
-        self.lineTemplate = [NSString stringWithFormat:@"%@ %@:%@ %@", STLoggerTemplateKeyTime, STLoggerTemplateKeyFunction, STLoggerTemplateKeyLine, STLoggerTemplateKeyMessage];
+        self.lineTemplate = [NSString stringWithFormat:@"%@ %@:%@ %@", STLoggerTemplateKeyTime, STLoggerTemplateKeyFile, STLoggerTemplateKeyLine, STLoggerTemplateKeyMessage];
     }
     return self;
 }
@@ -134,7 +133,8 @@ static Class __protocolClass;
                 }
                     
                 case DetailsDisplayFile: {
-                    [self writeText:fileName];
+                    NSString *lastPathComponent = [NSString stringWithCString:fileName encoding:NSUTF8StringEncoding].lastPathComponent;
+                    [self writeText:lastPathComponent.UTF8String];
                     break;
                 }
                     

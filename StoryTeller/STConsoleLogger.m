@@ -10,7 +10,7 @@
 
 #define XCODE_COLORS_ESCAPE "\033["
 #define XCODE_COLORS_SET_TEMPLATE @"%s%s%i,%i,%i;"
-#define XCODE_COLORS_RESET     @XCODE_COLORS_ESCAPE ";"   // Clear any foreground or background color
+#define XCODE_COLORS_RESET @XCODE_COLORS_ESCAPE ";"   // Clear any foreground or background color
 
 NS_ASSUME_NONNULL_BEGIN
 
