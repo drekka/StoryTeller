@@ -5,7 +5,7 @@
 
 	<title>{{page.title}}</title>
 
-	<link rel="stylesheet" href="{{page.cssPath}}">
+	<link rel="stylesheet" href="css/style.css">
 	<meta name="viewport" content="initial-scale=1, maximum-scale=1.4">
 	{{#strings.appledocData}}<meta name="generator" content="{{tool}} {{version}} (build {{build}})">{{/strings.appledocData}}
 </head>
@@ -14,11 +14,11 @@
 		<div class="container" class="hide-in-xcode">
 			{{#page}}
 			<h1 id="library-title">
-				<a href="{{page.documentationIndexPath}}">{{projectName}} {{strings.objectPage.libraryTitlePostfix}}</a>
+				<a href="index.html">{{projectName}} {{strings.objectPage.libraryTitlePostfix}}</a>
 			</h1>
 
 			<p id="developer-home">
-				<a href="{{page.documentationIndexPath}}">{{projectCompany}}</a>
+				<a href="index.html">{{projectCompany}}</a>
 			</p>
 			{{/page}}
 		</div>
@@ -57,7 +57,7 @@
 		</div>
 	</article>
 
-	<script src="{{page.jsPath}}"></script>
+	<script src="js/script.js"></script>
 </body>
 </html>
 
@@ -71,5 +71,5 @@ Section GBCommentComponent
 EndSection
 
 Section Navigation
-<li><a href="{{page.documentationIndexPath}}">Home</a></li>
+<li><a href="index.html">Home</a></li>
 EndSection

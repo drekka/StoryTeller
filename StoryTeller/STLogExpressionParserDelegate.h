@@ -8,15 +8,14 @@
 
 @import Foundation;
 
-@class STStoryTeller;
-#import "STMatcher.h"
+@protocol STMatcher;
 
 NS_ASSUME_NONNULL_BEGIN
 
 /**
  The delegate for the STLogExpressionParser class generated PEGKit.
  
- @discussion To receive information from the PEGKit parsing of a string, a class can receive messages via delegate calls. This class manages the parsing of a string containing a message and responding to the callbacks from PEGKit. 
+ @discussion To receive information from the PEGKit parsing of a string, a class can receive messages via delegate calls. This class manages the parsing of a string containing a message and responding to the callbacks from PEGKit.
  */
 @interface STLogExpressionParserDelegate : NSObject
 
@@ -27,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param error a pointer to a NSError variable where an error can be set if there is a problem.
  */
 -(id<STMatcher>) parseExpression:(NSString *) expression
-									error:(NSError * __autoreleasing  *) error;
+                           error:(NSError * __autoreleasing  *) error;
 
 @end
 

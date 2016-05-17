@@ -6,9 +6,10 @@
 //  Copyright © 2015 Derek Clarkson. All rights reserved.
 //
 
-#import <StoryTeller/STStoryTeller.h>
-#import <StoryTeller/STConfig.h>
+#import "STStoryTeller.h"
+#import "STConfig.h"
 #import "STMatcher.h"
+#import "STLogger.h"
 #import "STLogExpressionParserDelegate.h"
 
 @implementation STStoryTeller {

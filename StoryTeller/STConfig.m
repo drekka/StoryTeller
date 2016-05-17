@@ -10,9 +10,9 @@
 
 #import <PEGKit/PEGKit.h>
 
-#import <StoryTeller/STConfig.h>
-#import <StoryTeller/STStoryTeller.h>
-#import <StoryTeller/STConsoleLogger.h>
+#import "STConfig.h"
+#import "STStoryTeller.h"
+#import "STConsoleLogger.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -109,7 +109,7 @@ NS_ASSUME_NONNULL_BEGIN
 	[super setValue:value forKey:key];
 }
 
-// DIsabled default so we can load settings without having to check the names of properties.
+// Disabled default so we can load settings without having to check the names of properties.
 -(void) setValue:(id _Nullable) value forUndefinedKey:(NSString *) key {
 }
 

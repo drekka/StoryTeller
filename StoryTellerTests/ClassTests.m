@@ -9,8 +9,8 @@
 @import XCTest;
 @import ObjectiveC;
 
-#import "STLogExpressionParserDelegate.h"
-#import "STMatcher.h"
+#import <StoryTeller/StoryTeller.h>
+
 #import "MainClass.h"
 #import "SubClass.h"
 #import "AProtocol.h"

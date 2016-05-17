@@ -8,7 +8,7 @@
 
 @import Foundation;
 
-#import <StoryTeller/StoryTeller.h>
+#import "StoryTeller.h"
 
 @interface InMemoryLogger : STAbstractLogger
 

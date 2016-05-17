@@ -8,6 +8,8 @@
 
 @import Foundation;
 
+@class STDeallocHook;
+
 NS_ASSUME_NONNULL_BEGIN
 
 /**
@@ -17,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  @code
  id hook = [[STDeallocHook alloc] initWithBlock:^{
- // Do something when 'hook' is dealloced
+     // Do something when 'hook' is dealloced
  }];
  @endcode
  
