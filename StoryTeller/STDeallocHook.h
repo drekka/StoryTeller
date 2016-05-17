@@ -15,15 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Simple class that is designed to execute a block when a variable goes out of scope.
  
- @discussion To use it, do something like the following
- 
- @code
- id hook = [[STDeallocHook alloc] initWithBlock:^{
-     // Do something when 'hook' is dealloced
- }];
- @endcode
- 
- When `hook` goes out of scope and is deallocated, the code block will be executed. STDeallocHook is used to detect when a `STStartScope(...)` macro should end the scope of the key. The `STStartScope(...)` macro declares a local variable with a unique name and sets a STDeallocHook as it's value. When the hook deallocs, it calls endScope: in Story Teller and tells it to remove the key from the active list.
+ STDeallocHook is used to detect when a `STStartScope(...)` macro should end the scope of the key. The `STStartScope(...)` macro declares a local variable with a unique name and sets a STDeallocHook as it's value. When the hook deallocs, it calls endScope: in Story Teller and tells it to remove the key from the active list.
  */
 @interface STDeallocHook : NSObject
 /**
