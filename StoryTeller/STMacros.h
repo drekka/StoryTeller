@@ -7,7 +7,6 @@
 //
 
 #import <StoryTeller/STSToryTeller.h>
-#import <StoryTeller/STDeallocHook.h>
 
 #ifdef DISABLE_STORY_TELLER
 
@@ -32,16 +31,8 @@
 
 // Note the NS_VALID_UNTIL_END_OF_SCOPE macro. This ensures that the variable does not immediately dealloc.
 #define STStartScope(key) \
-_Pragma ("clang diagnostic push") \
-_Pragma ("clang diagnostic ignored \"-Wunused-variable\"") \
-NS_VALID_UNTIL_END_OF_SCOPE STDeallocHook *ST_CONCATINATE(_stHook_, __LINE__) = [[STDeallocHook alloc] initWithBlock:^{ \
-STEndScope(key); \
-}]; \
-_Pragma ("clang diagnostic pop") \
-[[STStoryTeller storyTeller] startScope:key]
+NS_VALID_UNTIL_END_OF_SCOPE __unused id ST_CONCATINATE(_stHook_, __LINE__) = [[STStoryTeller storyTeller] startScope:key] \
 
-#define STEndScope(key) \
-[[STStoryTeller storyTeller] endScope:key]
 
 #define STLog(key, messageTemplate, ...) \
 [[STStoryTeller storyTeller] record:key file:__FILE__ method: __func__ lineNumber: __LINE__ message:messageTemplate, ## __VA_ARGS__]

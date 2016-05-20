@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  Reset the logging system and clears all set logging criteria.
-
+ 
  @discussion Used mostly for debugging and testing. Generally speaking you would not need to reset the logging system.
  */
 -(void) reset;
@@ -43,7 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  The current active logger.
-
+ 
  @discussion By defaul this is an instance of STConsoleLogger. However, you can create and set a different class as long as it conforms to the STLogger protocol.
  @see STLogger
  */
@@ -57,14 +57,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  Turns on logging of everything regardless of log settings.
-
+ 
  @discussion Again not something that would normally be turned on. But can be useful when debugging. Activating this will override any other logging settings.
  */
 -(void) logAll;
 
 /**
  Turns on logging of all top level log statements.
-
+ 
  @discussion Similar to logAll except that it only logs the top level log statements. Any statement which is inside an active Key Scope will be ignored. The main goal of this is to enable a semi-quick high level report of the data going through the app. Activating this will will override any logging criteria. But not logAll.
  */
 -(void) logRoots;
@@ -75,7 +75,7 @@ NS_ASSUME_NONNULL_BEGIN
  Start logging for the passed key.
  
  @discussion This is the main method to call to activate logging programmatically.
-
+ 
  @param keyExpression the key to log. @see the documentation for descriptions of what this key can be.
  */
 -(void) startLogging:(NSString *) keyExpression;
@@ -84,28 +84,29 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  Starts a key Scope. 
-
+ 
  @discussion the Key will basically group any `STLog(...)` statements that occur after it's definition and until it goes out of scope. Scope follows the Objective-C scope rules in that it finishes at the end of the current function, loop or if statement. Basically when a locally declared variable would be dealloced.
  
  The major difference is that this scope also applies to any `STLog(...)` statements that are contained within methods called whilst the scope is active. This is the main purpose of this as it allows methods which do not have access to the key to be included in the logs when that key is being logged.
  
  @param key the key scope to activate.
+ @result An object that shoudl be kept alive via the NS_VALID_UNTIL_END_OF_SCOPE declaration. When this object deallocs it will disable the logging scope.
  */
--(void) startScope:(id) key;
+-(id) startScope:(id) key;
 
 /**
  Removes a specific Key Scope.
  @discussion Normally you would not need to call this directly as @c StoryTeller::startScope: automatically removes the keys when the escope ends. In fact, by automatically calling this method.
-
+ 
  @param key the key Scope to de-activate.
-*/
+ */
 -(void) endScope:(id) key;
 
 /// @name Querying
 
 /**
  Returns the number of Key Scopes that are currently active.
-
+ 
  @discussion Usually used for debugging and testing of Story Teller itself.
  */
 @property (nonatomic, assign, readonly) int numberActiveScopes;
@@ -140,7 +141,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  Useful helper method which executes a block of code if the key is active.
-
+ 
  @discussion Mainly used for wrapping up lines of code that involve more than just logging statements.
  
  @param key the key which will control the execution of the block.
