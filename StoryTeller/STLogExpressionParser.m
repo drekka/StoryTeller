@@ -1,4 +1,4 @@
-#import "STLogExpressionParser.h"
+#import <StoryTeller/STLogExpressionParser.h>
 #import <PEGKit/PEGKit.h>
     
 #pragma GCC diagnostic ignored "-Wundeclared-selector"

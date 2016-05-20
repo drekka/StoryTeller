@@ -8,9 +8,8 @@
 
 @import XCTest;
 #import <OCMock/OCMock.h>
-#import <StoryTeller/StoryTeller.h>
-#import "STLogExpressionParserDelegate.h"
-#import "STMatcher.h"
+@import StoryTeller;
+@import StoryTeller.Private;
 
 @interface OptionsTests : XCTestCase
 @end

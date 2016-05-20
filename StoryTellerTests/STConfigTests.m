@@ -8,8 +8,8 @@
 
 #import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
-#import <StoryTeller/StoryTeller.h>
-#import "STConfig.h"
+@import StoryTeller;
+@import StoryTeller.Private;
 
 #import "InMemoryLogger.h"
 

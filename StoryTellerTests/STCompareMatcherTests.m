@@ -8,7 +8,7 @@
 
 @import XCTest;
 
-#import "STCompareMatcher.h"
+@import StoryTeller.Private;
 #import <OCMock/OCMock.h>
 
 @interface STCompareMatcherTests : XCTestCase
@@ -18,18 +18,18 @@
 @implementation STCompareMatcherTests
 
 -(void) testCallsNextMatcherWhenMatches {
-
+    
     __block BOOL compareCalled = NO;
     id mockMatcher = OCMProtocolMock(@protocol(STMatcher));
     OCMStub([mockMatcher matches:@"abc"]).andReturn(YES);
-
+    
     STCompareMatcher *matcher = [[STCompareMatcher alloc] initWithCompare:^BOOL(id  _Nonnull key) {
         compareCalled = YES;
         return YES;
     }];
-
+    
     matcher.nextMatcher = mockMatcher;
-
+    
     XCTAssertTrue([matcher matches:@"abc"]);
     OCMVerify([mockMatcher matches:@"abc"]);
     

@@ -7,7 +7,7 @@
 //
 
 #import "STTestCase.h"
-#import <StoryTeller/STStoryTeller.h>
+@import StoryTeller;
 #import "InMemoryLogger.h"
 
 @implementation STTestCase

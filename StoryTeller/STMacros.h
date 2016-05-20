@@ -6,8 +6,8 @@
 //  Copyright © 2015 Derek Clarkson. All rights reserved.
 //
 
-#import "STSToryTeller.h"
-#import "STDeallocHook.h"
+#import <StoryTeller/STSToryTeller.h>
+#import <StoryTeller/STDeallocHook.h>
 
 #ifdef DISABLE_STORY_TELLER
 

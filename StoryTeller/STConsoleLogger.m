@@ -6,7 +6,7 @@
 //  Copyright © 2015 Derek Clarkson. All rights reserved.
 //
 
-#import "STConsoleLogger.h"
+#import <StoryTeller/STConsoleLogger.h>
 
 #define XCODE_COLORS_ESCAPE "\033["
 #define XCODE_COLORS_SET_TEMPLATE @"%s%s%i,%i,%i;"

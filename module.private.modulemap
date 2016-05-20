@@ -1,0 +1,10 @@
+explicit module StoryTeller.Private {
+    header "PrivateHeaders/STLogExpressionParser.h"
+    header "PrivateHeaders/STLogExpressionParserDelegate.h"
+    header "PrivateHeaders/STMatcher.h"
+    header "PrivateHeaders/STCompareMatcher.h"
+    header "PrivateHeaders/STFilterMatcher.h"
+    header "PrivateHeaders/STMatcherFactory.h"
+    header "PrivateHeaders/STConfig.h"
+    header "PrivateHeaders/STDeallocHook.h"
+}

@@ -6,7 +6,7 @@
 //  Copyright © 2015 Derek Clarkson. All rights reserved.
 //
 
-#import "STCompareMatcher.h"
+#import <StoryTeller/STCompareMatcher.h>
 
 @implementation STCompareMatcher {
     BOOL (^ _Nonnull _compareBlock)(_Nullable id key);

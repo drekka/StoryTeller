@@ -9,11 +9,11 @@
 @import ObjectiveC;
 #import <PEGKit/PEGKit.h>
 
-#import "STStoryTeller.h"
-#import "STLogExpressionParserDelegate.h"
+#import <StoryTeller/STStoryTeller.h>
+#import <StoryTeller/STLogExpressionParserDelegate.h>
 
-#import "STLogExpressionParser.h"
-#import "STMatcherFactory.h"
+#import <StoryTeller/STLogExpressionParser.h>
+#import <StoryTeller/STMatcherFactory.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

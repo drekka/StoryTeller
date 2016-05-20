@@ -6,7 +6,7 @@
 //  Copyright © 2015 Derek Clarkson. All rights reserved.
 //
 
-#import "STDeallocHook.h"
+#import <StoryTeller/STDeallocHook.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

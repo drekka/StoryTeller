@@ -14,16 +14,8 @@ FOUNDATION_EXPORT double StoryTellerVersionNumber;
 //! Project version string for StoryTeller.
 FOUNDATION_EXPORT const unsigned char StoryTellerVersionString[];
 
-#import "STAbstractLogger.h"
-#import "STCompareMatcher.h"
-#import "STConfig.h"
-#import "STConsoleLogger.h"
-#import "STDeallocHook.h"
-#import "STFilterMatcher.h"
-//#import "STLogExpressionParser.h"
-#import "STLogExpressionParserDelegate.h"
-#import "STLogger.h"
-#import "STMacros.h"
-#import "STMatcher.h"
-#import "STMatcherFactory.h"
-#import "STStoryTeller.h"
+#import <StoryTeller/STAbstractLogger.h>
+#import <StoryTeller/STConsoleLogger.h>
+#import <StoryTeller/STLogger.h>
+#import <StoryTeller/STMacros.h>
+#import <StoryTeller/STStoryTeller.h>

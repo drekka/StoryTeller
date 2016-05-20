@@ -9,7 +9,7 @@
 @import XCTest;
 @import ObjectiveC;
 
-#import <StoryTeller/StoryTeller.h>
+@import StoryTeller.Private;
 
 #import "MainClass.h"
 #import "SubClass.h"

@@ -7,8 +7,7 @@
 //
 
 @import XCTest;
-#import "STLogExpressionParserDelegate.h"
-#import "STMatcher.h"
+@import StoryTeller.Private;
 #import "MainClass.h"
 #import "SubClass.h"
 #import "AProtocol.h"

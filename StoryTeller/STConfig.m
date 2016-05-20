@@ -10,9 +10,9 @@
 
 #import <PEGKit/PEGKit.h>
 
-#import "STConfig.h"
-#import "STStoryTeller.h"
-#import "STConsoleLogger.h"
+#import <StoryTeller/STConfig.h>
+#import <StoryTeller/STStoryTeller.h>
+#import <StoryTeller/STConsoleLogger.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
