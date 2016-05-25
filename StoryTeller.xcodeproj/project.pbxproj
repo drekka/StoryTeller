@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		6C0747D61BE9F2720096BF85 /* PEGKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C0747D51BE9F2720096BF85 /* PEGKit.framework */; };
 		6C0747D71BE9F28F0096BF85 /* PEGKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C0747D51BE9F2720096BF85 /* PEGKit.framework */; };
-		6C1085C61B3A73F4009C7AB8 /* StoryTeller.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C158E141B38269D00119725 /* StoryTeller.framework */; };
 		6C158E2B1B38277200119725 /* STConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C158DE11B38206600119725 /* STConfig.m */; };
 		6C158E2C1B38277200119725 /* STDeallocHook.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CCFFA7C1B33CB5F00D2F371 /* STDeallocHook.m */; };
 		6C158E2D1B38277200119725 /* STConsoleLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CD18E011B32A5B8002C9806 /* STConsoleLogger.m */; };
@@ -40,6 +39,7 @@
 		6CC458AA1B4FEBD700FA0EA9 /* STMatcherFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CC458A81B4FEBD700FA0EA9 /* STMatcherFactory.m */; };
 		6CD938411B384AB5005B0B5D /* STConfigTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CD938401B384AB5005B0B5D /* STConfigTests.m */; };
 		6CDCEB971B38F07A007DAF3D /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CDCEB961B38F07A007DAF3D /* libOCMock.a */; };
+		F45241A51CF296B000464D24 /* StoryTeller.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6C158E141B38269D00119725 /* StoryTeller.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F469EACE1CEAEAB400D9DD47 /* PEGKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6C0747D51BE9F2720096BF85 /* PEGKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F469EACF1CEAEAC000D9DD47 /* libOCMock.a in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6CDCEB961B38F07A007DAF3D /* libOCMock.a */; };
 		F469EAD01CEAEB6800D9DD47 /* STMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C8174341B3CED7F00342066 /* STMatcher.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -75,6 +75,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				F45241A51CF296B000464D24 /* StoryTeller.framework in CopyFiles */,
 				F469EACF1CEAEAC000D9DD47 /* libOCMock.a in CopyFiles */,
 				F469EACE1CEAEAB400D9DD47 /* PEGKit.framework in CopyFiles */,
 			);
@@ -164,7 +165,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				6C0747D61BE9F2720096BF85 /* PEGKit.framework in Frameworks */,
-				6C1085C61B3A73F4009C7AB8 /* StoryTeller.framework in Frameworks */,
 				6CDCEB971B38F07A007DAF3D /* libOCMock.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -470,8 +470,9 @@
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PROJECT_DIR}/External/appledoc-2.2.1/appledoc\" \\\n--project-name \"Story Teller\" \\\n--project-company \"Derek Clarkson\" \\\n--company-id au.com.derekclarkson \\\n--output ~/help \\\n--logformat xcode \\\n--keep-undocumented-objects \\\n--keep-undocumented-members \\\n--search-undocumented-doc \\\n--preprocess-headerdoc \\\n--no-repeat-first-par \\\n--exit-threshold 2 \\\n--ignore .m \\\n--ignore STLogExpressionParser.h \\\nStoryTeller\n";
+			shellPath = /bin/bash;
+			shellScript = "echo \"Executing appledoc in dir $PWD\"\n\"${PROJECT_DIR}/External/appledoc-2.2.1/appledoc\" \\\n--project-name \"Story Teller\" \\\n--project-company \"Derek Clarkson\" \\\n--company-id au.com.derekclarkson \\\n--output ~/help \\\n--logformat xcode \\\n--keep-undocumented-objects \\\n--keep-undocumented-members \\\n--search-undocumented-doc \\\n--preprocess-headerdoc \\\n--no-repeat-first-par \\\n--exit-threshold 2 \\\n--ignore .m \\\n--ignore STLogExpressionParser.h \\\nStoryTeller\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
