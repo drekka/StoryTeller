@@ -1,13 +1,33 @@
 # StoryTeller 
 
-* [Quick start](#quick-start)
-* [Installation](#installation)
-* [Adding logging](#adding-logging-to-your-code)
-* [Configuration](#configuring-logging)
-* [Smart logging criteria](#smart-logging-criteria)
-* [Execution blocks](#execution-blocks)
-* [Async logging](#async)
-* [Performance](#performance)
+  * [StoryTeller](#storyteller)
+      * [WTF \- Another logging framework\!\!\!](#wtf---another-logging-framework)
+  * [Quick start](#quick-start)
+  * [Installation](#installation)
+    * [Carthage](#carthage)
+    * [Cocoapods](#cocoapods)
+    * [Submodules or Manual includes](#submodules-or-manual-includes)
+  * [Adding Story Teller to your code](#adding-story-teller-to-your-code)
+  * [Logging](#logging)
+    * [Magic keys](#magic-keys)
+    * [What if I don't have an accessible key?](#what-if-i-dont-have-an-accessible-key)
+  * [Configuring logging](#configuring-logging)
+    * [On startup](#on-startup)
+    * [Envirnoment variables](#envirnoment-variables)
+    * [Programmatically](#programmatically)
+    * [XCodeColors &amp; Logging templates](#xcodecolors--logging-templates)
+  * [Smart Logging Criteria](#smart-logging-criteria)
+    * [General logging](#general-logging)
+    * [Simple value criteria](#simple-value-criteria)
+    * [Classes or Protocol criteria](#classes-or-protocol-criteria)
+    * [KVC Property criteria](#kvc-property-criteria)
+    * [Runtime criteria](#runtime-criteria)
+  * [Execution blocks](#execution-blocks)
+    * [Release vs Debug](#release-vs-debug)
+    * [Async](#async)
+    * [Performance](#performance)
+      * [Update \- some bench marks](#update---some-bench-marks)
+  * [Credits](#credits)
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://raw.githubusercontent.com/drekka/StoryTeller/master/LICENSE)
 
@@ -17,32 +37,41 @@ A logging framework that promotes following data rather than functionality in lo
 
 Yep. Another one. But with a difference ...
 
-The idea that drives Story Teller is quite simple: ***To debug an application, developers need to see the threads of data as they weave their way through the code.***
+The idea that drives Story Teller is quite simple: ***To debug an application, developers need to follow data.***
 
-Other logging frameworks use a very crass shotgun approach (IMHO) base on assuming that the *severity* of a log statement can be used to derive useful logging output. There is no way to target the logging and usually a huge amount of useless output is produced. The real problem with these frameworks is that they are based on dated assumptions and designs from systems where CPU and storage are unlimited, and where producing Gigabytes of logs is thought to be useful. Mostly by people who have no idea what developers actually need. 
+For example, when debugging an accounting app, a developer might want to see all transaction realated to account number 1223344. 
 
-Story Teller takes a different approch - it targets what developers acutally need by combining the ability to base logging on dynamic data driven *Keys*, with a query driven logging criteria. This enabled the developer to target their logging on the specific data relevant to the problem at hand. This produces very concise logs which contain only relevant and useful information.
+No other logging framework can do this. They are built around the concept of different levels of information, from minimal through to highly detailed. All the developer can do is request more details and try and troll the output for the details they want.
+
+Debugging with Story Teller is completely different. Story Teller lets you specify a criteria for what you want logged. So seeing transactions for account 1223344 becomes a simple matter of telling Story Teller to log anything where account.number = 1223344. As a result, the entire log is relevant to the task at hand.
 
 # Quick start
 
 1. Install (see [below](#installation))
 
-2. Log some stuff using any key you like: 
+2. Instead of a log level, Story teller uses anything you like as a key. Here is some examples: 
 
- ```objectivec
+```objectivec
+// Using an object. 
 STLog(user, "User %@ is logging", user.id);
+STLog(account, "User %@ is accessing account %@", user.id, account.number);
+// Using a fixed value.
 STLog(@(EnumValueGUI), "GUI is doing %@ with %@", aGUIValue, anotherGUIVaue);
-STLog(currentView, "GUI is doing something with %@", currentView);
 STLog(@"abc", @"ABC, ha ha ha ha ha");
 ```
 
-3. Turn on targetted logging:
+3. Then when you want to log, ou can query using Story Teller's query language:
 
- ```objectivec
+```objectivec
+// Key is a User class with account name of ...
 STStartLogging(@"[User].account.name == \"derek's account\"");
+// Key is a User class with account balance > $500
 STStartLogging(@"[User].account.balance > 500");
+// Key is the string 'GUI'
 STStartLogging(@"GUI");
+// Key conforms to protocol UserAccount
 STStartLogging(@"<UserAccount>");
+// Key conforms to protocol Banking for a customer who is not a Banker protocol
 STStartLogging(@"<Banking>.customer != <Banker>");
 ```
 
@@ -59,7 +88,8 @@ This project can be dynamically included using [Carthage](https://github.com/Car
 Simple create a  file called ***CartFile*** in the root of your project and add a line of text like this:
 
 ```
-github "drekka/StoryTeller" >= 0.1
+// Pulls the latest version.
+github "drekka/StoryTeller"
 ```
 fire up a command line and execute from our projects root directory:
 
@@ -73,7 +103,7 @@ Then simply add this framework as you would any other.
 
 ## Cocoapods
 
-At the moment I don't support [Cocoapods](https://cocoapods.org) because I regard it as as hacky poor quality solution. And I don't use it on my personal projects. I have created a posspec in the root of Story Teller, but so far it doesn't pass the pod lint tests and typically with any Ruby hack projects, is giving errors that make no sense. I'll get around to supporting it one day. But it's not something I use. Feel free to figure it out if you want.
+At the moment I don't support [Cocoapods](https://cocoapods.org) because I regard it as as hacky poor quality solution. And I don't use it on my personal projects. I have created a posspec in the root of Story Teller, but so far it doesn't pass the pod lint tests and typically with any Ruby hack projects, is giving errors that make no sense. I'll get around to supporting it one day. But it's not something I use. Feel free to suggest what it should look like.
 
 ## Submodules or Manual includes
 
@@ -81,13 +111,22 @@ Another fine way to include Story Teller is to use [Git Submodules](https://chri
 
 [https://github.com/drekka/StoryTeller.git]()
 
-# Adding logging to your code
+# Adding Story Teller to your code
+
+Story teller can be added using a module include (Yes this works in Objective-C):
+
+```objectivec
+@import StoryTeller;
+```
+
+# Logging
 
 Story Teller has one basic logging statement:
 
 ```objectivec
 STLog(<key>, <message-template>, <args ...>); 
 ```
+
 This looks very similar to other logging frameworks. Except that they would either having `key` replaced with a severity level, or have multiple statements such as `logDebug`, `logInfo`, etc. 
 
 ## Magic keys
@@ -296,7 +335,7 @@ As you can see there is a lot of power here to decide what gets logged. Values f
  * **nil checks** - 'nil' keyword which checks for nils exactly the same as Objective-C does. Nil checks  can only use the logical operators: **==** and **!=**.
  * **type checks** - either a class or protocol declaration. The same way we declare the type of the key being searched.  Type checks can only use the logical operators: **==** and **!=**.
 
-## Runtim criteria
+## Runtime criteria
 
 Sometimes the best object o use for a key is a `Class` object. Or (rarely) you want to search on a property that returns a Class. In those cases you can use the **is** keyword to tell Story Teller to look for a Class rather than testing an object. 
 
@@ -340,19 +379,17 @@ Disable macro name: **`DISABLE_STORY_TELLER`**
 
 ## Async
 
-Story Teller does not support async logging at this time. Async logging is a response to a bad idea. The only time it is needed is when the developer is logging a massive amount of information to a file, usually because they have been told it's *'necessary'*. Often by someone who is not a developer and doesn't understand programming. I've never in 30 years seen an instance where one of these sorts of logs has been of any use. But some 3rd party libraries which support async come with it configured on as it allows them to log faster and claim performance gains.
+The only time async logging is needed is when logging a massive amount of information to a file. In 30 years of developing I've never seen an instance where a log like this has been of any use. 
 
-When debugging a problem or a unit test, developers will invaraibly turn off async because the delay between an event occuring and the logged statements appearing in the log is too long. If they appear at all. 
+In addition developers will invaraibly turn off async logging because the delay between an event occuring and the logged statements appearing in the log can be too long and cause the developer to be given a false impression of where the code is at. 
 
-Developers need to see things when they occur. Not some undetermined time in the future. This is why Story Teller does not support async.
+Story Teller is built for debugging. Not producing files or winning speed tests. So it does not support async logging.
 
 ## Performance
 
-Performance is something that is a factor when logging because logging to the console or a file is inheriantly slow. Traditional logging frameworks endevour to speed things up by using simple boolean controls or using async logging. This comes from the basic design concept which they all subscribe to - *that we want to log everything and sort it out later.* 
+Performance is something that is a factor when logging because logging to the console or a file is inheriantly slow. Other frameworks follow the basic design concept of - *That we want to log everything and sort it out later.* This is very wasteful. Especially in the mobile world where dumping everything into a file just on the off chance that someone might want to look at it is quite out of the question. 
 
-This is a flawed concept. It produces a lot of logging and causes significant slow downs. And it's very wasteful. Especially in the mobile world where dumping everything into a file just on the off chance that someone might want to look at it is quite out of the question. 
-
-Because of Story Teller's smart logging, it will often be faster than traditional logging frameworks simply because the reduction in output more than compensates for the extra processing required.
+Because Story Teller uses smarter logging techniques, it will often be faster than traditional logging frameworks simply because it produces less output, more than compensating for the extra processing required.
 
 ### Update - some bench marks
 
@@ -376,3 +413,5 @@ Still, Story Teller ran the same loop of avg(1,000)x10 very fast. In the region 
 
  
  
+
+
