@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		6C0747D61BE9F2720096BF85 /* PEGKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C0747D51BE9F2720096BF85 /* PEGKit.framework */; };
 		6C0747D71BE9F28F0096BF85 /* PEGKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C0747D51BE9F2720096BF85 /* PEGKit.framework */; };
-		6C1085C61B3A73F4009C7AB8 /* StoryTeller.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C158E141B38269D00119725 /* StoryTeller.framework */; };
 		6C158E2B1B38277200119725 /* STConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C158DE11B38206600119725 /* STConfig.m */; };
 		6C158E2C1B38277200119725 /* STDeallocHook.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CCFFA7C1B33CB5F00D2F371 /* STDeallocHook.m */; };
 		6C158E2D1B38277200119725 /* STConsoleLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CD18E011B32A5B8002C9806 /* STConsoleLogger.m */; };
@@ -40,7 +39,7 @@
 		6CC458AA1B4FEBD700FA0EA9 /* STMatcherFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CC458A81B4FEBD700FA0EA9 /* STMatcherFactory.m */; };
 		6CD938411B384AB5005B0B5D /* STConfigTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CD938401B384AB5005B0B5D /* STConfigTests.m */; };
 		6CDCEB971B38F07A007DAF3D /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CDCEB961B38F07A007DAF3D /* libOCMock.a */; };
-		F469EACE1CEAEAB400D9DD47 /* PEGKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6C0747D51BE9F2720096BF85 /* PEGKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F469EACE1CEAEAB400D9DD47 /* PEGKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6C0747D51BE9F2720096BF85 /* PEGKit.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		F469EACF1CEAEAC000D9DD47 /* libOCMock.a in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6CDCEB961B38F07A007DAF3D /* libOCMock.a */; };
 		F469EAD01CEAEB6800D9DD47 /* STMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C8174341B3CED7F00342066 /* STMatcher.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		F469EAD11CEAEB6800D9DD47 /* STCompareMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C8174301B3CDBA300342066 /* STCompareMatcher.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -56,6 +55,8 @@
 		F469EADB1CEAEB6800D9DD47 /* STStoryTeller.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CE5C3E71B329BD100F0A470 /* STStoryTeller.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F469EADC1CEAEB6800D9DD47 /* STMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C8AE1981B3A444F00DF2B9F /* STMacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F469EADD1CEAEB6800D9DD47 /* StoryTeller.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C8AE1991B3A466200DF2B9F /* StoryTeller.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F4E88B8C1CF6AE6000CCE36A /* StoryTeller.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C158E141B38269D00119725 /* StoryTeller.framework */; };
+		F4E88B8D1CF6AE6600CCE36A /* StoryTeller.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6C158E141B38269D00119725 /* StoryTeller.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +76,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				F4E88B8D1CF6AE6600CCE36A /* StoryTeller.framework in CopyFiles */,
 				F469EACF1CEAEAC000D9DD47 /* libOCMock.a in CopyFiles */,
 				F469EACE1CEAEAB400D9DD47 /* PEGKit.framework in CopyFiles */,
 			);
@@ -163,8 +165,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4E88B8C1CF6AE6000CCE36A /* StoryTeller.framework in Frameworks */,
 				6C0747D61BE9F2720096BF85 /* PEGKit.framework in Frameworks */,
-				6C1085C61B3A73F4009C7AB8 /* StoryTeller.framework in Frameworks */,
 				6CDCEB971B38F07A007DAF3D /* libOCMock.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -272,11 +274,11 @@
 		6CE5C3DB1B329BD100F0A470 = {
 			isa = PBXGroup;
 			children = (
-				F4325ED61CEEC8A4001A9FD6 /* module.private.modulemap */,
-				F4325ED51CEEC896001A9FD6 /* module.modulemap */,
 				F469EAC31CEAE53E00D9DD47 /* Frameworks */,
-				6C0A55FF1B38DFB4006E0A4A /* Resources */,
+				F4325ED51CEEC896001A9FD6 /* module.modulemap */,
+				F4325ED61CEEC8A4001A9FD6 /* module.private.modulemap */,
 				6CE5C3E51B329BD100F0A470 /* Products */,
+				6C0A55FF1B38DFB4006E0A4A /* Resources */,
 				6CE5C3E61B329BD100F0A470 /* StoryTeller */,
 				6CE5C3F31B329BD100F0A470 /* StoryTellerTests */,
 			);
@@ -470,8 +472,9 @@
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\nexit 0\n\n# HAving trouble with this version of appledoc\n\"${PROJECT_DIR}/External/appledoc-2.2.1/appledoc\" \\\n--project-name \"Story Teller\" \\\n--project-company \"Derek Clarkson\" \\\n--company-id au.com.derekclarkson \\\n--output ~/help \\\n--logformat xcode \\\n--keep-undocumented-objects \\\n--keep-undocumented-members \\\n--search-undocumented-doc \\\n--preprocess-headerdoc \\\n--no-repeat-first-par \\\n--exit-threshold 2 \\\n--ignore .m \\\n--ignore STLogExpressionParser.h \\\nStoryTeller\n";
+			shellPath = /bin/bash;
+			shellScript = "echo \"Executing appledoc in dir $PWD ...\"\n\"${PROJECT_DIR}/External/appledoc-2.2.1/appledoc\" \\\n--project-name \"Story Teller\" \\\n--project-company \"Derek Clarkson\" \\\n--company-id au.com.derekclarkson \\\n--output ~/help \\\n--logformat xcode \\\n--keep-undocumented-objects \\\n--keep-undocumented-members \\\n--search-undocumented-doc \\\n--preprocess-headerdoc \\\n--no-repeat-first-par \\\n--exit-threshold 2 \\\n--ignore .m \\\n--ignore STLogExpressionParser.h \\\nStoryTeller\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -532,7 +535,7 @@
 		6C158E261B38269D00119725 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -562,7 +565,7 @@
 		6C158E271B38269D00119725 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -718,7 +721,6 @@
 		6CE5C3FB1B329BD100F0A470 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -738,7 +740,6 @@
 		6CE5C3FC1B329BD100F0A470 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/External/OCMock-3.1.2/iOS";
 				INFOPLIST_FILE = StoryTellerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
