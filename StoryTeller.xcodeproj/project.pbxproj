@@ -272,11 +272,11 @@
 		6CE5C3DB1B329BD100F0A470 = {
 			isa = PBXGroup;
 			children = (
-				F4325ED61CEEC8A4001A9FD6 /* module.private.modulemap */,
-				F4325ED51CEEC896001A9FD6 /* module.modulemap */,
 				F469EAC31CEAE53E00D9DD47 /* Frameworks */,
-				6C0A55FF1B38DFB4006E0A4A /* Resources */,
+				F4325ED51CEEC896001A9FD6 /* module.modulemap */,
+				F4325ED61CEEC8A4001A9FD6 /* module.private.modulemap */,
 				6CE5C3E51B329BD100F0A470 /* Products */,
+				6C0A55FF1B38DFB4006E0A4A /* Resources */,
 				6CE5C3E61B329BD100F0A470 /* StoryTeller */,
 				6CE5C3F31B329BD100F0A470 /* StoryTellerTests */,
 			);
