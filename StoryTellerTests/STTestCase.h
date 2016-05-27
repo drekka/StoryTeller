@@ -10,6 +10,11 @@
 @import XCTest;
 #import "InMemoryLogger.h"
 
+// Accessing internal methods for testing purposes.
+@interface STStoryTeller (Debug)
++(void) start;
+@end
+
 @interface STTestCase : XCTestCase
 
 @property (nonatomic, strong, nonnull, readonly) InMemoryLogger *inMemoryLogger;

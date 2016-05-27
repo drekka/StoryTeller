@@ -6,7 +6,7 @@
 //  Copyright © 2015 Derek Clarkson. All rights reserved.
 //
 
-#import <StoryTeller/STAbstractLogger.h>
+#import "STAbstractLogger.h"
 @import UIKit;
 
 /**

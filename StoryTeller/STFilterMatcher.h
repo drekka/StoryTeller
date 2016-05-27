@@ -7,7 +7,7 @@
 //
 
 @import Foundation;
-#import <StoryTeller/STMatcher.h>
+#import "STMatcher.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

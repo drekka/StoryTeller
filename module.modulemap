@@ -1,3 +1,4 @@
 module StoryTeller {
     umbrella header "Headers/StoryTeller.h"
+    requires objc_arc
 }
