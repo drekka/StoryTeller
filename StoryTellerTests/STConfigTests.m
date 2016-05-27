@@ -6,10 +6,11 @@
 //  Copyright © 2015 Derek Clarkson. All rights reserved.
 //
 
-#import <XCTest/XCTest.h>
-#import <OCMock/OCMock.h>
+@import XCTest;
 @import StoryTeller;
 @import StoryTeller.Private;
+
+#import <OCMock/OCMock.h>
 
 #import "InMemoryLogger.h"
 
@@ -38,7 +39,31 @@
 
 -(void) testConfigReadsCommandLineArgs {
     
-    [self stubProcessInfoArguments:@[@"loggerClass=InMemoryLogger", @"log=abc log=def", @"logLineFormat=xyz"]];
+    [self mockProcessInfo];
+    [self stubProcessInfoArguments:@[@"--storyteller-no-autostart",
+                                     @"loggerClass=InMemoryLogger",
+                                     @"log=abc log=def",
+                                     @"logLineFormat=xyz"]];
+    
+    // Test
+    STStoryTeller *mockStoryTeller = OCMClassMock([STStoryTeller class]);
+    STConfig *config = [[STConfig alloc] init];
+    [config configure:mockStoryTeller];
+    
+    // Verify
+    OCMVerify([mockStoryTeller setLogger:[OCMArg isKindOfClass:[InMemoryLogger class]]]);
+    OCMVerify([mockStoryTeller startLogging:@"abc"]);
+    OCMVerify([mockStoryTeller startLogging:@"def"]);
+}
+
+-(void) testConfigReadsEnvironment {
+    
+    [self mockProcessInfo];
+    [self stubProcessInfoArguments:@[@"--storyteller-no-autostart"]];
+    [self stubProcessInfoEnvironment:@{@"loggerClass":@"InMemoryLogger",
+                                       @"log":@"abc",
+                                       @"log":@"def",
+                                       @"logLineFormat":@"xyz"}];
     
     // Test
     STConfig *config = [[STConfig alloc] init];
@@ -51,24 +76,55 @@
     OCMVerify([mockStoryTeller startLogging:@"def"]);
 }
 
--(void) testConfigWithInvalidLoggerClass {
+-(void) testConfigArgumentsOverrideEnvironment {
     
-    [self stubProcessInfoArguments:@[@"loggerClass=STConsoleLogger"]];
+    [self mockProcessInfo];
+    [self stubProcessInfoEnvironment:@{@"loggerClass":@"EnvironmentLogger"}];
+    [self stubProcessInfoArguments:@[@"--storyteller-no-autostart", @"loggerClass=ArgumentLogger"]];
     
     // Test
+    STStoryTeller *mockStoryTeller = OCMClassMock([STStoryTeller class]);
     STConfig *config = [[STConfig alloc] init];
-    id mockStoryTeller = OCMClassMock([STStoryTeller class]);
-    [config configure:mockStoryTeller];
+    @try {
+        [config configure:mockStoryTeller];
+        XCTFail(@"Exception not thrown");
+    } @catch (NSException *exception) {
+        XCTAssertEqualObjects(@"StoryTeller", exception.name);
+        XCTAssertEqualObjects(@"Unknown class 'ArgumentLogger'", exception.reason);
+    }
+}
+
+
+-(void) testConfigWithInvalidLoggerClass {
     
-    // Verify
-    Class loggerClass = [STConsoleLogger class];
-    OCMVerify([(STStoryTeller *)mockStoryTeller setLogger:[OCMArg isKindOfClass:loggerClass]]);
+    [self mockProcessInfo];
+    [self stubProcessInfoArguments:@[@"--storyteller-no-autostart", @"loggerClass=XXXXX"]];
+    
+    // Test
+    STStoryTeller *mockStoryTeller = OCMClassMock([STStoryTeller class]);
+    STConfig *config = [[STConfig alloc] init];
+    @try {
+        [config configure:mockStoryTeller];
+        XCTFail(@"Exception not thrown");
+    } @catch (NSException *exception) {
+        XCTAssertEqualObjects(@"StoryTeller", exception.name);
+        XCTAssertEqualObjects(@"Unknown class 'XXXXX'", exception.reason);
+    }
+}
+
+#pragma mark - Internal
+
+-(void) mockProcessInfo {
+    _mockProcessInfo = OCMClassMock([NSProcessInfo class]);
+    OCMStub(ClassMethod([_mockProcessInfo processInfo])).andReturn(_mockProcessInfo);
 }
 
 -(void) stubProcessInfoArguments:(NSArray<NSString *> *) args {
-    _mockProcessInfo = OCMClassMock([NSProcessInfo class]);
-    OCMStub(ClassMethod([_mockProcessInfo processInfo])).andReturn(_mockProcessInfo);
     OCMStub([(NSProcessInfo *)_mockProcessInfo arguments]).andReturn(args);
+}
+
+-(void) stubProcessInfoEnvironment:(NSDictionary<NSString *, NSString *> *) args {
+    OCMStub([(NSProcessInfo *)_mockProcessInfo environment]).andReturn(args);
 }
 
 @end

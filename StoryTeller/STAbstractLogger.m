@@ -7,7 +7,7 @@
 //
 @import ObjectiveC;
 
-#import <StoryTeller/STAbstractLogger.h>
+#import "STAbstractLogger.h"
 #import <pthread/pthread.h>
 
 #define NBR_KEYS 8 // details + message.

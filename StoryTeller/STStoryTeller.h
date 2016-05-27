@@ -28,16 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
  @discussion All interactions with Story Teller should go through this method.
  @return The main STStoryTeller instance.
  */
-+(STStoryTeller *) storyTeller;
-
-/// @name Debug
-
-/**
- Reset the logging system and clears all set logging criteria.
- 
- @discussion Used mostly for debugging and testing. Generally speaking you would not need to reset the logging system.
- */
--(void) reset;
++(nullable STStoryTeller *) storyTeller;
 
 /// @name Configuration
 

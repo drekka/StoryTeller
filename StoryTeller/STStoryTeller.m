@@ -6,12 +6,14 @@
 //  Copyright © 2015 Derek Clarkson. All rights reserved.
 //
 
-#import <StoryTeller/STStoryTeller.h>
-#import <StoryTeller/STConfig.h>
-#import <StoryTeller/STMatcher.h>
-#import <StoryTeller/STLogger.h>
-#import <StoryTeller/STLogExpressionParserDelegate.h>
-#import <StoryTeller/STDeallocHook.h>
+#import "STStoryTeller.h"
+#import "STConfig.h"
+#import "STMatcher.h"
+#import "STLogger.h"
+#import "STLogExpressionParserDelegate.h"
+#import "STDeallocHook.h"
+
+NS_ASSUME_NONNULL_BEGIN
 
 @implementation STStoryTeller {
     NSMutableSet *_activeKeys;
@@ -25,14 +27,21 @@ static __strong STStoryTeller *__storyTeller;
 #pragma mark - Lifecycle
 
 +(void) initialize {
-#ifndef DISABLE_STORY_TELLER
-    __storyTeller = [[STStoryTeller alloc] init];
-    [__storyTeller->_config configure:__storyTeller];
-#endif
+    if ([[NSProcessInfo processInfo].arguments containsObject:@"--storyteller-no-autostart"]) {
+        return;
+    }
+    [STStoryTeller start];
 }
 
-+(STStoryTeller * _Nonnull) storyTeller {
++(nullable STStoryTeller *) storyTeller {
     return __storyTeller;
+}
+
+#pragma mark - Debugging
+
++(void) start {
+    __storyTeller = [[STStoryTeller alloc] init];
+    [__storyTeller->_config configure:__storyTeller];
 }
 
 -(instancetype) init {
@@ -44,12 +53,6 @@ static __strong STStoryTeller *__storyTeller;
         _config = [[STConfig alloc] init];
     }
     return self;
-}
-
-#pragma mark - Story teller
-
--(void) reset {
-    [STStoryTeller initialize];
 }
 
 #pragma mark - Activating logging
@@ -169,3 +172,5 @@ static __strong STStoryTeller *__storyTeller;
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

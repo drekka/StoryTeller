@@ -6,7 +6,7 @@
 //  Copyright © 2015 Derek Clarkson. All rights reserved.
 //
 
-#import <StoryTeller/STSToryTeller.h>
+#import "STSToryTeller.h"
 
 #ifdef DISABLE_STORY_TELLER
 
