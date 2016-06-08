@@ -22,27 +22,25 @@ NS_ASSUME_NONNULL_BEGIN
     STLogExpressionParserDelegate *_expressionMatcherFactory;
 }
 
+#pragma mark - Singleton setup
+
 static __strong STStoryTeller *__storyTeller;
 
-#pragma mark - Lifecycle
-
-+(void) initialize {
-    if ([[NSProcessInfo processInfo].arguments containsObject:@"--storyteller-no-autostart"]) {
-        return;
-    }
-    [STStoryTeller start];
-}
-
 +(nullable STStoryTeller *) storyTeller {
+    if (!__storyTeller) {
+        __storyTeller = [[STStoryTeller alloc] init];
+        [__storyTeller->_config configure:__storyTeller];
+    }
     return __storyTeller;
 }
 
 #pragma mark - Debugging
 
-+(void) start {
-    __storyTeller = [[STStoryTeller alloc] init];
-    [__storyTeller->_config configure:__storyTeller];
++(void) reset {
+    __storyTeller = nil;
 }
+
+#pragma mark - Lifecycle
 
 -(instancetype) init {
     self = [super init];

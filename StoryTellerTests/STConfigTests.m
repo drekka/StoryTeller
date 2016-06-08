@@ -40,8 +40,7 @@
 -(void) testConfigReadsCommandLineArgs {
     
     [self mockProcessInfo];
-    [self stubProcessInfoArguments:@[@"--storyteller-no-autostart",
-                                     @"loggerClass=InMemoryLogger",
+    [self stubProcessInfoArguments:@[@"loggerClass=InMemoryLogger",
                                      @"log=abc log=def",
                                      @"logLineFormat=xyz"]];
     
@@ -59,7 +58,6 @@
 -(void) testConfigReadsEnvironment {
     
     [self mockProcessInfo];
-    [self stubProcessInfoArguments:@[@"--storyteller-no-autostart"]];
     [self stubProcessInfoEnvironment:@{@"loggerClass":@"InMemoryLogger",
                                        @"log":@"abc",
                                        @"log":@"def",
@@ -80,7 +78,7 @@
     
     [self mockProcessInfo];
     [self stubProcessInfoEnvironment:@{@"loggerClass":@"EnvironmentLogger"}];
-    [self stubProcessInfoArguments:@[@"--storyteller-no-autostart", @"loggerClass=ArgumentLogger"]];
+    [self stubProcessInfoArguments:@[@"loggerClass=ArgumentLogger"]];
     
     // Test
     STStoryTeller *mockStoryTeller = OCMClassMock([STStoryTeller class]);
@@ -98,7 +96,7 @@
 -(void) testConfigWithInvalidLoggerClass {
     
     [self mockProcessInfo];
-    [self stubProcessInfoArguments:@[@"--storyteller-no-autostart", @"loggerClass=XXXXX"]];
+    [self stubProcessInfoArguments:@[@"loggerClass=XXXXX"]];
     
     // Test
     STStoryTeller *mockStoryTeller = OCMClassMock([STStoryTeller class]);

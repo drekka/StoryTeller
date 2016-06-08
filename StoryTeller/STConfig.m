@@ -71,7 +71,7 @@ NS_ASSUME_NONNULL_BEGIN
         configUrl = [bundle URLForResource:@"StoryTellerConfig" withExtension:@"json"];
         if (configUrl != nil) {
             NSError *error = nil;
-            NSLog(@"Story Teller: Config file found ...");
+            NSLog(@"Story Teller: Config file found: %@", configUrl);
             NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfURL:configUrl]
                                                                      options:NSJSONReadingAllowFragments
                                                                        error:&error];

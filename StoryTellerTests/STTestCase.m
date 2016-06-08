@@ -14,7 +14,7 @@
 @implementation STTestCase
 
 -(void) setUp {
-    [STStoryTeller start];
+    [STStoryTeller reset];
     [STStoryTeller storyTeller].logger = [[InMemoryLogger alloc] init];
 }
 

@@ -12,7 +12,7 @@
 
 // Accessing internal methods for testing purposes.
 @interface STStoryTeller (Debug)
-+(void) start;
++(void) reset;
 @end
 
 @interface STTestCase : XCTestCase
