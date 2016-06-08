@@ -24,20 +24,23 @@
 }
 
 -(void) testMatches {
-    id<STMatcher> matcher = [_factory parseExpression:@"<NSCopying>" error:NULL];
+    id<STMatcher> matcher = [_factory parseExpression:@"<NSCopying>"];
     XCTAssertTrue([matcher matches:@"abc"]);
 }
 
 -(void) testFailsMatch {
-    id<STMatcher> matcher = [_factory parseExpression:@"<NSFastEnumeration>" error:NULL];
+    id<STMatcher> matcher = [_factory parseExpression:@"<NSFastEnumeration>"];
     XCTAssertFalse([matcher matches:@"abc"]);
 }
 
 -(void) testUnknownProtocol {
-    NSError *error = nil;
-    id<STMatcher> matcher = [_factory parseExpression:@"<Abc>" error:&error];
-    XCTAssertNil(matcher);
-    XCTAssertEqualObjects(@"Unable to find a protocol called Abc\nLine : Unknown\n", error.localizedFailureReason);
+    @try {
+        [_factory parseExpression:@"<Abc>"];
+        XCTFail(@"Exception not thrown");
+    }
+    @catch (NSException *e) {
+        XCTAssertEqualObjects(@"Unable to find a protocol called Abc\nLine : Unknown\n", e.description);
+    }
 }
 
 @end

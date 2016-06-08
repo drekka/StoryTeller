@@ -25,7 +25,7 @@
 
 
 -(void) testTrueMatches {
-    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].subClassProperty.boolProperty == true" error:NULL];
+    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].subClassProperty.boolProperty == true"];
     MainClass *mainClass = [[MainClass alloc] init];
     SubClass *subClass = [[SubClass alloc] init];
     mainClass.subClassProperty = subClass;
@@ -34,7 +34,7 @@
 }
 
 -(void) testFalseMatches {
-    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].subClassProperty.boolProperty == false" error:NULL];
+    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].subClassProperty.boolProperty == false"];
     MainClass *mainClass = [[MainClass alloc] init];
     SubClass *subClass = [[SubClass alloc] init];
     mainClass.subClassProperty = subClass;
@@ -42,7 +42,7 @@
 }
 
 -(void) testNoMatches {
-    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].subClassProperty.boolProperty == NO" error:NULL];
+    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].subClassProperty.boolProperty == NO"];
     MainClass *mainClass = [[MainClass alloc] init];
     SubClass *subClass = [[SubClass alloc] init];
     mainClass.subClassProperty = subClass;
@@ -50,7 +50,7 @@
 }
 
 -(void) testNotFalseMatches {
-    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].subClassProperty.boolProperty != false" error:NULL];
+    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].subClassProperty.boolProperty != false"];
     MainClass *mainClass = [[MainClass alloc] init];
     SubClass *subClass = [[SubClass alloc] init];
     mainClass.subClassProperty = subClass;
@@ -59,7 +59,7 @@
 }
 
 -(void) testYesMatches {
-    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].subClassProperty.boolProperty == YES" error:NULL];
+    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].subClassProperty.boolProperty == YES"];
     MainClass *mainClass = [[MainClass alloc] init];
     SubClass *subClass = [[SubClass alloc] init];
     mainClass.subClassProperty = subClass;
@@ -70,7 +70,7 @@
 #pragma mark - Type checking
 
 -(void) testWhenInstanceProperty {
-    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].subClassProperty == YES" error:NULL];
+    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].subClassProperty == YES"];
     MainClass *mainClass = [[MainClass alloc] init];
     SubClass *subClass = [[SubClass alloc] init];
     mainClass.subClassProperty = subClass;
@@ -78,7 +78,7 @@
 }
 
 -(void) testWhenAStringProperty {
-    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].stringProperty == YES" error:NULL];
+    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].stringProperty == YES"];
     MainClass *mainClass = [[MainClass alloc] init];
     SubClass *subClass = [[SubClass alloc] init];
     mainClass.subClassProperty = subClass;
@@ -86,7 +86,7 @@
 }
 
 -(void) testWhenAProtocolProperty {
-    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].protocolProperty == YES" error:NULL];
+    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].protocolProperty == YES"];
     MainClass *mainClass = [[MainClass alloc] init];
     SubClass *subClass = [[SubClass alloc] init];
     mainClass.subClassProperty = subClass;
@@ -94,7 +94,7 @@
 }
 
 -(void) testWhenAIntProperty {
-    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].intProperty == YES" error:NULL];
+    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].intProperty == YES"];
     MainClass *mainClass = [[MainClass alloc] init];
     SubClass *subClass = [[SubClass alloc] init];
     mainClass.subClassProperty = subClass;
@@ -104,10 +104,7 @@
 #pragma mark - Op checking
 
 -(void) testInvalidOp {
-    NSError *error = nil;
-    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].subClassProperty.boolProperty > YES" error:&error];
-    XCTAssertNil(matcher);
-    XCTAssertEqualObjects(@"Failed to match next input token", error.localizedDescription);
+    XCTAssertThrowsSpecificNamed([_factory parseExpression:@"[MainClass].subClassProperty.boolProperty > YES"], NSException, @"StoryTellerParseException");
 }
 
 @end

@@ -71,7 +71,7 @@ NS_ASSUME_NONNULL_BEGIN
 																						options:NSJSONReadingAllowFragments
 																						  error:&error];
 			if (error != nil) {
-				@throw [NSException exceptionWithName:@"StoryTeller" reason:[error localizedFailureReason] userInfo:nil];
+				@throw [NSException exceptionWithName:@"StoryTellerInvalidJSON" reason:[error localizedFailureReason] userInfo:nil];
 			}
 
 			[self setValuesForKeysWithDictionary:jsonData];
@@ -85,7 +85,7 @@ NS_ASSUME_NONNULL_BEGIN
 	Class loggerClass = objc_lookUpClass([_loggerClass UTF8String]);
 	id<STLogger> newLogger = [[loggerClass alloc] init];
 	if (newLogger == nil) {
-		@throw [NSException exceptionWithName:@"StoryTeller" reason:[NSString stringWithFormat:@"Unknown class '%@'", _loggerClass] userInfo:nil];
+		@throw [NSException exceptionWithName:@"StoryTellerUnknownClass" reason:[NSString stringWithFormat:@"Unknown class '%@'", _loggerClass] userInfo:nil];
 	}
 
 	if (self.logLineTemplate != nil) {

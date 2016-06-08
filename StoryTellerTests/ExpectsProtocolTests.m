@@ -24,7 +24,7 @@
 }
 
 -(void) testMatches {
-    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].subClassProperty == <AProtocol>" error:NULL];
+    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].subClassProperty == <AProtocol>"];
     MainClass *mainClass = [[MainClass alloc] init];
     SubClass *subClass = [[SubClass alloc] init];
     mainClass.subClassProperty = subClass;
@@ -32,7 +32,7 @@
 }
 
 -(void) testFailsMatch {
-    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].subClassProperty == <NSCopying>" error:NULL];
+    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].subClassProperty == <NSCopying>"];
     MainClass *mainClass = [[MainClass alloc] init];
     SubClass *subClass = [[SubClass alloc] init];
     mainClass.subClassProperty = subClass;

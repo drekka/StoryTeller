@@ -73,14 +73,9 @@ static __strong STStoryTeller *__storyTeller;
 }
 
 -(void) startLogging:(NSString * _Nonnull) keyExpression {
-    
     NSLog(@"Story Teller: Activating log: %@", keyExpression);
-    NSError *error = nil;
-    id<STMatcher> matcher = [_expressionMatcherFactory parseExpression:keyExpression
-                                                                 error:&error];
-    if (matcher) {
-        [_logMatchers addObject:matcher];
-    }
+    id<STMatcher> matcher = [_expressionMatcherFactory parseExpression:keyExpression];
+    [_logMatchers addObject:matcher];
 }
 
 #pragma mark - Activating

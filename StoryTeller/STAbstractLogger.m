@@ -96,7 +96,7 @@ static Class __protocolClass;
                 if (![scanner scanUpToString:@"}}" intoString:&keyword]) {
                     keyword = [lineTemplate substringFromIndex:scanner.scanLocation];
                 }
-                @throw [NSException exceptionWithName:@"StoryTeller" reason:[NSString stringWithFormat:@"Unknown log template keyword {{%@}}", keyword] userInfo:nil];
+                @throw [NSException exceptionWithName:@"StoryTellerUnknownKeyword" reason:[NSString stringWithFormat:@"Unknown log template keyword {{%@}}", keyword] userInfo:nil];
             }
             
             // Must be some text so scan up to the next opening delimiters.

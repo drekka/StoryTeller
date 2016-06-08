@@ -23,9 +23,8 @@
     _factory = [[STLogExpressionParserDelegate alloc] init];
 }
 
--(void) testUnknown {
-    NSError *error = nil;
-    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].intPropertyxxx == abc" error:&error];
+-(void) testUnknownKey {
+    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].intPropertyxxx == abc"];
     MainClass *mainClass = [[MainClass alloc] init];
     mainClass.stringProperty = @"def";
     XCTAssertThrowsSpecificNamed([matcher matches:mainClass], NSException, @"NSUnknownKeyException");

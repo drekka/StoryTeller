@@ -26,47 +26,47 @@
 #pragma mark - Simple values
 
 -(void) testStringMatches {
-    id<STMatcher> matcher = [_factory parseExpression:@"abc" error:NULL];
+    id<STMatcher> matcher = [_factory parseExpression:@"abc"];
     XCTAssertTrue([matcher matches:@"abc"]);
 }
 
 -(void) testStringFailsMatchWhenANumber {
-    id<STMatcher> matcher = [_factory parseExpression:@"abc" error:NULL];
+    id<STMatcher> matcher = [_factory parseExpression:@"abc"];
     XCTAssertFalse([matcher matches:@12]);
 }
 
 -(void) testStringFailsMatchWhenAClass {
-    id<STMatcher> matcher = [_factory parseExpression:@"abc" error:NULL];
+    id<STMatcher> matcher = [_factory parseExpression:@"abc"];
     XCTAssertFalse([matcher matches:[NSNumber class]]);
 }
 
 -(void) testStringMatchesWhereStringIsClassName {
-    id<STMatcher> matcher = [_factory parseExpression:@"NSString" error:NULL];
+    id<STMatcher> matcher = [_factory parseExpression:@"NSString"];
     XCTAssertTrue([matcher matches:@"NSString"]);
 }
 
 -(void) testStringFailsMatch {
-    id<STMatcher> matcher = [_factory parseExpression:@"abc" error:NULL];
+    id<STMatcher> matcher = [_factory parseExpression:@"abc"];
     XCTAssertFalse([matcher matches:@"def"]);
 }
 
 -(void) testNumberMatches {
-    id<STMatcher> matcher = [_factory parseExpression:@"12" error:NULL];
+    id<STMatcher> matcher = [_factory parseExpression:@"12"];
     XCTAssertTrue([matcher matches:@12]);
 }
 
 -(void) testNumberFailsMatch {
-    id<STMatcher> matcher = [_factory parseExpression:@"12.5" error:NULL];
+    id<STMatcher> matcher = [_factory parseExpression:@"12.5"];
     XCTAssertFalse([matcher matches:@12.678]);
 }
 
 -(void) testNumberFailsMatchWhenAString {
-    id<STMatcher> matcher = [_factory parseExpression:@"12.5" error:NULL];
+    id<STMatcher> matcher = [_factory parseExpression:@"12.5"];
     XCTAssertFalse([matcher matches:@"abc"]);
 }
 
 -(void) testNumberFailsMatchWhenAProtocol {
-    id<STMatcher> matcher = [_factory parseExpression:@"12.5" error:NULL];
+    id<STMatcher> matcher = [_factory parseExpression:@"12.5"];
     XCTAssertFalse([matcher matches:@protocol(NSCopying)]);
 }
 

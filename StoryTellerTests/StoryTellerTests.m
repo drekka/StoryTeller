@@ -121,6 +121,10 @@
     [self validateLogLineAtIndex:0 methodName:__PRETTY_FUNCTION__ lineNumber:logLine1 message:@"hello world 1"];
 }
 
+-(void) testStartLoggingWithNonExistantClass {
+    XCTAssertThrowsSpecificNamed([[STStoryTeller storyTeller] startLogging:@"[XXXX]"], NSException, @"StoryTellerParseException");
+}
+
 #pragma mark - Internal
 
 -(void) sayHelloAgain {

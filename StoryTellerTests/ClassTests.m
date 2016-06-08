@@ -33,39 +33,42 @@
 #pragma mark - Classes
 
 -(void) testClassMatches {
-    id<STMatcher> matcher = [_factory parseExpression:@"[NSString]" error:NULL];
+    id<STMatcher> matcher = [_factory parseExpression:@"[NSString]"];
     XCTAssertTrue([matcher matches:@"abc"]);
 }
 
 -(void) testClassIsUnknown {
-    NSError *error = nil;
-    id<STMatcher> matcher = [_factory parseExpression:@"[Abc]" error:&error];
-    XCTAssertNil(matcher);
-    XCTAssertEqualObjects(@"Unable to find a class called Abc\nLine : Unknown\n", error.localizedFailureReason);
+    @try {
+        [_factory parseExpression:@"[Abc]"];
+        XCTFail(@"Exception not thrown");
+    }
+    @catch (NSException *e) {
+        XCTAssertEqualObjects(@"Unable to find a class called Abc\nLine : Unknown\n", e.description);
+    }
 }
 
 -(void) testClassFailsMatch {
-    id<STMatcher> matcher = [_factory parseExpression:@"[NSString]" error:NULL];
+    id<STMatcher> matcher = [_factory parseExpression:@"[NSString]"];
     XCTAssertFalse([matcher matches:@12]);
 }
 
 -(void) testClassFailsMatchWhenDifferentClass {
-    id<STMatcher> matcher = [_factory parseExpression:@"[NSString]" error:NULL];
+    id<STMatcher> matcher = [_factory parseExpression:@"[NSString]"];
     XCTAssertFalse([matcher matches:[NSNumber class]]);
 }
 
 -(void) testClassFailsMatchWhenClass {
-    id<STMatcher> matcher = [_factory parseExpression:@"[NSString]" error:NULL];
+    id<STMatcher> matcher = [_factory parseExpression:@"[NSString]"];
     XCTAssertTrue([matcher matches:[NSString class]]);
 }
 
 -(void) testIsaClassMatches {
-    id<STMatcher> matcher = [_factory parseExpression:@"is [MainClass]" error:NULL];
+    id<STMatcher> matcher = [_factory parseExpression:@"is [MainClass]"];
     XCTAssertTrue([matcher matches:[MainClass class]]);
 }
 
 -(void) testIsaClassFailsMatch {
-    id<STMatcher> matcher = [_factory parseExpression:@"is [MainClass]" error:NULL];
+    id<STMatcher> matcher = [_factory parseExpression:@"is [MainClass]"];
     XCTAssertFalse([matcher matches:[NSString class]]);
 }
 
