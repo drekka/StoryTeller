@@ -7,9 +7,9 @@
 //
 
 @import  ObjectiveC;
-#import <StoryTeller/STMatcherFactory.h>
-#import <StoryTeller/STCompareMatcher.h>
-#import <StoryTeller/STFilterMatcher.h>
+#import "STMatcherFactory.h"
+#import "STCompareMatcher.h"
+#import "STFilterMatcher.h"
 
 @implementation STMatcherFactory
 

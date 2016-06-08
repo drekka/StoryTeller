@@ -17,7 +17,7 @@
 
 @implementation StoryTellerTests {
     int _helloAgainLogLine;
-    const char * _helloAgainMethodName;
+    const char *_helloAgainMethodName;
 }
 
 -(void) setUp {

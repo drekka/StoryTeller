@@ -6,14 +6,15 @@
 //  Copyright © 2015 Derek Clarkson. All rights reserved.
 //
 
-#import "STTestCase.h"
 @import StoryTeller;
+
+#import "STTestCase.h"
 #import "InMemoryLogger.h"
 
 @implementation STTestCase
 
 -(void) setUp {
-    [[STStoryTeller storyTeller] reset];
+    [STStoryTeller reset];
     [STStoryTeller storyTeller].logger = [[InMemoryLogger alloc] init];
 }
 
