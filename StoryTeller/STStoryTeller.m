@@ -90,31 +90,33 @@ static __strong STStoryTeller *__storyTeller;
     return (int)[_activeKeys count];
 }
 
--(id) startScope:(id _Nonnull) key {
+-(id) startScope:(__weak id _Nonnull) key {
     [_activeKeys addObject:key];
     return [[STDeallocHook alloc] initWithBlock:^{
         [[STStoryTeller storyTeller] endScope:key];
     }];
 }
 
--(void) endScope:(id _Nonnull) key {
+-(void) endScope:(__weak id _Nonnull) key {
     [_activeKeys removeObject:key];
 }
 
--(BOOL) isScopeActive:(id _Nonnull) key {
+-(BOOL) isScopeActive:(__weak id _Nonnull) key {
     return [_activeKeys containsObject:key];
 }
 
 #pragma mark - Logging
 
--(void) record:(id _Nonnull) key
+-(void) record:(__weak id _Nonnull) key
           file:(const char * _Nonnull) fileName
         method:(const char * _Nonnull) methodName
     lineNumber:(int) lineNumber
        message:(NSString * _Nonnull) messageTemplate, ... {
     
+    id strongKey = key;
+    
     // Only continue if the key is being logged.
-    if (![self shouldLogKey:key]) {
+    if (![self shouldLogKey:strongKey]) {
         return;
     }
     
@@ -129,12 +131,13 @@ static __strong STStoryTeller *__storyTeller;
                      fromFile:fileName
                    fromMethod:methodName
                    lineNumber:lineNumber
-                          key:key];
+                          key:strongKey];
 }
 
--(void) execute:(id _Nonnull) key block:(void (^ _Nonnull)(id _Nonnull)) block {
-    if ([self shouldLogKey:key]) {
-        block(key);
+-(void) execute:(__weak id _Nonnull) key block:(void (^ _Nonnull)(id _Nonnull)) block {
+    id strongKey = key;
+    if ([self shouldLogKey:strongKey]) {
+        block(strongKey);
     }
 }
 

@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @name Class methods
 
 /**
- Provides access to the Story teller singleton instance. 
+ Provides access to the Story teller singleton instance.
  
  @discussion All interactions with Story Teller should go through this method.
  @return The main STStoryTeller instance.
@@ -74,24 +74,24 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Stories
 
 /**
- Starts a key Scope. 
+ Starts a key Scope.
  
  @discussion the Key will basically group any `STLog(...)` statements that occur after it's definition and until it goes out of scope. Scope follows the Objective-C scope rules in that it finishes at the end of the current function, loop or if statement. Basically when a locally declared variable would be dealloced.
  
- The major difference is that this scope also applies to any `STLog(...)` statements that are contained within methods called whilst the scope is active. This is the main purpose of this as it allows methods which do not have access to the key to be included in the logs when that key is being logged.
+ The major difference is that this scope also applies to any `STLog(...)` statements that are contained within methods called whilst the scope is active. This is the main purpose of this as it allows methods which do not have access to the key to be included in the logs when that key is being logged. The key is weak to avoid issues around using this method in blocks and circular references to objects.
  
  @param key the key scope to activate.
  @result An object that shoudl be kept alive via the NS_VALID_UNTIL_END_OF_SCOPE declaration. When this object deallocs it will disable the logging scope.
  */
--(id) startScope:(id) key;
+-(id) startScope:(__weak id) key;
 
 /**
  Removes a specific Key Scope.
- @discussion Normally you would not need to call this directly as @c StoryTeller::startScope: automatically removes the keys when the escope ends. In fact, by automatically calling this method.
+ @discussion Normally you would not need to call this directly as @c StoryTeller::startScope: automatically removes the keys when the escope ends. In fact, by automatically calling this method. The key is weak to avoid issues around using this method in blocks and circular references to objects.
  
  @param key the key Scope to de-activate.
  */
--(void) endScope:(id) key;
+-(void) endScope:(__weak id) key;
 
 /// @name Querying
 
@@ -104,9 +104,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  Can be used to query if a Key Scope is active.
+ 
+ @discussion The key is weak to avoid issues around using this method in blocks and circular references to objects.
+
  @param key the key Scope to query.
  */
--(BOOL) isScopeActive:(id) key;
+-(BOOL) isScopeActive:(__weak id) key;
 
 #pragma mark - Logging
 
@@ -115,7 +118,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  The main method to be called to log a message in the current logger.
  
- @discussion This method also handled the descision making around whether to pass the message onto the current logger or not. If going ahead, it assembles the final message and passes it to the logger.
+ @discussion This method also handled the descision making around whether to pass the message onto the current logger or not. If going ahead, it assembles the final message and passes it to the logger. The key is weak to avoid issues around using this method in blocks and circular references to objects.
  
  @param key the key to log the message under.
  @param fileName the name of the file where the `STLog(...)` statement occurs.
@@ -124,7 +127,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param messageTemplate a standard NSString format message.
  @param ... a list of values for the message template.
  */
--(void) record:(id) key
+-(void) record:(__weak id) key
           file:(const char *) fileName
         method:(const char *) methodName
     lineNumber:(int) lineNumber
@@ -133,12 +136,12 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Useful helper method which executes a block of code if the key is active.
  
- @discussion Mainly used for wrapping up lines of code that involve more than just logging statements.
+ @discussion Mainly used for wrapping up lines of code that involve more than just logging statements. The key is weak to avoid issues around using this method in blocks and circular references to objects.
  
  @param key the key which will control the execution of the block.
  @param block the block to execute. The key argument is the key that was checked.
  */
--(void) execute:(id) key block:(void (^)(id key)) block;
+-(void) execute:(__weak id) key block:(void (^)(id key)) block;
 
 @end
 
