@@ -45,12 +45,12 @@ typedef NS_ENUM(NSUInteger, ValueType) {
     STLogExpressionParser *parser = [[STLogExpressionParser alloc] initWithDelegate:self];
     
     NSError *error = nil;
-    if ([parser parseString:expression error:&error]) {
-        return _rootMatcher;
+    if (![parser parseString:expression error:&error]) {
+        // Throw an exception.
+        @throw [NSException exceptionWithName:@"StoryTellerParseException" reason:error.localizedFailureReason userInfo:nil];
     }
-    
-    // Throw an exception.
-    @throw [NSException exceptionWithName:@"StoryTellerParseException" reason:error.localizedFailureReason userInfo:nil];
+
+    return _rootMatcher;
 }
 
 #pragma mark - Logger control
