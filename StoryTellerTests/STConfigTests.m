@@ -83,13 +83,8 @@
     // Test
     STStoryTeller *mockStoryTeller = OCMClassMock([STStoryTeller class]);
     STConfig *config = [[STConfig alloc] init];
-    @try {
-        [config configure:mockStoryTeller];
-        XCTFail(@"Exception not thrown");
-    } @catch (NSException *exception) {
-        XCTAssertEqualObjects(@"StoryTeller", exception.name);
-        XCTAssertEqualObjects(@"Unknown class 'ArgumentLogger'", exception.reason);
-    }
+    
+    XCTAssertThrowsSpecificNamed([config configure:mockStoryTeller], NSException, @"StoryTellerUnknownClass");
 }
 
 
@@ -101,13 +96,8 @@
     // Test
     STStoryTeller *mockStoryTeller = OCMClassMock([STStoryTeller class]);
     STConfig *config = [[STConfig alloc] init];
-    @try {
-        [config configure:mockStoryTeller];
-        XCTFail(@"Exception not thrown");
-    } @catch (NSException *exception) {
-        XCTAssertEqualObjects(@"StoryTeller", exception.name);
-        XCTAssertEqualObjects(@"Unknown class 'XXXXX'", exception.reason);
-    }
+    
+    XCTAssertThrowsSpecificNamed([config configure:mockStoryTeller], NSException, @"StoryTellerUnknownClass");
 }
 
 #pragma mark - Internal
