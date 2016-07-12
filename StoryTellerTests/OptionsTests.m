@@ -35,14 +35,14 @@
 
 -(void) testLogAll {
     id<STMatcher> matcher = [_factory parseExpression:@"LogAll"];
-    XCTAssertNil(matcher);
-    OCMVerify([_mockStoryTeller logAll]);
+    XCTAssertNotNil(matcher);
+    XCTAssertTrue(matcher.exclusive);
 }
 
 -(void) testLogRoots {
     id<STMatcher> matcher = [_factory parseExpression:@"LogRoots"];
-    XCTAssertNil(matcher);
-    OCMVerify([_mockStoryTeller logRoots]);
+    XCTAssertNotNil(matcher);
+    XCTAssertFalse(matcher.exclusive);
 }
 
 @end

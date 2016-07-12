@@ -40,6 +40,10 @@ static __strong STStoryTeller *__storyTeller;
     __storyTeller = nil;
 }
 
++(void) clearMatchers {
+    __storyTeller->_logMatchers = [[NSMutableSet alloc] init];
+}
+
 #pragma mark - Lifecycle
 
 -(instancetype) init {
@@ -55,27 +59,18 @@ static __strong STStoryTeller *__storyTeller;
 
 #pragma mark - Activating logging
 
--(void) logAll {
-    NSLog(@"Story Teller: Activating all log statements");
-    _logAll = YES;
-    _logRoots = NO;
-    [_logMatchers removeAllObjects];
-}
-
--(void) logRoots {
-    
-    if (_logAll) {
-        return;
-    }
-    
-    NSLog(@"Story Teller: Activating root log statements");
-    _logRoots = YES;
-    [_logMatchers removeAllObjects];
-}
-
 -(void) startLogging:(NSString * _Nonnull) keyExpression {
     NSLog(@"Story Teller: Activating log: %@", keyExpression);
     id<STMatcher> matcher = [_expressionMatcherFactory parseExpression:keyExpression];
+
+    if (_logMatchers.count > 0) {
+        if (matcher.exclusive) {
+            @throw [NSException exceptionWithName:@"StoryTellerConfigException" reason:[NSString stringWithFormat:@"%@ cannot be used with other logging expressions", keyExpression] userInfo:nil];
+        } else if ([_logMatchers anyObject].exclusive) {
+            @throw [NSException exceptionWithName:@"StoryTellerConfigException" reason:[NSString stringWithFormat:@"Log expression %@ cannot be used with previous exclusive expressions", keyExpression] userInfo:nil];
+        }
+    }
+
     [_logMatchers addObject:matcher];
 }
 
@@ -139,12 +134,7 @@ static __strong STStoryTeller *__storyTeller;
 -(BOOL) shouldLogKey:(id) key {
     
     // Check the bypass and active keys.
-    if (_logAll || [self isKeyMatched:key]) {
-        return YES;
-    }
-    
-    // If logRoot is in effect we need to log as long as there are no scopes.
-    if (_logRoots && [_activeKeys count] == 0) {
+    if ([self isKeyMatched:key]) {
         return YES;
     }
     
@@ -160,7 +150,7 @@ static __strong STStoryTeller *__storyTeller;
 
 -(BOOL) isKeyMatched:(id) key {
     for (id<STMatcher> matcher in _logMatchers) {
-        if ([matcher matches:key]) {
+        if ([matcher storyTeller:self matches:key]) {
             return YES;
         }
     }

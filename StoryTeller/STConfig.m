@@ -16,6 +16,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+// Properties loaded from config sources via KVC
 @interface STConfig ()
 @property (nonatomic, strong) NSArray<NSString *> *activeLogs;
 @property (nonatomic, strong) NSString *loggerClass;

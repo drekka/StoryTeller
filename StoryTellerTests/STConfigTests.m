@@ -26,6 +26,20 @@
     [_mockProcessInfo stopMocking];
 }
 
+
+-(void) testLogAll {
+
+    // Test
+    STConfig *config = [[STConfig alloc] init];
+    STStoryTeller *mockStoryTeller = OCMClassMock([STStoryTeller class]);
+    [config configure:mockStoryTeller];
+
+    // Verify
+    OCMVerify([mockStoryTeller setLogger:[OCMArg isKindOfClass:[STConsoleLogger class]]]);
+
+}
+
+
 -(void) testConfigWithDefault {
     
     // Test

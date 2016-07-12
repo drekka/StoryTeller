@@ -11,12 +11,13 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation STFilterMatcher {
-    id (^_filterBlock)(id key);
+    id (^_filterBlock)(STStoryTeller *storyTeller, id key);
 }
 
 @synthesize nextMatcher = _nextMatcher;
+@synthesize exclusive = _exclusive;
 
--(instancetype) initWithFilter:(id (^)(id key)) filterBlock {
+-(instancetype) initWithFilter:(id (^)(STStoryTeller *storyTeller, id key)) filterBlock {
     self = [super init];
     if (self) {
         _filterBlock = [filterBlock copy];
@@ -24,9 +25,9 @@ NS_ASSUME_NONNULL_BEGIN
     return self;
 }
 
--(BOOL) matches:(nullable id) key {
+-(BOOL) storyTeller:(STStoryTeller *) storyTeller matches:(id) key {
     NSAssert(_nextMatcher != NULL, @"Must have a next matcher");
-    return [self.nextMatcher matches:_filterBlock(key)];
+    return [self.nextMatcher storyTeller:storyTeller matches:_filterBlock(storyTeller, key)];
 }
 
 @end

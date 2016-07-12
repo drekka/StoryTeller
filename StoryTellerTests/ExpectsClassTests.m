@@ -7,7 +7,10 @@
 //
 
 @import XCTest;
+@import StoryTeller;
 @import StoryTeller.Private;
+@import OCMock;
+
 #import "MainClass.h"
 #import "SubClass.h"
 #import "AProtocol.h"
@@ -17,10 +20,12 @@
 
 @implementation ExpectsClassTests {
     STLogExpressionParserDelegate *_factory;
+    id _mockStoryTeller;
 }
 
 -(void) setUp {
     _factory = [[STLogExpressionParserDelegate alloc] init];
+    _mockStoryTeller = OCMClassMock([STStoryTeller class]);
 }
 
 #pragma mark - Class objects
@@ -29,14 +34,14 @@
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].classProperty is [SubClass]"];
     MainClass *mainClass = [[MainClass alloc] init];
     mainClass.classProperty = [SubClass class];
-    XCTAssertTrue([matcher matches:mainClass]);
+    XCTAssertTrue([matcher storyTeller:_mockStoryTeller matches:mainClass]);
 }
 
 -(void) testClassfailsMatch {
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].classProperty is [SubClass]"];
     MainClass *mainClass = [[MainClass alloc] init];
     mainClass.classProperty = [NSNumber class];
-    XCTAssertFalse([matcher matches:mainClass]);
+    XCTAssertFalse([matcher storyTeller:_mockStoryTeller matches:mainClass]);
 }
 
 #pragma mark - Type checking
@@ -45,21 +50,21 @@
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].stringProperty is [SubClass]"];
     MainClass *mainClass = [[MainClass alloc] init];
     mainClass.stringProperty = @"abc";
-    XCTAssertFalse([matcher matches:mainClass]);
+    XCTAssertFalse([matcher storyTeller:_mockStoryTeller matches:mainClass]);
 }
 
 -(void) testWhenAProtocolProperty {
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].protocolProperty is [SubClass]"];
     MainClass *mainClass = [[MainClass alloc] init];
     mainClass.protocolProperty = @protocol(NSCopying);
-    XCTAssertFalse([matcher matches:mainClass]);
+    XCTAssertFalse([matcher storyTeller:_mockStoryTeller matches:mainClass]);
 }
 
 -(void) testWhenAIntProperty {
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].intProperty is [SubClass]"];
     MainClass *mainClass = [[MainClass alloc] init];
     mainClass.intProperty = 5;
-    XCTAssertFalse([matcher matches:mainClass]);
+    XCTAssertFalse([matcher storyTeller:_mockStoryTeller matches:mainClass]);
 }
 
 #pragma mark - Op tests
@@ -68,7 +73,7 @@
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].intProperty == [SubClass]"];
     MainClass *mainClass = [[MainClass alloc] init];
     mainClass.intProperty = 5;
-    XCTAssertFalse([matcher matches:mainClass]);
+    XCTAssertFalse([matcher storyTeller:_mockStoryTeller matches:mainClass]);
 }
 
 
@@ -79,7 +84,7 @@
     MainClass *mainClass = [[MainClass alloc] init];
     SubClass *subClass = [[SubClass alloc] init];
     mainClass.subClassProperty = subClass;
-    XCTAssertTrue([matcher matches:mainClass]);
+    XCTAssertTrue([matcher storyTeller:_mockStoryTeller matches:mainClass]);
 }
 
 @end

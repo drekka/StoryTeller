@@ -56,11 +56,11 @@ typedef NS_ENUM(NSUInteger, ValueType) {
 #pragma mark - Logger control
 
 -(void) parser:(PKParser *)parser didMatchLogAll:(PKAssembly *)assembly {
-    [[STStoryTeller storyTeller] logAll];
+    [self addMatcher:[STMatcherFactory allMatcher]];
 }
 
 -(void) parser:(PKParser *)parser didMatchLogRoot:(PKAssembly *)assembly {
-    [[STStoryTeller storyTeller] logRoots];
+    [self addMatcher:[STMatcherFactory rootMatcher]];
 }
 
 #pragma mark - Expressions
@@ -223,12 +223,12 @@ typedef NS_ENUM(NSUInteger, ValueType) {
 
 
 -(void) addMatcher:(id<STMatcher>) matcher {
-    
+
     if (_rootMatcher == nil) {
         _rootMatcher = matcher;
         return;
     }
-    
+
     id<STMatcher> lastMatcher = _rootMatcher;
     while (lastMatcher.nextMatcher != nil) {
         lastMatcher = lastMatcher.nextMatcher;

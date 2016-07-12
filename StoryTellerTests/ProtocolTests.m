@@ -7,7 +7,10 @@
 //
 
 @import XCTest;
+@import StoryTeller;
 @import StoryTeller.Private;
+@import OCMock;
+
 #import "MainClass.h"
 #import "SubClass.h"
 #import "AProtocol.h"
@@ -17,20 +20,22 @@
 
 @implementation ProtocolTests {
     STLogExpressionParserDelegate *_factory;
+    id _mockStoryTeller;
 }
 
 -(void) setUp {
     _factory = [[STLogExpressionParserDelegate alloc] init];
+    _mockStoryTeller = OCMClassMock([STStoryTeller class]);
 }
 
 -(void) testMatches {
     id<STMatcher> matcher = [_factory parseExpression:@"<NSCopying>"];
-    XCTAssertTrue([matcher matches:@"abc"]);
+    XCTAssertTrue([matcher storyTeller:_mockStoryTeller matches:@"abc"]);
 }
 
 -(void) testFailsMatch {
     id<STMatcher> matcher = [_factory parseExpression:@"<NSFastEnumeration>"];
-    XCTAssertFalse([matcher matches:@"abc"]);
+    XCTAssertFalse([matcher storyTeller:_mockStoryTeller matches:@"abc"]);
 }
 
 -(void) testUnknownProtocol {

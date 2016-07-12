@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  @param compareBlock The block that will be used to compare the key with a value.
  */
--(instancetype) initWithCompare:(BOOL (^)(id key)) compareBlock;
+-(instancetype) initWithCompare:(BOOL (^)(STStoryTeller *storyTeller, id key)) compareBlock;
 
 @end
 

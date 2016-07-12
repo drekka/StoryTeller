@@ -6,23 +6,35 @@
 //  Copyright © 2015 Derek Clarkson. All rights reserved.
 //
 
+@import XCTest;
 @import StoryTeller;
 @import StoryTeller.Private;
+@import OCMock;
+#import "InMemoryLogger.h"
 
-#import "STTestCase.h"
+// Accessing internal methods for testing purposes.
+@interface STStoryTeller (Debug)
++(void) reset;
++(void) clearMatchers;
+@end
 
-@interface StoryTellerTests : STTestCase
-
+@interface StoryTellerTests : XCTestCase
 @end
 
 @implementation StoryTellerTests {
     int _helloAgainLogLine;
     const char *_helloAgainMethodName;
+    InMemoryLogger *_inMemoryLogger;
+
 }
 
 -(void) setUp {
-    [super setUp];
-    STStartLogging(@"abc");
+    _inMemoryLogger = [[InMemoryLogger alloc] init];
+    [STStoryTeller storyTeller].logger = _inMemoryLogger;
+}
+
+-(void) tearDown {
+    [STStoryTeller reset];
 }
 
 -(void) testActivatingKeyScope {
@@ -38,9 +50,9 @@
 }
 
 -(void) testMessageRecordedWhenKeyNotLogging {
-    XCTAssertEqual(0lu, [self.inMemoryLogger.log count]);
+    XCTAssertEqual(0lu, [_inMemoryLogger.log count]);
     STLog(@"xyz", @"hello world");
-    XCTAssertEqual(0lu, [self.inMemoryLogger.log count]);
+    XCTAssertEqual(0lu, [_inMemoryLogger.log count]);
 }
 
 -(void) testScopesInLoops {
@@ -59,7 +71,7 @@
         XCTAssertEqual(1, [STStoryTeller storyTeller].numberActiveScopes);
     }];
     
-    XCTAssertEqual(02u, [self.inMemoryLogger.log count]);
+    XCTAssertEqual(02u, [_inMemoryLogger.log count]);
     [self validateLogLineAtIndex:0 methodName:blockMethodName lineNumber:logLineNumbers[0].intValue message:@"hello world abc"];
     [self validateLogLineAtIndex:1 methodName:blockMethodName lineNumber:logLineNumbers[1].intValue message:@"hello world def"];
 }
@@ -72,7 +84,7 @@
     STLog(@"abc", @"hello world");
     [self sayHelloAgain];
     
-    XCTAssertEqual(2lu, [self.inMemoryLogger.log count]);
+    XCTAssertEqual(2lu, [_inMemoryLogger.log count]);
     
     [self validateLogLineAtIndex:0 methodName:__PRETTY_FUNCTION__ lineNumber:logLine message:@"hello world"];
     [self validateLogLineAtIndex:1 methodName:_helloAgainMethodName lineNumber:_helloAgainLogLine message:@"hello world 2"];
@@ -88,9 +100,11 @@
 }
 
 -(void) testLogAll {
-    
-    [[STStoryTeller storyTeller] logAll];
-    
+
+    [STStoryTeller clearMatchers];
+
+    STStartLogging(@"LogAll");
+
     int logLine1 = __LINE__ + 1;
     STLog(@"xyz", @"hello world 1");
     STStartScope(@"abc");
@@ -99,7 +113,7 @@
     int logLine3 = __LINE__ + 1;
     STLog(@"def", @"hello world 3");
     
-    XCTAssertEqual(3lu, [self.inMemoryLogger.log count]);
+    XCTAssertEqual(3lu, [_inMemoryLogger.log count]);
     
     [self validateLogLineAtIndex:0 methodName:__PRETTY_FUNCTION__ lineNumber:logLine1 message:@"hello world 1"];
     [self validateLogLineAtIndex:1 methodName:__PRETTY_FUNCTION__ lineNumber:logLine2 message:@"hello world 2"];
@@ -108,15 +122,17 @@
 
 -(void) testLogRoot {
     
-    [[STStoryTeller storyTeller] logRoots];
-    
+    [STStoryTeller clearMatchers];
+
+    STStartLogging(@"LogRoots");
+
     int logLine1 = __LINE__ + 1;
     STLog(@"xyz", @"hello world 1");
     STStartScope(@"def");
     STLog(@"xyz", @"hello world 2");
     STLog(@"def", @"hello world 3");
     
-    XCTAssertEqual(1lu, [self.inMemoryLogger.log count]);
+    XCTAssertEqual(1lu, [_inMemoryLogger.log count]);
     
     [self validateLogLineAtIndex:0 methodName:__PRETTY_FUNCTION__ lineNumber:logLine1 message:@"hello world 1"];
 }
@@ -139,7 +155,7 @@
                        message:(NSString * _Nonnull) message {
     NSString *lastPathComponent = [NSString stringWithCString:__FILE__ encoding:NSUTF8StringEncoding].lastPathComponent;
     NSString *expected = [NSString stringWithFormat:@"%@:%i %@", lastPathComponent, lineNumber, message];
-    XCTAssertEqualObjects(expected, [self.inMemoryLogger.log[idx] substringFromIndex:13]);
+    XCTAssertEqualObjects(expected, [_inMemoryLogger.log[idx] substringFromIndex:13]);
 }
 
 @end

@@ -7,7 +7,10 @@
 //
 
 @import XCTest;
+@import StoryTeller;
 @import StoryTeller.Private;
+@import OCMock;
+
 #import "MainClass.h"
 #import "SubClass.h"
 #import "AProtocol.h"
@@ -17,12 +20,13 @@
 
 @implementation ExpectsBooleanTests {
     STLogExpressionParserDelegate *_factory;
+    id _mockStoryTeller;
 }
 
 -(void) setUp {
     _factory = [[STLogExpressionParserDelegate alloc] init];
+    _mockStoryTeller = OCMClassMock([STStoryTeller class]);
 }
-
 
 -(void) testTrueMatches {
     id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].subClassProperty.boolProperty == true"];
@@ -30,7 +34,7 @@
     SubClass *subClass = [[SubClass alloc] init];
     mainClass.subClassProperty = subClass;
     subClass.boolProperty = YES;
-    XCTAssertTrue([matcher matches:mainClass]);
+    XCTAssertTrue([matcher storyTeller:_mockStoryTeller matches:mainClass]);
 }
 
 -(void) testFalseMatches {
@@ -38,7 +42,7 @@
     MainClass *mainClass = [[MainClass alloc] init];
     SubClass *subClass = [[SubClass alloc] init];
     mainClass.subClassProperty = subClass;
-    XCTAssertTrue([matcher matches:mainClass]);
+    XCTAssertTrue([matcher storyTeller:_mockStoryTeller matches:mainClass]);
 }
 
 -(void) testNoMatches {
@@ -46,7 +50,7 @@
     MainClass *mainClass = [[MainClass alloc] init];
     SubClass *subClass = [[SubClass alloc] init];
     mainClass.subClassProperty = subClass;
-    XCTAssertTrue([matcher matches:mainClass]);
+    XCTAssertTrue([matcher storyTeller:_mockStoryTeller matches:mainClass]);
 }
 
 -(void) testNotFalseMatches {
@@ -55,7 +59,7 @@
     SubClass *subClass = [[SubClass alloc] init];
     mainClass.subClassProperty = subClass;
     subClass.boolProperty = YES;
-    XCTAssertTrue([matcher matches:mainClass]);
+    XCTAssertTrue([matcher storyTeller:_mockStoryTeller matches:mainClass]);
 }
 
 -(void) testYesMatches {
@@ -64,7 +68,7 @@
     SubClass *subClass = [[SubClass alloc] init];
     mainClass.subClassProperty = subClass;
     subClass.boolProperty = YES;
-    XCTAssertTrue([matcher matches:mainClass]);
+    XCTAssertTrue([matcher storyTeller:_mockStoryTeller matches:mainClass]);
 }
 
 #pragma mark - Type checking
@@ -74,7 +78,7 @@
     MainClass *mainClass = [[MainClass alloc] init];
     SubClass *subClass = [[SubClass alloc] init];
     mainClass.subClassProperty = subClass;
-    XCTAssertFalse([matcher matches:mainClass]);
+    XCTAssertFalse([matcher storyTeller:_mockStoryTeller matches:mainClass]);
 }
 
 -(void) testWhenAStringProperty {
@@ -82,7 +86,7 @@
     MainClass *mainClass = [[MainClass alloc] init];
     SubClass *subClass = [[SubClass alloc] init];
     mainClass.subClassProperty = subClass;
-    XCTAssertFalse([matcher matches:mainClass]);
+    XCTAssertFalse([matcher storyTeller:_mockStoryTeller matches:mainClass]);
 }
 
 -(void) testWhenAProtocolProperty {
@@ -90,7 +94,7 @@
     MainClass *mainClass = [[MainClass alloc] init];
     SubClass *subClass = [[SubClass alloc] init];
     mainClass.subClassProperty = subClass;
-    XCTAssertFalse([matcher matches:mainClass]);
+    XCTAssertFalse([matcher storyTeller:_mockStoryTeller matches:mainClass]);
 }
 
 -(void) testWhenAIntProperty {
@@ -98,7 +102,7 @@
     MainClass *mainClass = [[MainClass alloc] init];
     SubClass *subClass = [[SubClass alloc] init];
     mainClass.subClassProperty = subClass;
-    XCTAssertFalse([matcher matches:mainClass]);
+    XCTAssertFalse([matcher storyTeller:_mockStoryTeller matches:mainClass]);
 }
 
 #pragma mark - Op checking
