@@ -14,6 +14,9 @@
 		6C158E2D1B38277200119725 /* STConsoleLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CD18E011B32A5B8002C9806 /* STConsoleLogger.m */; };
 		6C158E2E1B38277200119725 /* STAbstractLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C6879981B32F49A00091F87 /* STAbstractLogger.m */; };
 		6C158E2F1B38277200119725 /* STStoryTeller.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CE5C3E91B329BD100F0A470 /* STStoryTeller.m */; };
+		6C3F07E91D33D2D100166A39 /* STMatcherFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C3F07E81D33D2D100166A39 /* STMatcherFactoryTests.m */; };
+		6C3F07EB1D33DF5000166A39 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 6C3F07EA1D33DF5000166A39 /* Cartfile */; };
+		6C3F07EE1D33E03100166A39 /* OCMock.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C3F07EC1D33E02C00166A39 /* OCMock.framework */; };
 		6C7145631B4425BE00EBC055 /* StoryTellerConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 6C158DE51B3820F100119725 /* StoryTellerConfig.json */; };
 		6C8174331B3CDBA300342066 /* STCompareMatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C8174311B3CDBA300342066 /* STCompareMatcher.m */; };
 		6C8174391B3CEDDD00342066 /* STFilterMatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C8174371B3CEDDD00342066 /* STFilterMatcher.m */; };
@@ -21,7 +24,6 @@
 		6C8E922C1B3BC41C00E6B6C4 /* STLogExpressionParserDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C8E922A1B3BC41C00E6B6C4 /* STLogExpressionParserDelegate.m */; };
 		6C9B50F81B32AC770004E06D /* StoryTellerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50F71B32AC770004E06D /* StoryTellerTests.m */; };
 		6C9B50FB1B32ACB30004E06D /* InMemoryLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50FA1B32ACB30004E06D /* InMemoryLogger.m */; };
-		6C9B50FE1B32ADD80004E06D /* STTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50FD1B32ADD80004E06D /* STTestCase.m */; };
 		6C9E1A631B44CABA00763905 /* MainClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9E1A621B44CABA00763905 /* MainClass.m */; };
 		6C9E1A671B44CB5B00763905 /* SubClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9E1A661B44CB5B00763905 /* SubClass.m */; };
 		6C9E1A6A1B44CBC500763905 /* OptionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9E1A691B44CBC500763905 /* OptionsTests.m */; };
@@ -38,9 +40,6 @@
 		6CA7DF061B3A61D7002491FF /* STLogExpressionParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CA7DF041B3A61D7002491FF /* STLogExpressionParser.m */; };
 		6CC458AA1B4FEBD700FA0EA9 /* STMatcherFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CC458A81B4FEBD700FA0EA9 /* STMatcherFactory.m */; };
 		6CD938411B384AB5005B0B5D /* STConfigTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CD938401B384AB5005B0B5D /* STConfigTests.m */; };
-		6CDCEB971B38F07A007DAF3D /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CDCEB961B38F07A007DAF3D /* libOCMock.a */; };
-		F469EACE1CEAEAB400D9DD47 /* PEGKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6C0747D51BE9F2720096BF85 /* PEGKit.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		F469EACF1CEAEAC000D9DD47 /* libOCMock.a in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6CDCEB961B38F07A007DAF3D /* libOCMock.a */; };
 		F469EAD01CEAEB6800D9DD47 /* STMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C8174341B3CED7F00342066 /* STMatcher.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		F469EAD11CEAEB6800D9DD47 /* STCompareMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C8174301B3CDBA300342066 /* STCompareMatcher.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		F469EAD21CEAEB6800D9DD47 /* STFilterMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C8174361B3CEDDD00342066 /* STFilterMatcher.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -56,7 +55,6 @@
 		F469EADC1CEAEB6800D9DD47 /* STMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C8AE1981B3A444F00DF2B9F /* STMacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F469EADD1CEAEB6800D9DD47 /* StoryTeller.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C8AE1991B3A466200DF2B9F /* StoryTeller.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F4E88B8C1CF6AE6000CCE36A /* StoryTeller.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C158E141B38269D00119725 /* StoryTeller.framework */; };
-		F4E88B8D1CF6AE6600CCE36A /* StoryTeller.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6C158E141B38269D00119725 /* StoryTeller.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,21 +67,6 @@
 		};
 /* End PBXContainerItemProxy section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		6C3F85271BD20D67006CC6C7 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				F4E88B8D1CF6AE6600CCE36A /* StoryTeller.framework in CopyFiles */,
-				F469EACF1CEAEAC000D9DD47 /* libOCMock.a in CopyFiles */,
-				F469EACE1CEAEAB400D9DD47 /* PEGKit.framework in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
 		6C0747D51BE9F2720096BF85 /* PEGKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PEGKit.framework; path = Carthage/Build/iOS/PEGKit.framework; sourceTree = "<group>"; };
 		6C158DE01B38206600119725 /* STConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STConfig.h; sourceTree = "<group>"; };
@@ -91,6 +74,9 @@
 		6C158DE51B3820F100119725 /* StoryTellerConfig.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = StoryTellerConfig.json; path = ../StoryTeller/StoryTellerConfig.json; sourceTree = "<group>"; };
 		6C158E141B38269D00119725 /* StoryTeller.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StoryTeller.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C158E181B38269D00119725 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = StoryTeller/Info.plist; sourceTree = "<group>"; };
+		6C3F07E81D33D2D100166A39 /* STMatcherFactoryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STMatcherFactoryTests.m; sourceTree = "<group>"; };
+		6C3F07EA1D33DF5000166A39 /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
+		6C3F07EC1D33E02C00166A39 /* OCMock.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OCMock.framework; path = Carthage/Build/iOS/OCMock.framework; sourceTree = "<group>"; };
 		6C6879971B32F49A00091F87 /* STAbstractLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = STAbstractLogger.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		6C6879981B32F49A00091F87 /* STAbstractLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = STAbstractLogger.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		6C8174301B3CDBA300342066 /* STCompareMatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = STCompareMatcher.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -106,8 +92,6 @@
 		6C9B50F71B32AC770004E06D /* StoryTellerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = StoryTellerTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		6C9B50F91B32ACB30004E06D /* InMemoryLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = InMemoryLogger.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		6C9B50FA1B32ACB30004E06D /* InMemoryLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InMemoryLogger.m; sourceTree = "<group>"; };
-		6C9B50FC1B32ADD80004E06D /* STTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STTestCase.h; sourceTree = "<group>"; };
-		6C9B50FD1B32ADD80004E06D /* STTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = STTestCase.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		6C9E1A611B44CABA00763905 /* MainClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainClass.h; sourceTree = "<group>"; };
 		6C9E1A621B44CABA00763905 /* MainClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainClass.m; sourceTree = "<group>"; };
 		6C9E1A641B44CB0A00763905 /* AProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AProtocol.h; sourceTree = "<group>"; };
@@ -115,7 +99,7 @@
 		6C9E1A661B44CB5B00763905 /* SubClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubClass.m; sourceTree = "<group>"; };
 		6C9E1A691B44CBC500763905 /* OptionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = OptionsTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		6C9E1A6B1B44CC2200763905 /* SimpleValueTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SimpleValueTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		6C9E1A6D1B44CD4500763905 /* ClassTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassTests.m; sourceTree = "<group>"; };
+		6C9E1A6D1B44CD4500763905 /* ClassTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ClassTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		6C9E1A6F1B44CD7A00763905 /* ProtocolTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ProtocolTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		6C9E1A711B44CE0300763905 /* ExpectsStringTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ExpectsStringTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		6C9E1A731B44CEB900763905 /* PropertiesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PropertiesTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -134,22 +118,12 @@
 		6CD18E001B32A5B8002C9806 /* STConsoleLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = STConsoleLogger.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		6CD18E011B32A5B8002C9806 /* STConsoleLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = STConsoleLogger.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		6CD938401B384AB5005B0B5D /* STConfigTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = STConfigTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		6CDCEB961B38F07A007DAF3D /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOCMock.a; path = "External/OCMock-3.1.2/iOS/libOCMock.a"; sourceTree = SOURCE_ROOT; };
 		6CE5C3E71B329BD100F0A470 /* STStoryTeller.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = STStoryTeller.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		6CE5C3E91B329BD100F0A470 /* STStoryTeller.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = STStoryTeller.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		6CE5C3EF1B329BD100F0A470 /* StoryTellerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StoryTellerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6CE5C3F41B329BD100F0A470 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F4325ED51CEEC896001A9FD6 /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		F4325ED61CEEC8A4001A9FD6 /* module.private.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.private.modulemap; sourceTree = "<group>"; };
-		F469EAC51CEAE55200D9DD47 /* NSNotificationCenter+OCMAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNotificationCenter+OCMAdditions.h"; sourceTree = "<group>"; };
-		F469EAC61CEAE55200D9DD47 /* OCMArg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMArg.h; sourceTree = "<group>"; };
-		F469EAC71CEAE55200D9DD47 /* OCMConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMConstraint.h; sourceTree = "<group>"; };
-		F469EAC81CEAE55200D9DD47 /* OCMLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMLocation.h; sourceTree = "<group>"; };
-		F469EAC91CEAE55200D9DD47 /* OCMMacroState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMMacroState.h; sourceTree = "<group>"; };
-		F469EACA1CEAE55200D9DD47 /* OCMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMock.h; sourceTree = "<group>"; };
-		F469EACB1CEAE55200D9DD47 /* OCMockObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockObject.h; sourceTree = "<group>"; };
-		F469EACC1CEAE55200D9DD47 /* OCMRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMRecorder.h; sourceTree = "<group>"; };
-		F469EACD1CEAE55200D9DD47 /* OCMStubRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMStubRecorder.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +131,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C3F07EE1D33E03100166A39 /* OCMock.framework in Frameworks */,
 				6C0747D71BE9F28F0096BF85 /* PEGKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -167,7 +142,6 @@
 			files = (
 				F4E88B8C1CF6AE6000CCE36A /* StoryTeller.framework in Frameworks */,
 				6C0747D61BE9F2720096BF85 /* PEGKit.framework in Frameworks */,
-				6CDCEB971B38F07A007DAF3D /* libOCMock.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -246,6 +220,7 @@
 			isa = PBXGroup;
 			children = (
 				6C81743A1B3D204F00342066 /* STCompareMatcherTests.m */,
+				6C3F07E81D33D2D100166A39 /* STMatcherFactoryTests.m */,
 			);
 			name = Matchers;
 			sourceTree = "<group>";
@@ -274,6 +249,7 @@
 		6CE5C3DB1B329BD100F0A470 = {
 			isa = PBXGroup;
 			children = (
+				6C3F07EA1D33DF5000166A39 /* Cartfile */,
 				F469EAC31CEAE53E00D9DD47 /* Frameworks */,
 				F4325ED51CEEC896001A9FD6 /* module.modulemap */,
 				F4325ED61CEEC8A4001A9FD6 /* module.private.modulemap */,
@@ -317,8 +293,6 @@
 				6CD938401B384AB5005B0B5D /* STConfigTests.m */,
 				6C158DE51B3820F100119725 /* StoryTellerConfig.json */,
 				6C9B50F71B32AC770004E06D /* StoryTellerTests.m */,
-				6C9B50FC1B32ADD80004E06D /* STTestCase.h */,
-				6C9B50FD1B32ADD80004E06D /* STTestCase.m */,
 			);
 			path = StoryTellerTests;
 			sourceTree = "<group>";
@@ -326,28 +300,10 @@
 		F469EAC31CEAE53E00D9DD47 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				F469EAC41CEAE55200D9DD47 /* OCMock */,
-				6CDCEB961B38F07A007DAF3D /* libOCMock.a */,
+				6C3F07EC1D33E02C00166A39 /* OCMock.framework */,
 				6C0747D51BE9F2720096BF85 /* PEGKit.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		F469EAC41CEAE55200D9DD47 /* OCMock */ = {
-			isa = PBXGroup;
-			children = (
-				F469EAC51CEAE55200D9DD47 /* NSNotificationCenter+OCMAdditions.h */,
-				F469EAC61CEAE55200D9DD47 /* OCMArg.h */,
-				F469EAC71CEAE55200D9DD47 /* OCMConstraint.h */,
-				F469EAC81CEAE55200D9DD47 /* OCMLocation.h */,
-				F469EAC91CEAE55200D9DD47 /* OCMMacroState.h */,
-				F469EACA1CEAE55200D9DD47 /* OCMock.h */,
-				F469EACB1CEAE55200D9DD47 /* OCMockObject.h */,
-				F469EACC1CEAE55200D9DD47 /* OCMRecorder.h */,
-				F469EACD1CEAE55200D9DD47 /* OCMStubRecorder.h */,
-			);
-			name = OCMock;
-			path = "External/OCMock-3.1.2/iOS/OCMock";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -402,7 +358,7 @@
 				6CE5C3EB1B329BD100F0A470 /* Sources */,
 				6CE5C3EC1B329BD100F0A470 /* Frameworks */,
 				6CE5C3ED1B329BD100F0A470 /* Resources */,
-				6C3F85271BD20D67006CC6C7 /* CopyFiles */,
+				6C3F07EF1D33E04C00166A39 /* Copy frameworks */,
 			);
 			buildRules = (
 			);
@@ -454,6 +410,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C3F07EB1D33DF5000166A39 /* Cartfile in Resources */,
 				6C7145631B4425BE00EBC055 /* StoryTellerConfig.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -461,6 +418,22 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		6C3F07EF1D33E04C00166A39 /* Copy frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/OCMock.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/PEGKit.framework",
+			);
+			name = "Copy frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "carthage copy-frameworks";
+		};
 		6CFF3BD31B709D7E00538BA1 /* Appledoc */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -502,7 +475,6 @@
 			files = (
 				6C9E1A631B44CABA00763905 /* MainClass.m in Sources */,
 				6C9E1A7E1B44D0C100763905 /* ExpectsProtocolTests.m in Sources */,
-				6C9B50FE1B32ADD80004E06D /* STTestCase.m in Sources */,
 				6C9E1A761B44CF3900763905 /* ExpectsNumberTests.m in Sources */,
 				6C9B50F81B32AC770004E06D /* StoryTellerTests.m in Sources */,
 				6CD938411B384AB5005B0B5D /* STConfigTests.m in Sources */,
@@ -514,6 +486,7 @@
 				6C9E1A701B44CD7A00763905 /* ProtocolTests.m in Sources */,
 				6C9E1A671B44CB5B00763905 /* SubClass.m in Sources */,
 				6C9B50FB1B32ACB30004E06D /* InMemoryLogger.m in Sources */,
+				6C3F07E91D33D2D100166A39 /* STMatcherFactoryTests.m in Sources */,
 				6C9E1A7A1B44D00600763905 /* ExpectsBooleanTests.m in Sources */,
 				6C9E1A7C1B44D05200763905 /* ExpectsClassTests.m in Sources */,
 				6C9E1A781B44CF8B00763905 /* ExpectsNilTests.m in Sources */,
@@ -536,10 +509,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 1.5;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_CURRENT_VERSION = $CURRENT_PROJECT_VERSION;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = StoryTeller/Info.plist;
 				INSTALL_PATH = "@rpath";
@@ -562,10 +535,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 1.5;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_CURRENT_VERSION = $CURRENT_PROJECT_VERSION;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = StoryTeller/Info.plist;
 				INSTALL_PATH = "@rpath";

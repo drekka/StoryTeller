@@ -34,15 +34,15 @@
 #pragma mark - Options
 
 -(void) testLogAll {
-    id<STMatcher> matcher = [_factory parseExpression:@"LogAll" error:NULL];
-    XCTAssertNil(matcher);
-    OCMVerify([_mockStoryTeller logAll]);
+    id<STMatcher> matcher = [_factory parseExpression:@"LogAll"];
+    XCTAssertNotNil(matcher);
+    XCTAssertTrue(matcher.exclusive);
 }
 
 -(void) testLogRoots {
-    id<STMatcher> matcher = [_factory parseExpression:@"LogRoots" error:NULL];
-    XCTAssertNil(matcher);
-    OCMVerify([_mockStoryTeller logRoots]);
+    id<STMatcher> matcher = [_factory parseExpression:@"LogRoots"];
+    XCTAssertNotNil(matcher);
+    XCTAssertFalse(matcher.exclusive);
 }
 
 @end

@@ -7,7 +7,10 @@
 //
 
 @import XCTest;
+@import StoryTeller;
 @import StoryTeller.Private;
+@import OCMock;
+
 #import "MainClass.h"
 #import "SubClass.h"
 #import "AProtocol.h"
@@ -17,32 +20,34 @@
 
 @implementation ExpectsNilTests {
     STLogExpressionParserDelegate *_factory;
+    id _mockStoryTeller;
 }
 
 -(void) setUp {
     _factory = [[STLogExpressionParserDelegate alloc] init];
+    _mockStoryTeller = OCMClassMock([STStoryTeller class]);
 }
 
 #pragma mark - General Properties
 
 -(void) testMatches {
-    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].stringProperty == nil" error:NULL];
+    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].stringProperty == nil"];
     MainClass *mainClass = [[MainClass alloc] init];
-    XCTAssertTrue([matcher matches:mainClass]);
+    XCTAssertTrue([matcher storyTeller:_mockStoryTeller matches:mainClass]);
 }
 
 -(void) testNotEqualMatches {
-    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].stringProperty != nil" error:NULL];
+    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].stringProperty != nil"];
     MainClass *mainClass = [[MainClass alloc] init];
     mainClass.stringProperty = @"def";
-    XCTAssertTrue([matcher matches:mainClass]);
+    XCTAssertTrue([matcher storyTeller:_mockStoryTeller matches:mainClass]);
 }
 
 -(void) testFailsMatch {
-    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].stringProperty == nil" error:NULL];
+    id<STMatcher> matcher = [_factory parseExpression:@"[MainClass].stringProperty == nil"];
     MainClass *mainClass = [[MainClass alloc] init];
     mainClass.stringProperty = @"def";
-    XCTAssertFalse([matcher matches:mainClass]);
+    XCTAssertFalse([matcher storyTeller:_mockStoryTeller matches:mainClass]);
 }
 
 @end

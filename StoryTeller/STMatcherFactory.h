@@ -17,6 +17,16 @@ NS_ASSUME_NONNULL_BEGIN
 @interface STMatcherFactory : NSObject
 
 /**
+ Matcher used when LogAll is specified. Not copatibile with other matchers.
+ */
++(id<STMatcher>) allMatcher;
+
+/**
+ Matcher used when LogRoots is specified. Not copatibile with other matchers.
+ */
++(id<STMatcher>) rootMatcher;
+
+/**
  Returns a matcher that matches if the key if it's a specific class or a descendant of that class.
  
  @discussion This can also be used to match protocols by obtaining the class of the protocol and comparing against that.

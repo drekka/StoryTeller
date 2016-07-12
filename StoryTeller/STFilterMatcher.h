@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @return an instance of this class.
  */
--(instancetype) initWithFilter:(id (^)(id key)) filterBlock;
+-(instancetype) initWithFilter:(id (^)(STStoryTeller *storyTeller, id key)) filterBlock;
 
 @end
 

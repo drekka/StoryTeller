@@ -26,6 +26,20 @@
     [_mockProcessInfo stopMocking];
 }
 
+
+-(void) testLogAll {
+
+    // Test
+    STConfig *config = [[STConfig alloc] init];
+    STStoryTeller *mockStoryTeller = OCMClassMock([STStoryTeller class]);
+    [config configure:mockStoryTeller];
+
+    // Verify
+    OCMVerify([mockStoryTeller setLogger:[OCMArg isKindOfClass:[STConsoleLogger class]]]);
+
+}
+
+
 -(void) testConfigWithDefault {
     
     // Test
@@ -40,8 +54,7 @@
 -(void) testConfigReadsCommandLineArgs {
     
     [self mockProcessInfo];
-    [self stubProcessInfoArguments:@[@"--storyteller-no-autostart",
-                                     @"loggerClass=InMemoryLogger",
+    [self stubProcessInfoArguments:@[@"loggerClass=InMemoryLogger",
                                      @"log=abc log=def",
                                      @"logLineFormat=xyz"]];
     
@@ -59,7 +72,6 @@
 -(void) testConfigReadsEnvironment {
     
     [self mockProcessInfo];
-    [self stubProcessInfoArguments:@[@"--storyteller-no-autostart"]];
     [self stubProcessInfoEnvironment:@{@"loggerClass":@"InMemoryLogger",
                                        @"log":@"abc",
                                        @"log":@"def",
@@ -80,36 +92,26 @@
     
     [self mockProcessInfo];
     [self stubProcessInfoEnvironment:@{@"loggerClass":@"EnvironmentLogger"}];
-    [self stubProcessInfoArguments:@[@"--storyteller-no-autostart", @"loggerClass=ArgumentLogger"]];
+    [self stubProcessInfoArguments:@[@"loggerClass=ArgumentLogger"]];
     
     // Test
     STStoryTeller *mockStoryTeller = OCMClassMock([STStoryTeller class]);
     STConfig *config = [[STConfig alloc] init];
-    @try {
-        [config configure:mockStoryTeller];
-        XCTFail(@"Exception not thrown");
-    } @catch (NSException *exception) {
-        XCTAssertEqualObjects(@"StoryTeller", exception.name);
-        XCTAssertEqualObjects(@"Unknown class 'ArgumentLogger'", exception.reason);
-    }
+    
+    XCTAssertThrowsSpecificNamed([config configure:mockStoryTeller], NSException, @"StoryTellerUnknownClass");
 }
 
 
 -(void) testConfigWithInvalidLoggerClass {
     
     [self mockProcessInfo];
-    [self stubProcessInfoArguments:@[@"--storyteller-no-autostart", @"loggerClass=XXXXX"]];
+    [self stubProcessInfoArguments:@[@"loggerClass=XXXXX"]];
     
     // Test
     STStoryTeller *mockStoryTeller = OCMClassMock([STStoryTeller class]);
     STConfig *config = [[STConfig alloc] init];
-    @try {
-        [config configure:mockStoryTeller];
-        XCTFail(@"Exception not thrown");
-    } @catch (NSException *exception) {
-        XCTAssertEqualObjects(@"StoryTeller", exception.name);
-        XCTAssertEqualObjects(@"Unknown class 'XXXXX'", exception.reason);
-    }
+    
+    XCTAssertThrowsSpecificNamed([config configure:mockStoryTeller], NSException, @"StoryTellerUnknownClass");
 }
 
 #pragma mark - Internal

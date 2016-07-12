@@ -8,13 +8,16 @@
 
 #import "STCompareMatcher.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @implementation STCompareMatcher {
-    BOOL (^ _Nonnull _compareBlock)(_Nullable id key);
+    BOOL (^_compareBlock)(STStoryTeller *storyTeller, id key);
 }
 
 @synthesize nextMatcher = _nextMatcher;
+@synthesize exclusive = _exclusive;
 
--(nonnull instancetype) initWithCompare:(BOOL (^ _Nonnull)(_Nullable id key)) compareBlock {
+-(nonnull instancetype) initWithCompare:(BOOL (^)(STStoryTeller *storyTeller, id key)) compareBlock {
     self = [super init];
     if (self) {
         _compareBlock = compareBlock;
@@ -22,9 +25,11 @@
     return self;
 }
 
--(BOOL) matches:(id _Nullable) key {
-    return _compareBlock(key)
-    && (self.nextMatcher == nil ? YES : [self.nextMatcher matches:key]);
+-(BOOL) storyTeller:(STStoryTeller *) storyTeller matches:(id) key {
+    return _compareBlock(storyTeller, key)
+    && (self.nextMatcher == nil ? YES : [self.nextMatcher storyTeller:storyTeller matches:key]);
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

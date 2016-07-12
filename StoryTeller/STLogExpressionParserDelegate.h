@@ -23,10 +23,8 @@ NS_ASSUME_NONNULL_BEGIN
  Call to parse a string containing an expression and generate a STMatcher which can validate objects based on that expression.
  
  @param expression the expression to be parsed.
- @param error a pointer to a NSError variable where an error can be set if there is a problem.
  */
--(id<STMatcher>) parseExpression:(NSString *) expression
-                           error:(NSError * __autoreleasing  *) error;
+-(id<STMatcher>) parseExpression:(NSString *) expression;
 
 @end
 

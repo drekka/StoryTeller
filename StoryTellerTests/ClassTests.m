@@ -8,7 +8,9 @@
 
 @import XCTest;
 @import ObjectiveC;
+@import OCMock;
 
+@import StoryTeller;
 @import StoryTeller.Private;
 
 #import "MainClass.h"
@@ -20,10 +22,12 @@
 
 @implementation ClassTests {
     STLogExpressionParserDelegate *_factory;
+    id _mockStoryTeller;
 }
 
 -(void) setUp {
     _factory = [[STLogExpressionParserDelegate alloc] init];
+    _mockStoryTeller = OCMClassMock([STStoryTeller class]);
 }
 
 -(void) testRuntimeConforms {
@@ -33,40 +37,43 @@
 #pragma mark - Classes
 
 -(void) testClassMatches {
-    id<STMatcher> matcher = [_factory parseExpression:@"[NSString]" error:NULL];
-    XCTAssertTrue([matcher matches:@"abc"]);
+    id<STMatcher> matcher = [_factory parseExpression:@"[NSString]"];
+    XCTAssertTrue([matcher storyTeller:_mockStoryTeller matches:@"abc"]);
 }
 
 -(void) testClassIsUnknown {
-    NSError *error = nil;
-    id<STMatcher> matcher = [_factory parseExpression:@"[Abc]" error:&error];
-    XCTAssertNil(matcher);
-    XCTAssertEqualObjects(@"Unable to find a class called Abc\nLine : Unknown\n", error.localizedFailureReason);
+    @try {
+        [_factory parseExpression:@"[Abc]"];
+        XCTFail(@"Exception not thrown");
+    }
+    @catch (NSException *e) {
+        XCTAssertEqualObjects(@"Unable to find a class called Abc\nLine : Unknown\n", e.description);
+    }
 }
 
 -(void) testClassFailsMatch {
-    id<STMatcher> matcher = [_factory parseExpression:@"[NSString]" error:NULL];
-    XCTAssertFalse([matcher matches:@12]);
+    id<STMatcher> matcher = [_factory parseExpression:@"[NSString]"];
+    XCTAssertFalse([matcher storyTeller:_mockStoryTeller matches:@12]);
 }
 
 -(void) testClassFailsMatchWhenDifferentClass {
-    id<STMatcher> matcher = [_factory parseExpression:@"[NSString]" error:NULL];
-    XCTAssertFalse([matcher matches:[NSNumber class]]);
+    id<STMatcher> matcher = [_factory parseExpression:@"[NSString]"];
+    XCTAssertFalse([matcher storyTeller:_mockStoryTeller matches:[NSNumber class]]);
 }
 
 -(void) testClassFailsMatchWhenClass {
-    id<STMatcher> matcher = [_factory parseExpression:@"[NSString]" error:NULL];
-    XCTAssertTrue([matcher matches:[NSString class]]);
+    id<STMatcher> matcher = [_factory parseExpression:@"[NSString]"];
+    XCTAssertTrue([matcher storyTeller:_mockStoryTeller matches:[NSString class]]);
 }
 
 -(void) testIsaClassMatches {
-    id<STMatcher> matcher = [_factory parseExpression:@"is [MainClass]" error:NULL];
-    XCTAssertTrue([matcher matches:[MainClass class]]);
+    id<STMatcher> matcher = [_factory parseExpression:@"is [MainClass]"];
+    XCTAssertTrue([matcher storyTeller:_mockStoryTeller matches:[MainClass class]]);
 }
 
 -(void) testIsaClassFailsMatch {
-    id<STMatcher> matcher = [_factory parseExpression:@"is [MainClass]" error:NULL];
-    XCTAssertFalse([matcher matches:[NSString class]]);
+    id<STMatcher> matcher = [_factory parseExpression:@"is [MainClass]"];
+    XCTAssertFalse([matcher storyTeller:_mockStoryTeller matches:[NSString class]]);
 }
 
 @end

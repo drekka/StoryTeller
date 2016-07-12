@@ -7,7 +7,10 @@
 //
 
 @import XCTest;
+@import StoryTeller;
 @import StoryTeller.Private;
+@import OCMock;
+
 #import "MainClass.h"
 #import "SubClass.h"
 #import "AProtocol.h"
@@ -17,27 +20,32 @@
 
 @implementation ProtocolTests {
     STLogExpressionParserDelegate *_factory;
+    id _mockStoryTeller;
 }
 
 -(void) setUp {
     _factory = [[STLogExpressionParserDelegate alloc] init];
+    _mockStoryTeller = OCMClassMock([STStoryTeller class]);
 }
 
 -(void) testMatches {
-    id<STMatcher> matcher = [_factory parseExpression:@"<NSCopying>" error:NULL];
-    XCTAssertTrue([matcher matches:@"abc"]);
+    id<STMatcher> matcher = [_factory parseExpression:@"<NSCopying>"];
+    XCTAssertTrue([matcher storyTeller:_mockStoryTeller matches:@"abc"]);
 }
 
 -(void) testFailsMatch {
-    id<STMatcher> matcher = [_factory parseExpression:@"<NSFastEnumeration>" error:NULL];
-    XCTAssertFalse([matcher matches:@"abc"]);
+    id<STMatcher> matcher = [_factory parseExpression:@"<NSFastEnumeration>"];
+    XCTAssertFalse([matcher storyTeller:_mockStoryTeller matches:@"abc"]);
 }
 
 -(void) testUnknownProtocol {
-    NSError *error = nil;
-    id<STMatcher> matcher = [_factory parseExpression:@"<Abc>" error:&error];
-    XCTAssertNil(matcher);
-    XCTAssertEqualObjects(@"Unable to find a protocol called Abc\nLine : Unknown\n", error.localizedFailureReason);
+    @try {
+        [_factory parseExpression:@"<Abc>"];
+        XCTFail(@"Exception not thrown");
+    }
+    @catch (NSException *e) {
+        XCTAssertEqualObjects(@"Unable to find a protocol called Abc\nLine : Unknown\n", e.description);
+    }
 }
 
 @end
