@@ -16,7 +16,6 @@
 		6C158E2F1B38277200119725 /* STStoryTeller.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CE5C3E91B329BD100F0A470 /* STStoryTeller.m */; };
 		6C3F07E91D33D2D100166A39 /* STMatcherFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C3F07E81D33D2D100166A39 /* STMatcherFactoryTests.m */; };
 		6C3F07EB1D33DF5000166A39 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 6C3F07EA1D33DF5000166A39 /* Cartfile */; };
-		6C3F07EE1D33E03100166A39 /* OCMock.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C3F07EC1D33E02C00166A39 /* OCMock.framework */; };
 		6C7145631B4425BE00EBC055 /* StoryTellerConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 6C158DE51B3820F100119725 /* StoryTellerConfig.json */; };
 		6C8174331B3CDBA300342066 /* STCompareMatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C8174311B3CDBA300342066 /* STCompareMatcher.m */; };
 		6C8174391B3CEDDD00342066 /* STFilterMatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C8174371B3CEDDD00342066 /* STFilterMatcher.m */; };
@@ -37,6 +36,8 @@
 		6C9E1A7A1B44D00600763905 /* ExpectsBooleanTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9E1A791B44D00600763905 /* ExpectsBooleanTests.m */; };
 		6C9E1A7C1B44D05200763905 /* ExpectsClassTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9E1A7B1B44D05200763905 /* ExpectsClassTests.m */; };
 		6C9E1A7E1B44D0C100763905 /* ExpectsProtocolTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9E1A7D1B44D0C100763905 /* ExpectsProtocolTests.m */; };
+		6CA4E2BA1D375FF4000C68C9 /* OCMock.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C3F07EC1D33E02C00166A39 /* OCMock.framework */; };
+		6CA4E2BB1D376118000C68C9 /* StoryTeller.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C158E141B38269D00119725 /* StoryTeller.framework */; };
 		6CA7DF061B3A61D7002491FF /* STLogExpressionParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CA7DF041B3A61D7002491FF /* STLogExpressionParser.m */; };
 		6CC458AA1B4FEBD700FA0EA9 /* STMatcherFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CC458A81B4FEBD700FA0EA9 /* STMatcherFactory.m */; };
 		6CD938411B384AB5005B0B5D /* STConfigTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CD938401B384AB5005B0B5D /* STConfigTests.m */; };
@@ -54,7 +55,6 @@
 		F469EADB1CEAEB6800D9DD47 /* STStoryTeller.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CE5C3E71B329BD100F0A470 /* STStoryTeller.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F469EADC1CEAEB6800D9DD47 /* STMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C8AE1981B3A444F00DF2B9F /* STMacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F469EADD1CEAEB6800D9DD47 /* StoryTeller.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C8AE1991B3A466200DF2B9F /* StoryTeller.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F4E88B8C1CF6AE6000CCE36A /* StoryTeller.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C158E141B38269D00119725 /* StoryTeller.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -131,7 +131,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6C3F07EE1D33E03100166A39 /* OCMock.framework in Frameworks */,
 				6C0747D71BE9F28F0096BF85 /* PEGKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -140,7 +139,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F4E88B8C1CF6AE6000CCE36A /* StoryTeller.framework in Frameworks */,
+				6CA4E2BB1D376118000C68C9 /* StoryTeller.framework in Frameworks */,
+				6CA4E2BA1D375FF4000C68C9 /* OCMock.framework in Frameworks */,
 				6C0747D61BE9F2720096BF85 /* PEGKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -520,7 +520,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = module.modulemap;
 				MODULEMAP_PRIVATE_FILE = module.private.modulemap;
-				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = au.com.derekclarkson.StoryTeller;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -546,7 +545,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = module.modulemap;
 				MODULEMAP_PRIVATE_FILE = module.private.modulemap;
-				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = au.com.derekclarkson.StoryTeller;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -690,11 +688,8 @@
 		6CE5C3FB1B329BD100F0A470 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/External/OCMock-3.1.2/iOS";
 				INFOPLIST_FILE = StoryTellerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/External/OCMock-3.1.2/iOS";
-				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = au.com.derekclarkson.StoryTellerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TVOS_DEPLOYMENT_TARGET = 9.0;
@@ -705,11 +700,8 @@
 		6CE5C3FC1B329BD100F0A470 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/External/OCMock-3.1.2/iOS";
 				INFOPLIST_FILE = StoryTellerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/External/OCMock-3.1.2/iOS";
-				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = au.com.derekclarkson.StoryTellerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TVOS_DEPLOYMENT_TARGET = 9.0;
