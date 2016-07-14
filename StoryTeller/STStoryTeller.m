@@ -22,27 +22,29 @@ NS_ASSUME_NONNULL_BEGIN
     STLogExpressionParserDelegate *_expressionMatcherFactory;
 }
 
+#pragma mark - Singleton setup
+
 static __strong STStoryTeller *__storyTeller;
 
-#pragma mark - Lifecycle
-
-+(void) initialize {
-    if ([[NSProcessInfo processInfo].arguments containsObject:@"--storyteller-no-autostart"]) {
-        return;
-    }
-    [STStoryTeller start];
-}
-
 +(nullable STStoryTeller *) storyTeller {
+    if (!__storyTeller) {
+        __storyTeller = [[STStoryTeller alloc] init];
+        [__storyTeller->_config configure:__storyTeller];
+    }
     return __storyTeller;
 }
 
 #pragma mark - Debugging
 
-+(void) start {
-    __storyTeller = [[STStoryTeller alloc] init];
-    [__storyTeller->_config configure:__storyTeller];
++(void) reset {
+    __storyTeller = nil;
 }
+
++(void) clearMatchers {
+    __storyTeller->_logMatchers = [[NSMutableSet alloc] init];
+}
+
+#pragma mark - Lifecycle
 
 -(instancetype) init {
     self = [super init];
@@ -57,33 +59,19 @@ static __strong STStoryTeller *__storyTeller;
 
 #pragma mark - Activating logging
 
--(void) logAll {
-    NSLog(@"Story Teller: Activating all log statements");
-    _logAll = YES;
-    _logRoots = NO;
-    [_logMatchers removeAllObjects];
-}
-
--(void) logRoots {
-    
-    if (_logAll) {
-        return;
-    }
-    
-    NSLog(@"Story Teller: Activating root log statements");
-    _logRoots = YES;
-    [_logMatchers removeAllObjects];
-}
-
 -(void) startLogging:(NSString * _Nonnull) keyExpression {
-    
     NSLog(@"Story Teller: Activating log: %@", keyExpression);
-    NSError *error = nil;
-    id<STMatcher> matcher = [_expressionMatcherFactory parseExpression:keyExpression
-                                                                 error:&error];
-    if (matcher) {
-        [_logMatchers addObject:matcher];
+    id<STMatcher> matcher = [_expressionMatcherFactory parseExpression:keyExpression];
+
+    if (_logMatchers.count > 0) {
+        if (matcher.exclusive) {
+            @throw [NSException exceptionWithName:@"StoryTellerConfigException" reason:[NSString stringWithFormat:@"%@ cannot be used with other logging expressions", keyExpression] userInfo:nil];
+        } else if ([_logMatchers anyObject].exclusive) {
+            @throw [NSException exceptionWithName:@"StoryTellerConfigException" reason:[NSString stringWithFormat:@"Log expression %@ cannot be used with previous exclusive expressions", keyExpression] userInfo:nil];
+        }
     }
+
+    [_logMatchers addObject:matcher];
 }
 
 #pragma mark - Activating
@@ -92,31 +80,33 @@ static __strong STStoryTeller *__storyTeller;
     return (int)[_activeKeys count];
 }
 
--(id) startScope:(id _Nonnull) key {
+-(id) startScope:(__weak id _Nonnull) key {
     [_activeKeys addObject:key];
     return [[STDeallocHook alloc] initWithBlock:^{
         [[STStoryTeller storyTeller] endScope:key];
     }];
 }
 
--(void) endScope:(id _Nonnull) key {
+-(void) endScope:(__weak id _Nonnull) key {
     [_activeKeys removeObject:key];
 }
 
--(BOOL) isScopeActive:(id _Nonnull) key {
+-(BOOL) isScopeActive:(__weak id _Nonnull) key {
     return [_activeKeys containsObject:key];
 }
 
 #pragma mark - Logging
 
--(void) record:(id _Nonnull) key
+-(void) record:(__weak id _Nonnull) key
           file:(const char * _Nonnull) fileName
         method:(const char * _Nonnull) methodName
     lineNumber:(int) lineNumber
        message:(NSString * _Nonnull) messageTemplate, ... {
     
+    id strongKey = key;
+    
     // Only continue if the key is being logged.
-    if (![self shouldLogKey:key]) {
+    if (![self shouldLogKey:strongKey]) {
         return;
     }
     
@@ -131,24 +121,20 @@ static __strong STStoryTeller *__storyTeller;
                      fromFile:fileName
                    fromMethod:methodName
                    lineNumber:lineNumber
-                          key:key];
+                          key:strongKey];
 }
 
--(void) execute:(id _Nonnull) key block:(void (^ _Nonnull)(id _Nonnull)) block {
-    if ([self shouldLogKey:key]) {
-        block(key);
+-(void) execute:(__weak id _Nonnull) key block:(void (^ _Nonnull)(id _Nonnull)) block {
+    id strongKey = key;
+    if ([self shouldLogKey:strongKey]) {
+        block(strongKey);
     }
 }
 
 -(BOOL) shouldLogKey:(id) key {
     
     // Check the bypass and active keys.
-    if (_logAll || [self isKeyMatched:key]) {
-        return YES;
-    }
-    
-    // If logRoot is in effect we need to log as long as there are no scopes.
-    if (_logRoots && [_activeKeys count] == 0) {
+    if ([self isKeyMatched:key]) {
         return YES;
     }
     
@@ -164,7 +150,7 @@ static __strong STStoryTeller *__storyTeller;
 
 -(BOOL) isKeyMatched:(id) key {
     for (id<STMatcher> matcher in _logMatchers) {
-        if ([matcher matches:key]) {
+        if ([matcher storyTeller:self matches:key]) {
             return YES;
         }
     }

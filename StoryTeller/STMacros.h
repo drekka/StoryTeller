@@ -11,7 +11,7 @@
 #ifdef DISABLE_STORY_TELLER
 
 // Remove all logging code.
-#define STStartLogging(key)
+#define STStartLogging(expression)
 #define STStartScope(key)
 #define STEndScope(key)
 #define STLog(key, messageTemplate, ...)
@@ -26,8 +26,8 @@
 // means that macros such as __LINE__ can be concatinated.
 #define ST_CONCATINATE(prefix, suffix) _ST_CONCAT(prefix, suffix)
 
-#define STStartLogging(key) \
-[[STStoryTeller storyTeller] startLogging:key]
+#define STStartLogging(expression) \
+[[STStoryTeller storyTeller] startLogging:expression]
 
 // Note the NS_VALID_UNTIL_END_OF_SCOPE macro. This ensures that the variable does not immediately dealloc.
 #define STStartScope(key) \

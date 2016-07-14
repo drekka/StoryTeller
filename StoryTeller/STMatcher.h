@@ -8,6 +8,10 @@
 
 @import Foundation;
 
+@class STStoryTeller;
+
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  A protocol that defines the interface for matchers. 
  */
@@ -20,11 +24,18 @@
 
  @return YES if the matcher matches the key.
  */
--(BOOL) matches:(id _Nullable) key;
+-(BOOL) storyTeller:(STStoryTeller *) storyTeller matches:(id) key;
 
 /**
  The next matcher in the chain.
  */
 @property (nonatomic, strong, nullable) id<STMatcher> nextMatcher;
 
+/**
+ If YES, this matcher cannot be usd with other matchers. For example, the LogAll matcher.
+ */
+@property (nonatomic, assign) BOOL exclusive;
+
 @end
+
+NS_ASSUME_NONNULL_END

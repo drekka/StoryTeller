@@ -16,6 +16,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+// Properties loaded from config sources via KVC
 @interface STConfig ()
 @property (nonatomic, strong) NSArray<NSString *> *activeLogs;
 @property (nonatomic, strong) NSString *loggerClass;
@@ -63,38 +64,36 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 -(void) configurefromFile {
-    
-    // Get the config file.
-    NSArray<NSBundle *> *appBundles = [NSBundle allBundles];
-    NSURL *configUrl = nil;
-    for (NSBundle *bundle in appBundles) {
-        configUrl = [bundle URLForResource:@"StoryTellerConfig" withExtension:@"json"];
-        if (configUrl != nil) {
-            NSError *error = nil;
-            NSLog(@"Story Teller: Config file found ...");
-            NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfURL:configUrl]
-                                                                     options:NSJSONReadingAllowFragments
-                                                                       error:&error];
-            if (error != nil) {
-                @throw [NSException exceptionWithName:@"StoryTeller" reason:[error localizedFailureReason] userInfo:nil];
-            }
-            
-            [self setValuesForKeysWithDictionary:jsonData];
-            return;
-        }
-    }
+
+	// Get the config file.
+	NSArray<NSBundle *> *appBundles = [NSBundle allBundles];
+	NSURL *configUrl = nil;
+	for (NSBundle *bundle in appBundles) {
+		configUrl = [bundle URLForResource:@"StoryTellerConfig" withExtension:@"json"];
+		if (configUrl != nil) {
+			NSError *error = nil;
+			NSLog(@"Story Teller: Config file found ...");
+			NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfURL:configUrl]
+																						options:NSJSONReadingAllowFragments
+																						  error:&error];
+			if (error != nil) {
+				@throw [NSException exceptionWithName:@"StoryTellerInvalidJSON" reason:[error localizedFailureReason] userInfo:nil];
+			}
+
+			[self setValuesForKeysWithDictionary:jsonData];
+			return;
+		}
+	}
 }
 
 -(void) configure:(STStoryTeller *) storyTeller {
-    
-    // Validate the logger class to be used.
-    Class loggerClass = objc_lookUpClass([_loggerClass UTF8String]);
-    if (loggerClass == nil) {
-        @throw [NSException exceptionWithName:@"StoryTeller" reason:[NSString stringWithFormat:@"Unknown class '%@'", _loggerClass] userInfo:nil];
-    }
 
-    id<STLogger> newLogger = [[loggerClass alloc] init];
-    
+	Class loggerClass = objc_lookUpClass([_loggerClass UTF8String]);
+	id<STLogger> newLogger = [[loggerClass alloc] init];
+	if (newLogger == nil) {
+		@throw [NSException exceptionWithName:@"StoryTellerUnknownClass" reason:[NSString stringWithFormat:@"Unknown class '%@'", _loggerClass] userInfo:nil];
+	}
+
     if (self.logLineTemplate != nil) {
         newLogger.lineTemplate = self.logLineTemplate;
     }
