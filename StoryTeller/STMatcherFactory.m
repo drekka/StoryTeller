@@ -38,19 +38,19 @@ static Class __protocolClass;
 
 +(id<STMatcher>) isaClassMatcher:(Class) expected {
     return [[STCompareMatcher alloc] initWithCompare:^BOOL(STStoryTeller *storyTeller, id  key) {
-        return [self isAClass:key] && [(Class)key isSubclassOfClass:expected];
+        return object_isClass(key) && [(Class)key isSubclassOfClass:expected];
     }];
 }
 
 +(id<STMatcher>) isKindOfClassMatcher:(Class) expected {
     return [[STCompareMatcher alloc] initWithCompare:^BOOL(STStoryTeller *storyTeller, id  key) {
-        return [self isAClass:key] ? [(Class)key isSubclassOfClass:expected] : [key isKindOfClass:expected];
+        return object_isClass(key) ? [(Class)key isSubclassOfClass:expected] : [key isKindOfClass:expected];
     }];
 }
 
 +(id<STMatcher>) isNotKindOfClassMatcher:(Class) expected {
     return [[STCompareMatcher alloc] initWithCompare:^BOOL(STStoryTeller *storyTeller, id  key) {
-        return [self isAClass:key] ? ! [(Class)key isSubclassOfClass:expected] : ! [key isKindOfClass:expected];
+        return object_isClass(key) ? ! [(Class)key isSubclassOfClass:expected] : ! [key isKindOfClass:expected];
     }];
 }
 
@@ -152,12 +152,6 @@ static Class __protocolClass;
     return [[STFilterMatcher alloc] initWithFilter:^id(STStoryTeller *storyTeller, id  key) {
         return [key valueForKeyPath:keypath];
     }];
-}
-
-#pragma mark - Internal
-
-+(BOOL) isAClass:(id) value {
-    return class_isMetaClass(object_getClass(value));
 }
 
 @end

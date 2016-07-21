@@ -162,7 +162,7 @@ static Class __protocolClass;
                 }
                     
                 case DetailsDisplayKey: {
-                    if ([self keyIsClass:key]) {
+                    if (object_isClass(key)) {
                         [self writeText:"c:["];
                         [self writeText:NSStringFromClass(key).UTF8String];
                         [self writeText:"]"];
@@ -195,10 +195,6 @@ static Class __protocolClass;
 
 -(void) writeText:(const char * _Nonnull) text {
     [self doesNotRecognizeSelector:_cmd];
-}
-
--(BOOL) keyIsClass:(id) key {
-    return class_isMetaClass(object_getClass(key));
 }
 
 -(BOOL) keyIsProtocol:(id) key {
