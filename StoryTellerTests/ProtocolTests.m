@@ -33,6 +33,23 @@
     XCTAssertTrue([matcher storyTeller:_mockStoryTeller matches:@"abc"]);
 }
 
+-(void) testProtocolMatchesSwiftName {
+
+    // Create a fake class.
+    Class newClass = objc_allocateClassPair([NSObject class], "NewClass", 0);
+    objc_registerClassPair(newClass);
+
+    // Create the swift protocol and add it to the class.
+    Protocol *swiftLikeProtocol = objc_allocateProtocol("MyProject.Protocol");
+    objc_registerProtocol(swiftLikeProtocol);
+    class_addProtocol(newClass, swiftLikeProtocol);
+
+    id obj = [[newClass alloc] init];
+
+    id<STMatcher> matcher = [_factory parseExpression:@"<MyProject.Protocol>"];
+    XCTAssertTrue([matcher storyTeller:_mockStoryTeller matches:obj]);
+}
+
 -(void) testFailsMatch {
     id<STMatcher> matcher = [_factory parseExpression:@"<NSFastEnumeration>"];
     XCTAssertFalse([matcher storyTeller:_mockStoryTeller matches:@"abc"]);
