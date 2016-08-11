@@ -8,8 +8,6 @@
 
 @import Foundation;
 
-@class STDeallocHook;
-
 NS_ASSUME_NONNULL_BEGIN
 
 /**

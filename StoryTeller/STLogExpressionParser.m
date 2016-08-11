@@ -197,19 +197,20 @@
 
 - (void)keyPath_ {
     
-    do {
-        [self propertyPath_]; 
-    } while ([self speculate:^{ [self propertyPath_]; }]);
+    [self keyPathComponent_]; 
+    while ([self speculate:^{ [self keyPathComponent_]; }]) {
+        [self keyPathComponent_]; 
+    }
 
     [self fireDelegateSelector:@selector(parser:didMatchKeyPath:)];
 }
 
-- (void)propertyPath_ {
+- (void)keyPathComponent_ {
     
     [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_DOT discard:YES]; 
     [self propertyName_]; 
 
-    [self fireDelegateSelector:@selector(parser:didMatchPropertyPath:)];
+    [self fireDelegateSelector:@selector(parser:didMatchKeyPathComponent:)];
 }
 
 - (void)propertyName_ {
@@ -236,7 +237,7 @@
 - (void)protocol_ {
     
     [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_LT_SYM discard:YES]; 
-    [self objCId_]; 
+    [self objectName_]; 
     [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_GT_SYM discard:YES]; 
 
     [self fireDelegateSelector:@selector(parser:didMatchProtocol:)];
@@ -245,10 +246,21 @@
 - (void)class_ {
     
     [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_OPEN_BRACKET discard:YES]; 
-    [self objCId_]; 
+    [self objectName_]; 
     [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_CLOSE_BRACKET discard:YES]; 
 
     [self fireDelegateSelector:@selector(parser:didMatchClass:)];
+}
+
+- (void)objectName_ {
+    
+    [self objCId_]; 
+    while ([self speculate:^{ [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_DOT discard:YES]; [self objCId_]; }]) {
+        [self match:STLOGEXPRESSIONPARSER_TOKEN_KIND_DOT discard:YES]; 
+        [self objCId_]; 
+    }
+
+    [self fireDelegateSelector:@selector(parser:didMatchObjectName:)];
 }
 
 - (void)objCId_ {

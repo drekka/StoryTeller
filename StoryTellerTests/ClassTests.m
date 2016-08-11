@@ -41,6 +41,18 @@
     XCTAssertTrue([matcher storyTeller:_mockStoryTeller matches:@"abc"]);
 }
 
+-(void) testClassMatchesSwiftName {
+
+    // Create a fake class.
+    Class newClass = objc_allocateClassPair([NSObject class], "MyProject.MyClass", 0);
+    objc_registerClassPair(newClass);
+
+    id obj = [[newClass alloc] init];
+
+    id<STMatcher> matcher = [_factory parseExpression:@"[MyProject.MyClass]"];
+    XCTAssertTrue([matcher storyTeller:_mockStoryTeller matches:obj]);
+}
+
 -(void) testClassIsUnknown {
     @try {
         [_factory parseExpression:@"[Abc]"];
