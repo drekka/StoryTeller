@@ -1,0 +1,12 @@
+storyteller-version: v1.7
+Timezone: Australia/Melbourne
+author: Derek Clarkson
+lang-title-objc: <p class="language-title">Objective-C</p>
+lang-title-swift: <p class="language-title">Swift</p>
+ 
+defaults:
+  -
+    scope:
+      path: "" # an empty string here means all files in the project
+    values:
+      layout: "default"
