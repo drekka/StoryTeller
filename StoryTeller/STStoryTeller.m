@@ -27,9 +27,11 @@ NS_ASSUME_NONNULL_BEGIN
 static __strong STStoryTeller *__storyTeller;
 
 +(nullable STStoryTeller *) storyTeller {
-    if (!__storyTeller) {
-        __storyTeller = [[STStoryTeller alloc] init];
-        [__storyTeller->_config configure:__storyTeller];
+    @synchronized (self) {
+        if (!__storyTeller) {
+            __storyTeller = [[STStoryTeller alloc] init];
+            [__storyTeller->_config configure:__storyTeller];
+        }
     }
     return __storyTeller;
 }
@@ -37,11 +39,15 @@ static __strong STStoryTeller *__storyTeller;
 #pragma mark - Debugging
 
 +(void) reset {
-    __storyTeller = nil;
+    @synchronized (self) {
+        __storyTeller = nil;
+    }
 }
 
 +(void) clearMatchers {
-    __storyTeller->_logMatchers = [[NSMutableSet alloc] init];
+    @synchronized (self) {
+        __storyTeller->_logMatchers = [[NSMutableSet alloc] init];
+    }
 }
 
 #pragma mark - Lifecycle
@@ -62,7 +68,7 @@ static __strong STStoryTeller *__storyTeller;
 -(void) startLogging:(NSString * _Nonnull) keyExpression {
     NSLog(@"Story Teller: Activating log: %@", keyExpression);
     id<STMatcher> matcher = [_expressionMatcherFactory parseExpression:keyExpression];
-
+    
     if (_logMatchers.count > 0) {
         if (matcher.exclusive) {
             @throw [NSException exceptionWithName:@"StoryTellerConfigException" reason:[NSString stringWithFormat:@"%@ cannot be used with other logging expressions", keyExpression] userInfo:nil];
@@ -70,7 +76,7 @@ static __strong STStoryTeller *__storyTeller;
             @throw [NSException exceptionWithName:@"StoryTellerConfigException" reason:[NSString stringWithFormat:@"Log expression %@ cannot be used with previous exclusive expressions", keyExpression] userInfo:nil];
         }
     }
-
+    
     [_logMatchers addObject:matcher];
 }
 
