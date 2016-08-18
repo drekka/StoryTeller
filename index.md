@@ -4,31 +4,6 @@ title: Story Teller {{ site.storyteller-version }}
 
 Story Teller {{ site.storyteller-version }} 
 
-* [Installation](#installation)
-* [Carthage](#carthage)
-* [Cocoapods](#cocoapods)
-* [Adding Story Teller to your code](#adding-story-teller-to-your-code)
-* [Logging](#logging)
-* [Story Teller keys](#story-teller-keys)
-* [What if the keys not accessible?](#what-if-the-keys-not-accessible)
-* [Configuring logging](#configuring-logging)
-* [On startup](#on-startup)
-* [Environment variables](#environment-variables)
-* [Programmatically](#programmatically)
-* [XCodeColors &amp; Logging templates](#xcodecolors--logging-templates)
-* [Smart Logging Criteria](#smart-logging-criteria)
-* [General logging](#general-logging)
-* [Simple value criteria](#simple-value-criteria)
-* [Classes or Protocol criteria](#classes-or-protocol-criteria)
-* [KVC Property criteria](#kvc-property-criteria)
-* [Runtime criteria](#runtime-criteria)
-* [Execution blocks](#execution-blocks)
-* [Release vs Debug](#release-vs-debug)
-* [Async](#async)
-* [Performance](#performance)
-* [Update \- some bench marks](#update---some-bench-marks)
-* [Credits](#credits)
-
 [![GitHub license](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://raw.githubusercontent.com/drekka/StoryTeller/master/LICENSE)
 
 # WTF - Another Logging Framework!!! 
