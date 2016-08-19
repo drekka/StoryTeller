@@ -160,7 +160,6 @@ img {
 header {
   width:270px;
   float:left;
-  position:fixed;
   -webkit-font-smoothing:subpixel-antialiased;
 }
 
@@ -171,7 +170,6 @@ strong {
 
 header ul li + li + li {
   border-right:none;
-  width:89px;
 }
 
 header ul a strong {
@@ -200,7 +198,6 @@ hr {
 footer {
   width:270px;
   float:left;
-  position:fixed;
   bottom:50px;
   -webkit-font-smoothing:subpixel-antialiased;
 }

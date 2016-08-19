@@ -15,24 +15,33 @@
   <body>
     <div class="wrapper">
       <header>
+
         <h1>Story Teller {{ site.storyteller-version }}</h1>
         <p><i>A log should tell a story, not drown the reader in irrelevance.</i></p>
 
-        <p class="view"><a href="https://github.com/drekka/StoryTeller">View the Project on GitHub <small>drekka/StoryTeller</small></a></p>
+        <p>
+        <a href="https://raw.githubusercontent.com/drekka/StoryTeller/master/LICENSE">
+            <img src="https://img.shields.io/badge/license-MIT-lightgrey.svg" />
+        </a>
+        <a href="https://github.com/Carthage/Carthage">
+            <img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat" />
+        </a>
+        </p>
+
+        <p class="view">
+        <a href="https://github.com/drekka/StoryTeller">View on GitHub <small>drekka/StoryTeller</small></a>
+        </p>
 
         {% include toc.html %}
         
       </header>
       <section>
-        <h1>
-<a id="storyteller" class="anchor" href="#storyteller" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>StoryTeller</h1>
 
-{{ content }}
+          {{ content }}
 
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/drekka">drekka</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
     </div>
     <script src="javascripts/scale.fix.js"></script>

@@ -2,44 +2,52 @@
 title: Story Teller {{ site.storyteller-version }}
 ---
 
-Story Teller {{ site.storyteller-version }} 
-
-[![GitHub license](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://raw.githubusercontent.com/drekka/StoryTeller/master/LICENSE)
-
 # WTF - Another Logging Framework!!! 
 
 *Yes StoryTeller is a logging framework. But it's nothing like any logging framework you will have used before.*
 
-Every other logging framework I have ever encountered (Java or Objective-C) follows the same flawed design - *Provide the developer with a set of increasing severity levels which they can use to set the important of the text to be logged.* 
+I created Story Teller because every other logging framework I've found (in both Java and Objective-C worlds) follows the same flawed design - *To provide a fixed set of severity levels which define the importance of the text being logged.* 
 
-The basic assumption being that it's possible to create meaningful logs based on how important the developer thinks each piece of information is. Here's a typical logging example (using made up code because I don't want to dis anyone else code):
+The assumption behind this is that severity levels match what developers are interested in when debugging problems. The flaw in this is that developers are interested in log statements from specific parts of the program, often in relation to specific data. Not everything across the entire So turning on debug logging to see whats going on in one part of the app can produce a massive amount of irrelevant logging.
+
+Here's a typical example of how you might setup traditional logging (using a made up API):
 
 ```objc
 // Set up logging
 Logger *log = Logger sharedInstance];
+
+// Activate logging
 [log setLogLevel:LogLevel.Debug];
+
 // ... 
+
 logDebug(@"Current account number is %@", account.accNumber);
 ```
 
-To debug a problem with account 1223334433, the developer has to turn on `Debug` logging which then prints out every piece of debug level information regardless of whether it relates to account 1223334444 or not. Often creating massive amounts of output which the developer has to wade through to find the few pieces of relevant information. 
+So if debugging a problem with account 1223334433, the developer will first have to turn on debug severity logging. This will then print out every log statement for debug severity and above across the entire app. The developer will then have to read through a large amount of output, much of which will be irrelevant to the problem at hand. 
 
-***Debugging with Story Teller is completely different***. Story Teller throws out the concept of fixed levels of severity, replacing them with a dynamic, query driven logging system that lets the developer specify the data they want to see. The advantage of this is that the log *only* contains information relevant to the problem being solved. Here's Story Teller's targetted equivalent of the above:
+__*Debugging with Story Teller is completely different*__. 
+
+Story Teller throws out the concept of fixed levels of severity and replaces them with a query driven logging system. This lets the developer specify the context they are interested in and resulting in a log that *only* contains information relevant to the problem being solved. 
+
+Here's how Story Teller deals with debugging a problem for account 1223334444:
 
 ```objc
-// Setup logging 
+// Setup logging, actually nothing to setup
+
+// Activate logging
 STStartLogging(@"[account].accNumber == 1223334444");
+
 // ...
+
 STLog(account, @"Current account number is %@", account.accNumber);
 ```
 
-Notice how we can now specify a criteria so that we only see log statements which are relevant to the account we are interested. Now instead of a massive amount of irrelevant information to search through, the entire log is relevant to the task at hand - ***How cool is that?***
+Notice how we can specify a criteria for the log statements we want to see. Now the the entire log is relevant to the task at hand - ***How cool is that?***
 
 # Installation
 
 ## Carthage
-
-[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 [Carthage](https://github.com/Carthage/Carthage) is the recommended method for including Story Teller in your projects. Simply create a  file called ***CartFile*** in the root of your project and add this line:
 
@@ -55,8 +63,8 @@ carthage bootstrap
 
 This will download and compile the following frameworks:
 
-* *<project-root>/Carthage/Build/iOS/StoryTeller.framework*
-* *<project-root>/Carthage/Build/tvOS/StoryTeller.framework*
+* __*&lt;project-root&gt;/Carthage/Build/iOS/StoryTeller.framework*__
+* __*&lt;project-root&gt;/Carthage/Build/tvOS/StoryTeller.framework*__
 
 Add the relevant framework as you would any other.
 
@@ -95,9 +103,9 @@ STLog(@"abc", @"ABC, ha ha ha ha ha");
 
 ## What if the keys not accessible?
 
-Often you will have logging which does not have access to the object you want to use as a key. For example a method which performs currency conversion probably won't have the account object passed to it. So how do you ensure that the conversion logging is also active when you are debugging an issue for the account. 
+Often you will have logging which does not have access to the object you want to use as a key. For example a method which performs currency conversion probably won't have the account object passed to it. *So how do you ensure that the conversion logging is also active when you are debugging an issue for the account?* 
 
-Story Teller solves this problem with the concept of **Key Scopes**. You can tell it to make a key cover any number of log statements within a particular scope, even if those logging statements are within methods which don't have access to the key. Here's an example:
+Story Teller solves this problem with the concept of **Key Scopes**. You can tell it to make a key cover any number of log statements within a particular scope, even log statements within other classes and methods which don't have any access to the key. Here's an example:
 
 ```objc
 -(void) firstMethod {
@@ -116,104 +124,9 @@ When reporting based on user, the second log statement (key:account) will also b
 Scopes follow these rules: 
 
 * Normal Objective-C scopes for variables. This is because under the hood, Story Teller is using a dynamically added variable to detect when the scope ends. Normally this is the end of the current method, loop or if statement. Assume a `STScopeStart(...)` is a variable declaration and you will ge the idea. 
-* Story Teller's then includes any called code. So any logging within a method or API is also included with the scope. This enables logging across a wide range of classes to be accessed using one key without having to specifically pass that key around.  
+* Log statements within any called methods are regarded as being part of the scope's key. This enables logging to be activated without having to specifically pass the relevant key around.  
 
 In the above example, any logging with in `goDoSomethingWithAccount:` will also be logged when logging for the user.
-
-# Configuring logging
-
-## On startup
-
-Story Teller uses a set of options which it obtains via this process on startup:
-
-1. A default setup is first created with no logging active.
-2. Story Teller then searches all bundles in the app for a file called ***StoryTellerConfig.json***. If found this file is read and the base config is updated with any settings it contains.
-3. Finally the process is checked and if any of the arguments set on the process match known keys in the config, then those values are updated.
-
-The basic idea is that you can add a ***StoryTellerConfig.json*** file to your app to provide the general config you want to run with, and then during development you can override at will by setting arguments in XCode's scheme for your app.
-
-Current the Json file has two settings and looks something like this:
-
-```json
-{
-"activeLogs": [
-"abc",                           /* A specific string key */
-12,                              /* A numeric (Enum?) key */
-"[User].account.balance > 500"   /* Any account over $500 */
-],
-"loggerClass": "STConsoleLogger",  /* Optional */
-"logLineTemplate": "{{file}}:{{line}} {{message}}" /* Optional */
-}
-```
-
-### Settings
-
-Key  | Value
-------------- | -------------
-activeLogs | A comma separated list of keys to activate. This is the main setting for turning on logging.
-loggerClass | If you want to set a different class for the, use this setting to specify the class. The class must implement `<STLogger>` and have a no-arg constructor. You only need to put the class name in this setting. Story Teller will handle the rest. By default, Story Teller uses a simple console logger.
-logLineTemplate | The template of each line in the log. See [XcodeColors & Logging Templates](#xcodecolors-&-logging-templates) below for details of this value.
-
-## Environment variables
-
-You can also pass the settings via enviroment variables. For example, you could set them up in an Xcode schema for running the app.
-
-**loggerClass** and **logLineTemplate** are settable. To activate a log you use one or more **log** settings. 
-
-## Programmatically
-
-You can also programmically enable and disable logging as well. To enable logging, use this statement:
-
-```objectivec
-STStartLogging(<key>);
-```
-
-## XCodeColors & Logging templates
-
-[XCodeColors](https://github.com/robbiehanson/XcodeColors) is an excellant tool for colour coding your XCode console output. Story Teller supports using it to colour code the details and message of the output. In addition, you can also fully customise the layout of the log lines. 
-
-### [XCodeColors](https://github.com/robbiehanson/XcodeColors)
-
-If you have XcodeColors installed you can use the following setup to configure Story Tellers console logger. This *Only* works for the `STConsoleLogger`.
-
-```objectivec
-((STConsoleLogger *)[STStoryTeller storyTeller].logger).addXcodeColours = YES;
-
-// Only need these if you want to change from the default colours. Which are these colours !
-((STConsoleLogger *)[STStoryTeller storyTeller].logger).messageColour = [UIColor blackColor];
-((STConsoleLogger *)[STStoryTeller storyTeller].logger).detailsColour = [UIColor lightGrayColor];
-```
-
-### Customising the logging template.
-
-The default template for a logged line looks like this:
-
-`{{time}} {{function}}:{{line}} {{message}}`
-
-As you can see it's based on typical [Moustache templating](https://mustache.github.io) using curly brackets and keywords to define where to insert various pieces of information. Naturally you can customize this. Here's how:
-
-```objectivec
-[STStoryTeller storyTeller].logger.lineTemplate = [NSString stringWithFormat:@"%1$@\n   %2$@:%3$@", STLoggerTemplateKeyMessage, STLoggerTemplateKeyFunction, STLoggerTemplateKeyLine];
-``` 
-
-All the above example does is build a new template string using some predefined strings. This is recommended as it's less likely to trigger mistakes. The only required keyword in any template is the `STLoggerTemplateKeyMessage` (`{{message}}`). All others are optional. Here's an example of the output from the above setup:
-
-![Log output](./Example log.png)
-
-
-
-#### Template keywords
-
-Built in variable  | Text value | Inserts a ...
-------------- | ------------- | ------------- 
-STLoggerTemplateKeyMessage | {{message}} | ***(Required)*** The finished message argument from `STLog(...)` with all arguments inseted. 
-STLoggerTemplateKeyFile | {{file}} | the name of the source code file.
-STLoggerTemplateKeyFunction | {{function}} | A string representation of the method name which generated the log message.
-STLoggerTemplateKeyLine | {{line}} | The line number of the `STLog(...)` command.
-STLoggerTemplateKeyThreadId | {{threadId}} | The current thread id.
-STLoggerTemplateKeyThreadName | {{threadName}} | he current thread's name.
-STLoggerTemplateKeyTime | {{time}} | The current time.
-STLoggerTemplateKeyTime | {{key}} | The Story Teller *key* associated with the `STLog(...)` command.
 
 # Smart Logging Criteria
 
@@ -222,7 +135,7 @@ The `activeLogs` configuration setting contains an comma seperated list of smart
 So what are these criteria? Here are the options
 
 
-## General logging
+## Activating logs
 
 First up there are two special logs you can activate:
 
@@ -255,8 +168,6 @@ STStartLogging(@(EnumValueX));
 ```
 
 ## Classes or Protocol criteria 
-
-### Instances
 
 You can log based on the type of the key used like this:
 
@@ -330,13 +241,113 @@ STExecuteBlock(<key>, ^(id key) {
 
 The block will only be executed if they currently active logging matches the key. This makes it a perfect way to handle larger and more complex logging situations.
 
-## Release vs Debug
+# Release vs Debug
 
 Story Teller is very much a Debug orientated logger. Is is not designed to be put into production apps. To that effect, it has a strip mode. Simply add this macro to your **Release** macro declarations and all Story Teller loggin will be stripped out, leaving your Release version a lean mean speed machine.
 
 Disable macro name: **`DISABLE_STORY_TELLER`**
 
-## Async
+# Configuring logging
+
+## On startup
+
+Story Teller uses a set of options which it obtains via this process on startup:
+
+1. A default setup is first created with no logging active.
+2. Story Teller then searches all bundles in the app for a file called ***StoryTellerConfig.json***. If found this file is read and the base config is updated with any settings it contains.
+3. Finally the process is checked and if any of the arguments set on the process match known keys in the config, then those values are updated.
+
+The basic idea is that you can add a ***StoryTellerConfig.json*** file to your app to provide the general config you want to run with, and then during development you can override at will by setting arguments in XCode's scheme for your app.
+
+Current the Json file has two settings and looks something like this:
+
+{% raw %}
+```json
+{
+    "activeLogs": [
+        "abc",                           /* A specific string key */
+        12,                              /* A numeric (Enum?) key */
+        "[User].account.balance > 500"   /* Any account over $500 */
+    ],
+    "loggerClass": "STConsoleLogger",  /* Optional */
+    "logLineTemplate": "{{file}}:{{line}} {{message}}" /* Optional */
+}
+```
+{% endraw %}
+
+### Template keys
+
+Key  | Value
+------------- | -------------
+activeLogs | A comma separated list of keys to activate. This is the main setting for turning on logging.
+loggerClass | If you want to set a different class for the, use this setting to specify the class. The class must implement `<STLogger>` and have a no-arg constructor. You only need to put the class name in this setting. Story Teller will handle the rest. By default, Story Teller uses a simple console logger.
+logLineTemplate | The template of each line in the log. See [XcodeColors & Logging Templates](#xcodecolors-&-logging-templates) below for details of this value.
+
+## Environment variables
+
+You can also pass the settings via enviroment variables. For example, you could set them up in an Xcode schema for running the app.
+
+**loggerClass** and **logLineTemplate** are settable. To activate a log you use one or more **log** settings. 
+
+## Programmatically
+
+You can also programmically enable and disable logging as well. To enable logging, use this statement:
+
+```objectivec
+STStartLogging(<key>);
+```
+
+## XCodeColors & Logging templates
+
+[XCodeColors](https://github.com/robbiehanson/XcodeColors) is an excellant tool for colour coding your XCode console output. Story Teller supports using it to colour code the details and message of the output. In addition, you can also fully customise the layout of the log lines. 
+
+### [XCodeColors](https://github.com/robbiehanson/XcodeColors)
+
+If you have XcodeColors installed you can use the following setup to configure Story Tellers console logger. This *Only* works for the `STConsoleLogger`.
+
+```objectivec
+((STConsoleLogger *)[STStoryTeller storyTeller].logger).addXcodeColours = YES;
+
+// Only need these if you want to change from the default colours. Which are these colours !
+((STConsoleLogger *)[STStoryTeller storyTeller].logger).messageColour = [UIColor blackColor];
+((STConsoleLogger *)[STStoryTeller storyTeller].logger).detailsColour = [UIColor lightGrayColor];
+```
+
+### Customising the logging template.
+
+The default template for a logged line looks like this:
+
+{% raw %}
+`{{time}} {{function}}:{{line}} {{message}}`
+{% endraw %}
+
+As you can see it's based on typical [Moustache templating](https://mustache.github.io) using curly brackets and keywords to define where to insert various pieces of information. Naturally you can customize this. Here's how:
+
+```objectivec
+[STStoryTeller storyTeller].logger.lineTemplate = [NSString stringWithFormat:@"%1$@\n   %2$@:%3$@", STLoggerTemplateKeyMessage, STLoggerTemplateKeyFunction, STLoggerTemplateKeyLine];
+``` 
+
+All the above example does is build a new template string using some predefined strings. This is recommended as it's less likely to trigger mistakes. The only required keyword in any template is the `STLoggerTemplateKeyMessage` {% raw %}(`{{message}}`){% endraw %}. All others are optional. Here's an example of the output from the above setup:
+
+![Log output](./Example log.png)
+
+
+
+#### Template keywords
+
+Built in variable  | Text value | Inserts a ...
+------------- | ------------- | ------------- 
+STLoggerTemplateKeyMessage | &#123;&#123;message&#125;&#125; | ***(Required)*** The finished message argument from `STLog(...)` with all arguments inseted. 
+STLoggerTemplateKeyFile | &#123;&#123;file&#125;&#125; | the name of the source code file.
+STLoggerTemplateKeyFunction | &#123;&#123;function&#125;&#125; | A string representation of the method name which generated the log message.
+STLoggerTemplateKeyLine | &#123;&#123;line&#125;&#125; | The line number of the `STLog(...)` command.
+STLoggerTemplateKeyThreadId | &#123;&#123;threadId&#125;&#125; | The current thread id.
+STLoggerTemplateKeyThreadName | &#123;&#123;threadName&#125;&#125; | he current thread's name.
+STLoggerTemplateKeyTime | &#123;&#123;time&#125;&#125; | The current time.
+STLoggerTemplateKeyTime | &#123;&#123;key&#125;&#125; | The Story Teller *key* associated with the `STLog(...)` command.
+
+
+# Async
 
 The only time async logging is needed is when logging a massive amount of information to a file. In 30 years of developing I've never seen an instance where a log like this has been of any use. 
 
@@ -344,13 +355,13 @@ In addition developers will invaraibly turn off async logging because the delay 
 
 Story Teller is built for debugging. Not producing files or winning speed tests. So it does not support async logging.
 
-## Performance
+# Performance
 
 Performance is something that is a factor when logging because logging to the console or a file is inheriantly slow. Other frameworks follow the basic design concept of - *That we want to log everything and sort it out later.* This is very wasteful. Especially in the mobile world where dumping everything into a file just on the off chance that someone might want to look at it is quite out of the question. 
 
 Because Story Teller uses smarter logging techniques, it will often be faster than traditional logging frameworks simply because it produces less output, more than compensating for the extra processing required.
 
-### Update - some bench marks
+## Update - some bench marks
 
 I decided to get an idea of how Story Teller actually compared. So I created a test project and put both Story Teller and a *Very Popular 3rd party logging framework* into it. 
 
