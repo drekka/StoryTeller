@@ -6,11 +6,13 @@ title: Story Teller {{ site.storyteller-version }}
 
 *Yes StoryTeller is a logging framework. But it's nothing like any logging framework you will have used before.*
 
-I created Story Teller because every other logging framework I've found (in both Java and Objective-C worlds) follows the same flawed design - *To provide a fixed set of severity levels which define the importance of the text being logged.* 
+Every other logging framework I've seen follows the same design - *Using a fixed set of message categories to control what gets logged.* A typically set being *debug, Warning, Info, Error* and *Fatal*. 
 
-The assumption behind this is that severity levels match what developers are interested in when debugging problems. The flaw in this is that developers are interested in log statements from specific parts of the program, often in relation to specific data. Not everything across the entire So turning on debug logging to see whats going on in one part of the app can produce a massive amount of irrelevant logging.
+The idea behind this is that developers will sort their log statements out into the appropriate category when they add them to the code. When debugging, the developer then has to activate the levels required to log the details they need. Often having to search through large amounts of logging from  the entire app to find the information they require.
 
-Here's a typical example of how you might setup traditional logging (using a made up API):
+I created Story Teller because I never found a single logging framework that dared to question this basic design and it's inherant problem - *that it makes the developer choose when to log when they write the log statement.*    
+
+Here's a example of how you might setup traditional logging (using a made up API):
 
 ```objc
 // Set up logging
@@ -24,13 +26,13 @@ Logger *log = Logger sharedInstance];
 logDebug(@"Current account number is %@", account.accNumber);
 ```
 
-So if debugging a problem with account 1223334433, the developer will first have to turn on debug severity logging. This will then print out every log statement for debug severity and above across the entire app. The developer will then have to read through a large amount of output, much of which will be irrelevant to the problem at hand. 
+When debugging a problem with account 1223334433, you will first have to turn on logging of the debug category to print out every debug log statement across the entire app. Then you will have to read through a large amount of output, most of which will be irrelevant to debugging the account. 
 
 __*Debugging with Story Teller is completely different*__. 
 
-Story Teller throws out the concept of fixed levels of severity and replaces them with a query driven logging system. This lets the developer specify the context they are interested in and resulting in a log that *only* contains information relevant to the problem being solved. 
+Story Teller throws out the concept of fixed logging categories, replacing them with a query driven logging system that selects log statements to output at run time. This lets you zero in on your problem precisely and results in a log that *only* contains the relevant information. 
 
-Here's how Story Teller deals with debugging a problem for account 1223334444:
+Here's how Story Teller deals with debugging account 1223334444:
 
 ```objc
 // Setup logging, actually nothing to setup
@@ -92,7 +94,7 @@ STLog(<key>, <message-template>, <args ...>);
 
 ## Story Teller keys
 
-The core difference between Story Teller and all other logging frameworks is Story Teller's ability to use object as a key for a logging statement. This key can be anything you want - An account object, a user, a class, a string, or any other valid Objective-C object. Whatever makes sense in your app. Here are some examples:
+The core difference between Story Teller and all other logging frameworks is Story Teller's ability to use any object as a category for a logging statement. Story Teller uses the term *'key'* instead of category. The key for a statement can be anything you want - An account object, user object, a class, string, or any other valid Objective-C object. Whatever makes sense in your app. Here are some examples:
 
 ```objc
 STLog(user, "User %@ is logging", user.id);
@@ -103,7 +105,9 @@ STLog(@"abc", @"ABC, ha ha ha ha ha");
 
 ## What if the keys not accessible?
 
-Often you will have logging which does not have access to the object you want to use as a key. For example a method which performs currency conversion probably won't have the account object passed to it. *So how do you ensure that the conversion logging is also active when you are debugging an issue for the account?* 
+Often you will have logging which does not have access to the object you want to use as a key. For example a method which performs currency conversion probably won't have the account object passed to it. 
+
+*So how do you ensure that the conversion logging is also active when you are debugging an issue for the account?* 
 
 Story Teller solves this problem with the concept of **Key Scopes**. You can tell it to make a key cover any number of log statements within a particular scope, even log statements within other classes and methods which don't have any access to the key. Here's an example:
 
@@ -123,19 +127,16 @@ When reporting based on user, the second log statement (key:account) will also b
 
 Scopes follow these rules: 
 
-* Normal Objective-C scopes for variables. This is because under the hood, Story Teller is using a dynamically added variable to detect when the scope ends. Normally this is the end of the current method, loop or if statement. Assume a `STScopeStart(...)` is a variable declaration and you will ge the idea. 
-* Log statements within any called methods are regarded as being part of the scope's key. This enables logging to be activated without having to specifically pass the relevant key around.  
+* Key scopes follow normal Objective-C variable scopes. Under the hood Story Teller declares a variable at the scope declaration. When the variable's object deallocs, Story Teller ends the scope. Normally this is the end of the current method, loop or if statement. Assume a `STScopeStart(...)` is a variable declaration and you will ge the idea. 
+* Any log statements found in calls to methods or functions, on the current class or another, are regarded as also having the scope's key. This enables then to log without having to pass the relevant key around.  
 
-In the above example, any logging with in `goDoSomethingWithAccount:` will also be logged when logging for the user.
+In the above example, the log statment in the `doSomething` method will also activate when the user is logging. Because `startScope(user)` is active when the method is called.
 
 # Smart Logging Criteria
 
-The `activeLogs` configuration setting contains an comma seperated list of smart criteria which activate the log statements. The  `STStartLogging(<criteria>);` Objective-C statement does the same thing, except you can only pass one criteria at a time. 
+As you have seen in the first example above, you can use the `STStartLogging(&lt;criteria&gt;)` statment to activate a log. But what is this criteria? 
 
-So what are these criteria? Here are the options
-
-
-## Activating logs
+## General logs
 
 First up there are two special logs you can activate:
 
