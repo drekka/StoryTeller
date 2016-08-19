@@ -7,7 +7,7 @@
 //
 
 @import ObjectiveC;
-#import <PEGKit/PEGKit.h>
+@import PEGKit;
 
 #import "STStoryTeller.h"
 #import "STLogExpressionParserDelegate.h"
