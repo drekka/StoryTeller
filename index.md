@@ -10,7 +10,7 @@ Every other logging framework I've seen follows the same design - *Using a fixed
 
 The idea behind this is that developers will sort their log statements out into the appropriate category when they add them to the code. When debugging, the developer then has to activate the levels required to log the details they need. Often having to search through large amounts of logging from  the entire app to find the information they require.
 
-I created Story Teller because I never found a single logging framework that dared to question this basic design and it's inherant problem - *that it makes the developer choose when to log when they write the log statement.*    
+I created *[Story Teller](https://github.com/drekka/StoryTeller)* because I never found a single logging framework that dared to question this basic design and it's inherant problem - *that it makes logging decisions when the log statement is written.*    
 
 Here's a example of how you might setup traditional logging (using a made up API):
 
