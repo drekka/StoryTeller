@@ -68,6 +68,7 @@
 		6CD10E651D5D9BB6001D3507 /* StoryTeller.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C8AE1991B3A466200DF2B9F /* StoryTeller.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6CD10E661D5D9BF5001D3507 /* STInternalMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CBABD1F1D5B48A400E44EC4 /* STInternalMacros.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6CD938411B384AB5005B0B5D /* STConfigTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CD938401B384AB5005B0B5D /* STConfigTests.m */; };
+		6CE899401D8FA74E00A1983F /* Cartfile.private in Resources */ = {isa = PBXBuildFile; fileRef = 6CE8993F1D8FA74E00A1983F /* Cartfile.private */; };
 		F469EAD01CEAEB6800D9DD47 /* STMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C8174341B3CED7F00342066 /* STMatcher.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		F469EAD11CEAEB6800D9DD47 /* STCompareMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C8174301B3CDBA300342066 /* STCompareMatcher.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		F469EAD21CEAEB6800D9DD47 /* STFilterMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C8174361B3CEDDD00342066 /* STFilterMatcher.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -152,6 +153,7 @@
 		6CE5C3E91B329BD100F0A470 /* STStoryTeller.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = STStoryTeller.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		6CE5C3EF1B329BD100F0A470 /* StoryTellerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StoryTellerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6CE5C3F41B329BD100F0A470 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6CE8993F1D8FA74E00A1983F /* Cartfile.private */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile.private; sourceTree = "<group>"; };
 		F4325ED51CEEC896001A9FD6 /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		F4325ED61CEEC8A4001A9FD6 /* module.private.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.private.modulemap; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -305,6 +307,7 @@
 		6CE5C3DB1B329BD100F0A470 = {
 			isa = PBXGroup;
 			children = (
+				6CE8993F1D8FA74E00A1983F /* Cartfile.private */,
 				6C3F07EA1D33DF5000166A39 /* Cartfile */,
 				F469EAC31CEAE53E00D9DD47 /* Frameworks */,
 				F4325ED51CEEC896001A9FD6 /* module.modulemap */,
@@ -514,6 +517,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6C3F07EB1D33DF5000166A39 /* Cartfile in Resources */,
+				6CE899401D8FA74E00A1983F /* Cartfile.private in Resources */,
 				6C7145631B4425BE00EBC055 /* StoryTellerConfig.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -617,7 +621,6 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
-				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -646,7 +649,6 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
-				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -753,8 +755,9 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.7;
+				CURRENT_PROJECT_VERSION = 1.7.1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DYLIB_COMPATIBILITY_VERSION = 1.7;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
@@ -823,8 +826,9 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.7;
+				CURRENT_PROJECT_VERSION = 1.7.1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_COMPATIBILITY_VERSION = 1.7;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
