@@ -65,7 +65,7 @@ static __strong STStoryTeller *__storyTeller;
 
 #pragma mark - Activating logging
 
--(void) startLogging:(NSString * _Nonnull) keyExpression {
+-(void) startLogging:(NSString *) keyExpression {
     NSLog(@"Story Teller: Activating log: %@", keyExpression);
     id<STMatcher> matcher = [_expressionMatcherFactory parseExpression:keyExpression];
     
@@ -86,33 +86,31 @@ static __strong STStoryTeller *__storyTeller;
     return (int)[_activeKeys count];
 }
 
--(id) startScope:(__weak id _Nonnull) key {
+-(id) startScope:(__weak id) key {
     [_activeKeys addObject:key];
     return [[STDeallocHook alloc] initWithBlock:^{
         [[STStoryTeller storyTeller] endScope:key];
     }];
 }
 
--(void) endScope:(__weak id _Nonnull) key {
+-(void) endScope:(__weak id) key {
     [_activeKeys removeObject:key];
 }
 
--(BOOL) isScopeActive:(__weak id _Nonnull) key {
+-(BOOL) isScopeActive:(__weak id) key {
     return [_activeKeys containsObject:key];
 }
 
 #pragma mark - Logging
 
--(void) record:(__weak id _Nonnull) key
-          file:(const char * _Nonnull) fileName
-        method:(const char * _Nonnull) methodName
+-(void) record:(id) key
+          file:(const char *) fileName
+        method:(const char *) methodName
     lineNumber:(int) lineNumber
-       message:(NSString * _Nonnull) messageTemplate, ... {
-    
-    id strongKey = key;
+       message:(NSString *) messageTemplate, ... {
     
     // Only continue if the key is being logged.
-    if (![self shouldLogKey:strongKey]) {
+    if (![self shouldLogKey:key]) {
         return;
     }
     
@@ -127,10 +125,10 @@ static __strong STStoryTeller *__storyTeller;
                      fromFile:fileName
                    fromMethod:methodName
                    lineNumber:lineNumber
-                          key:strongKey];
+                          key:key];
 }
 
--(void) execute:(__weak id _Nonnull) key block:(void (^ _Nonnull)(id _Nonnull)) block {
+-(void) execute:(__weak id) key block:(void (^)(id)) block {
     id strongKey = key;
     if ([self shouldLogKey:strongKey]) {
         block(strongKey);

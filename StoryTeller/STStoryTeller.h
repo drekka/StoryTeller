@@ -107,7 +107,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param messageTemplate a standard NSString format message.
  @param ... a list of values for the message template.
  */
--(void) record:(__weak id) key
+-(void) record:(id) key
           file:(const char *) fileName
         method:(const char *) methodName
     lineNumber:(int) lineNumber
