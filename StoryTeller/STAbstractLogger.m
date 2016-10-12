@@ -12,6 +12,8 @@
 
 #define NBR_KEYS 8 // details + message.
 
+NSString * const STLoggerTemplateKeyThreadPicture = @"{{threadPicture}}";
+NSString * const STLoggerTemplateKeyThreadNumber = @"{{threadNumber}}";
 NSString * const STLoggerTemplateKeyThreadId = @"{{threadId}}";
 NSString * const STLoggerTemplateKeyFile = @"{{file}}";
 NSString * const STLoggerTemplateKeyFunction = @"{{function}}";
@@ -22,7 +24,9 @@ NSString * const STLoggerTemplateKeyKey = @"{{key}}";
 NSString * const STLoggerTemplateKeyMessage = @"{{message}}";
 
 typedef NS_ENUM(int, DetailsDisplay) {
+    DetailsDisplayThreadPicture,
     DetailsDisplayThreadId,
+    DetailsDisplayThreadNumber,
     DetailsDisplayFile,
     DetailsDisplayFuntion,
     DetailsDisplayLine,
@@ -37,6 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation STAbstractLogger {
     NSDateFormatter *_dateFormatter;
     NSMutableArray *_lineFragments;
+    BOOL _lastThreadWasMain;
 }
 
 @synthesize lineTemplate = _lineTemplate;
@@ -53,6 +58,7 @@ static Class __protocolClass;
         _dateFormatter = [[NSDateFormatter alloc] init];
         _dateFormatter.dateFormat = @"HH:mm:ss.sss";
         self.lineTemplate = [NSString stringWithFormat:@"%@ %@:%@ %@", STLoggerTemplateKeyTime, STLoggerTemplateKeyFile, STLoggerTemplateKeyLine, STLoggerTemplateKeyMessage];
+        _lastThreadWasMain = YES;
     }
     return self;
 }
@@ -70,7 +76,11 @@ static Class __protocolClass;
     NSScanner *scanner = [NSScanner scannerWithString:lineTemplate];
     scanner.charactersToBeSkipped = nil;
     do {
-        if ([scanner scanString:STLoggerTemplateKeyThreadId intoString:nil]) {
+        if ([scanner scanString:STLoggerTemplateKeyThreadPicture intoString:nil]) {
+            [_lineFragments addObject:@(DetailsDisplayThreadPicture)];
+        } else if ([scanner scanString:STLoggerTemplateKeyThreadNumber intoString:nil]) {
+            [_lineFragments addObject:@(DetailsDisplayThreadNumber)];
+        } else if ([scanner scanString:STLoggerTemplateKeyThreadId intoString:nil]) {
             [_lineFragments addObject:@(DetailsDisplayThreadId)];
         } else if ([scanner scanString:STLoggerTemplateKeyFile intoString:nil]) {
             [_lineFragments addObject:@(DetailsDisplayFile)];
@@ -131,7 +141,39 @@ static Class __protocolClass;
                     [self writeText:[NSString stringWithFormat:@"<%x>", pthread_mach_thread_np(pthread_self())].UTF8String];
                     break;
                 }
-                    
+
+                case DetailsDisplayThreadNumber: {
+                    [self writeText:[NSString stringWithFormat:@"%i", pthread_mach_thread_np(pthread_self())].UTF8String];
+                    break;
+                }
+
+                case DetailsDisplayThreadName: {
+                    NSString *threadName = [NSThread currentThread].name;
+                    if ([threadName length] > 0) {
+                        [self writeText:threadName.UTF8String];
+                    }
+                    break;
+                }
+
+                case DetailsDisplayThreadPicture: {
+                    if ([NSThread isMainThread]) {
+                        if (self->_lastThreadWasMain) {
+                            [self writeText:"|  "];
+                        } else {
+                            [self writeText:"|¯ "];
+                            self->_lastThreadWasMain = YES;
+                        }
+                    } else {
+                        if (self->_lastThreadWasMain) {
+                            [self writeText:"|¯]"];
+                            self->_lastThreadWasMain = NO;
+                        } else {
+                            [self writeText:"| ]"];
+                        }
+                    }
+                    break;
+                }
+
                 case DetailsDisplayFile: {
                     NSString *lastPathComponent = [NSString stringWithCString:fileName encoding:NSUTF8StringEncoding].lastPathComponent;
                     [self writeText:lastPathComponent.UTF8String];
@@ -145,14 +187,6 @@ static Class __protocolClass;
                     
                 case DetailsDisplayLine: {
                     [self writeText:[NSString stringWithFormat:@"%i", lineNumber].UTF8String];
-                    break;
-                }
-                    
-                case DetailsDisplayThreadName: {
-                    NSString *threadName = [NSThread currentThread].name;
-                    if ([threadName length] > 0) {
-                        [self writeText:threadName.UTF8String];
-                    }
                     break;
                 }
                     
