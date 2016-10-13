@@ -56,7 +56,7 @@ static Class __protocolClass;
     self = [super init];
     if (self) {
         _dateFormatter = [[NSDateFormatter alloc] init];
-        _dateFormatter.dateFormat = @"HH:mm:ss.SSSS";
+        _dateFormatter.dateFormat = @"HH:mm:ss.SSS";
         self.lineTemplate = [NSString stringWithFormat:@"%@ %@:%@ %@", STLoggerTemplateKeyTime, STLoggerTemplateKeyFile, STLoggerTemplateKeyLine, STLoggerTemplateKeyMessage];
         _lastThreadWasMain = YES;
     }
