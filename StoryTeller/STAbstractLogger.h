@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param text the text to be written.
  */
--(void) writeText:(const char *) text;
+-(void) writeText:(char *) text;
 
 @end
 
