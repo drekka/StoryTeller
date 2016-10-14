@@ -6,7 +6,13 @@ Story Teller is an advanced logging framework that takes an entirely different a
 
 See how it works on the main [Story Teller site](http://drekka.github.io/StoryTeller).
 
-# V1.7.4 #
+# V1.7.5
+
+* Fixed bugs in test code.
+* Removed line feed from line assembly code. Added it in console logger.
+* Removed key as argument to block when executing a block for a key.
+
+# V1.7.4
 
 * Refactored the log assembly code to avoid multiple threads mixing text on a single line.
 

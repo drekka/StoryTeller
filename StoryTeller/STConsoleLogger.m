@@ -91,7 +91,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 -(void) writeText:(char *) text {
-    printf("%s", text);
+    printf("%s\n", text);
 }
 
 NS_ASSUME_NONNULL_END
