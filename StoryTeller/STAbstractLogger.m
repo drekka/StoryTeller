@@ -230,7 +230,6 @@ static Class __protocolClass;
     }];
     
     // Write a final line feed.
-    [self appendBuffer:buffer chars:"\n"];
     [self writeText:*buffer];
     free(*buffer);
     

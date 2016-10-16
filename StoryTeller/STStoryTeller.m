@@ -128,10 +128,9 @@ static __strong STStoryTeller *__storyTeller;
                           key:key];
 }
 
--(void) execute:(__weak id) key block:(void (^)(id)) block {
-    id strongKey = key;
-    if ([self shouldLogKey:strongKey]) {
-        block(strongKey);
+-(void) execute:(id) key block:(void (^)()) block {
+    if ([self shouldLogKey:key]) {
+        block();
     }
 }
 

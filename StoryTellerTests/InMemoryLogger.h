@@ -12,6 +12,6 @@
 
 @interface InMemoryLogger : STAbstractLogger
 
-@property (nonatomic, strong, readonly, nonnull) NSArray *log;
+@property (nonatomic, strong, readonly) NSArray<NSString *> *log;
 
 @end
