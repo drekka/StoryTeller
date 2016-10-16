@@ -8,10 +8,7 @@
 
 #import "InMemoryLogger.h"
 
-@implementation InMemoryLogger {
-    NSMutableArray<NSString *> *_log;
-    NSMutableString *_cache;
-}
+@implementation InMemoryLogger
 
 -(instancetype) init {
     self = [super init];
@@ -21,26 +18,8 @@
     return self;
 }
 
--(void)writeText:(const char * _Nonnull)text {
-
-    if (_cache == nil) {
-        _cache = [[NSMutableString alloc] init];
-    }
-
-    NSString *fragment = [NSString stringWithUTF8String:text];
-    if ([@"\n" isEqualToString:fragment]) {
-        // end of line.
-        printf("%s\n", [_cache UTF8String]);
-        [_log addObject:_cache];
-        _cache = nil;
-    } else {
-        [_cache appendString:fragment];
-    }
-
-}
-
--(NSArray *) log {
-    return _log;
+-(void)writeText:(char *) text {
+    [(NSMutableArray *)_log addObject:[NSString stringWithUTF8String:text]];
 }
 
 @end

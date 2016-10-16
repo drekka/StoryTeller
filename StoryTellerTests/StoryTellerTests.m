@@ -93,7 +93,7 @@
 -(void) testExecuteBlock {
     STStartScope(@"abc");
     __block BOOL blockCalled = NO;
-    STExecuteBlock(@"abc", ^(id key) {
+    STExecuteBlock(@"abc", ^ {
         blockCalled = YES;
     });
     XCTAssertTrue(blockCalled);

@@ -118,10 +118,9 @@ NS_ASSUME_NONNULL_BEGIN
  
  @discussion Mainly used for wrapping up lines of code that involve more than just logging statements. The key is weak to avoid issues around using this method in blocks and circular references to objects.
  
- @param key the key which will control the execution of the block.
  @param block the block to execute. The key argument is the key that was checked.
  */
--(void) execute:(__weak id) key block:(void (^)(id key)) block;
+-(void) execute:(id) key block:(void (^)()) block;
 
 @end
 
