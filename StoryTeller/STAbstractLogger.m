@@ -12,6 +12,8 @@
 
 #define NBR_KEYS 8 // details + message.
 
+NSString * const STLoggerTemplateKeyThreadPicture = @"{{threadPicture}}";
+NSString * const STLoggerTemplateKeyThreadNumber = @"{{threadNumber}}";
 NSString * const STLoggerTemplateKeyThreadId = @"{{threadId}}";
 NSString * const STLoggerTemplateKeyFile = @"{{file}}";
 NSString * const STLoggerTemplateKeyFunction = @"{{function}}";
@@ -22,7 +24,9 @@ NSString * const STLoggerTemplateKeyKey = @"{{key}}";
 NSString * const STLoggerTemplateKeyMessage = @"{{message}}";
 
 typedef NS_ENUM(int, DetailsDisplay) {
+    DetailsDisplayThreadPicture,
     DetailsDisplayThreadId,
+    DetailsDisplayThreadNumber,
     DetailsDisplayFile,
     DetailsDisplayFuntion,
     DetailsDisplayLine,
@@ -37,6 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation STAbstractLogger {
     NSDateFormatter *_dateFormatter;
     NSMutableArray *_lineFragments;
+    BOOL _lastThreadWasMain;
 }
 
 @synthesize lineTemplate = _lineTemplate;
@@ -51,8 +56,9 @@ static Class __protocolClass;
     self = [super init];
     if (self) {
         _dateFormatter = [[NSDateFormatter alloc] init];
-        _dateFormatter.dateFormat = @"HH:mm:ss.sss";
+        _dateFormatter.dateFormat = @"HH:mm:ss.SSS";
         self.lineTemplate = [NSString stringWithFormat:@"%@ %@:%@ %@", STLoggerTemplateKeyTime, STLoggerTemplateKeyFile, STLoggerTemplateKeyLine, STLoggerTemplateKeyMessage];
+        _lastThreadWasMain = YES;
     }
     return self;
 }
@@ -70,7 +76,11 @@ static Class __protocolClass;
     NSScanner *scanner = [NSScanner scannerWithString:lineTemplate];
     scanner.charactersToBeSkipped = nil;
     do {
-        if ([scanner scanString:STLoggerTemplateKeyThreadId intoString:nil]) {
+        if ([scanner scanString:STLoggerTemplateKeyThreadPicture intoString:nil]) {
+            [_lineFragments addObject:@(DetailsDisplayThreadPicture)];
+        } else if ([scanner scanString:STLoggerTemplateKeyThreadNumber intoString:nil]) {
+            [_lineFragments addObject:@(DetailsDisplayThreadNumber)];
+        } else if ([scanner scanString:STLoggerTemplateKeyThreadId intoString:nil]) {
             [_lineFragments addObject:@(DetailsDisplayThreadId)];
         } else if ([scanner scanString:STLoggerTemplateKeyFile intoString:nil]) {
             [_lineFragments addObject:@(DetailsDisplayFile)];
@@ -122,78 +132,143 @@ static Class __protocolClass;
           lineNumber:(int) lineNumber
                  key:(id) key {
     
+    char *initBuffer = malloc(sizeof(char));
+    char **buffer = &initBuffer;
     [_lineFragments enumerateObjectsUsingBlock:^(id fragment, NSUInteger idx, BOOL *stop) {
         
         if ([fragment isKindOfClass:[NSNumber class]]) {
             switch (((NSNumber *)fragment).intValue) {
                     
                 case DetailsDisplayThreadId: {
-                    [self writeText:[NSString stringWithFormat:@"<%x>", pthread_mach_thread_np(pthread_self())].UTF8String];
+                    [self appendBuffer:buffer chars:"<"];
+                    [self appendBuffer:buffer hex:(int) pthread_mach_thread_np(pthread_self())];
+                    [self appendBuffer:buffer chars:">"];
                     break;
                 }
                     
-                case DetailsDisplayFile: {
-                    NSString *lastPathComponent = [NSString stringWithCString:fileName encoding:NSUTF8StringEncoding].lastPathComponent;
-                    [self writeText:lastPathComponent.UTF8String];
-                    break;
-                }
-                    
-                case DetailsDisplayFuntion: {
-                    [self writeText:methodName];
-                    break;
-                }
-                    
-                case DetailsDisplayLine: {
-                    [self writeText:[NSString stringWithFormat:@"%i", lineNumber].UTF8String];
+                case DetailsDisplayThreadNumber: {
+                    [self appendBuffer:buffer chars:"<"];
+                    [self appendBuffer:buffer int:(int) pthread_mach_thread_np(pthread_self())];
+                    [self appendBuffer:buffer chars:">"];
                     break;
                 }
                     
                 case DetailsDisplayThreadName: {
                     NSString *threadName = [NSThread currentThread].name;
                     if ([threadName length] > 0) {
-                        [self writeText:threadName.UTF8String];
+                        [self appendBuffer:buffer string:threadName];
                     }
                     break;
                 }
                     
+                case DetailsDisplayThreadPicture: {
+                    if ([NSThread isMainThread]) {
+                        if (self->_lastThreadWasMain) {
+                            [self appendBuffer:buffer chars:"|  "];
+                        } else {
+                            [self appendBuffer:buffer chars:"|¯ "];
+                            self->_lastThreadWasMain = YES;
+                        }
+                    } else {
+                        if (self->_lastThreadWasMain) {
+                            [self appendBuffer:buffer chars:"|¯]"];
+                            self->_lastThreadWasMain = NO;
+                        } else {
+                            [self appendBuffer:buffer chars:"| ]"];
+                        }
+                    }
+                    break;
+                }
+                    
+                case DetailsDisplayFile: {
+                    NSString *lastPathComponent = [NSString stringWithCString:fileName encoding:NSUTF8StringEncoding].lastPathComponent;
+                    [self appendBuffer:buffer string:lastPathComponent];
+                    break;
+                }
+                    
+                case DetailsDisplayFuntion: {
+                    [self appendBuffer:buffer chars:methodName];
+                    break;
+                }
+                    
+                case DetailsDisplayLine: {
+                    [self appendBuffer:buffer int:lineNumber];
+                    break;
+                }
+                    
                 case DetailsDisplayTime: {
-                    [self writeText:[self->_dateFormatter stringFromDate:[NSDate date]].UTF8String];
+                    [self appendBuffer:buffer string:[self->_dateFormatter stringFromDate:[NSDate date]]];
                     break;
                 }
                     
                 case DetailsDisplayKey: {
                     if (object_isClass(key)) {
-                        [self writeText:"c:["];
-                        [self writeText:NSStringFromClass(key).UTF8String];
-                        [self writeText:"]"];
+                        [self appendBuffer:buffer chars:"c:["];
+                        [self appendBuffer:buffer string:NSStringFromClass(key)];
+                        [self appendBuffer:buffer chars:"]"];
                     } else if ([self keyIsProtocol:key]) {
-                        [self writeText:"p:<"];
-                        [self writeText:NSStringFromProtocol(key).UTF8String];
-                        [self writeText:">"];
+                        [self appendBuffer:buffer chars:"p:<"];
+                        [self appendBuffer:buffer string:NSStringFromProtocol(key)];
+                        [self appendBuffer:buffer chars:">"];
                     } else {
-                        [self writeText:"k:'"];
-                        [self writeText:[key description].UTF8String];
-                        [self writeText:"'"];
+                        [self appendBuffer:buffer chars:"k:'"];
+                        [self appendBuffer:buffer string:[key description]];
+                        [self appendBuffer:buffer chars:"'"];
                     }
                     break;
                 }
                     
                 default: { // Message
-                    [self writeText:message.UTF8String];
+                    [self appendBuffer:buffer string:message];
                 }
             }
+            
         } else {
             // Text fragment so just write it
-            [self writeText:((NSString *)fragment).UTF8String];
+            [self appendBuffer:buffer string:fragment];
         }
     }];
     
     // Write a final line feed.
-    [self writeText:"\n"];
+    [self appendBuffer:buffer chars:"\n"];
+    [self writeText:*buffer];
+    free(*buffer);
     
 }
 
--(void) writeText:(const char * _Nonnull) text {
+-(void) appendBuffer:(char **) buffer string:(NSString *) text {
+    char *oldBuffer = *buffer;
+    if (-1 == asprintf(buffer, "%s%s", oldBuffer, text.UTF8String)) {
+        NSLog(@"Failed to concatinate '%s' and '%s', insufficent memory!", oldBuffer, text.UTF8String);
+    }
+    free(oldBuffer);
+}
+
+-(void) appendBuffer:(char **) buffer int:(int) aInt {
+    char *oldBuffer = *buffer;
+    if (-1 == asprintf(buffer, "%s%i", oldBuffer, aInt)) {
+        NSLog(@"Failed to concatinate '%s' and '%i', insufficent memory!", oldBuffer, aInt);
+    }
+    free(oldBuffer);
+}
+
+-(void) appendBuffer:(char **) buffer hex:(int) aInt {
+    char *oldBuffer = *buffer;
+    if (-1 == asprintf(buffer, "%s%#x", oldBuffer, aInt)) {
+        NSLog(@"Failed to concatinate '%s' and '%#x', insufficent memory!", oldBuffer, aInt);
+    }
+    free(oldBuffer);
+}
+
+-(void) appendBuffer:(char **) buffer chars:(const char *) text {
+    char *oldBuffer = *buffer;
+    if (-1 == asprintf(buffer, "%s%s", oldBuffer, text)) {
+        NSLog(@"Failed to concatinate '%s' and '%s', insufficent memory!", oldBuffer, text);
+    }
+    free(oldBuffer);
+}
+
+-(void) writeText:(char *) text {
     [self doesNotRecognizeSelector:_cmd];
 }
 
