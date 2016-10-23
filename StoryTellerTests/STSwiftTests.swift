@@ -27,6 +27,13 @@ class STSwiftTests: XCTestCase {
         validateLogLine(0, methodName: "testBaseLogging", lineNumber: #line - 1, message: "Hello")
     }
 
+    func testScopeActive() {
+        let _ = STStartScope(self)
+        STStartLogging("[StoryTellerTests.STSwiftTests]")
+        STLog("abc" as NSString, "Hello")
+        validateLogLine(0, methodName: "testBaseLogging", lineNumber: #line - 1, message: "Hello")
+    }
+
     // MARK:- Internal
 
     func validateLogLine(_ atIndex:Int, methodName:String, lineNumber:Int, message:String) {
