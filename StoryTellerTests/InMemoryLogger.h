@@ -7,7 +7,6 @@
 //
 
 @import Foundation;
-
 @import StoryTeller;
 
 @interface InMemoryLogger : STAbstractLogger

@@ -10,13 +10,9 @@
 @import StoryTeller;
 @import StoryTeller.Private;
 @import OCMock;
-#import "InMemoryLogger.h"
 
-// Accessing internal methods for testing purposes.
-@interface STStoryTeller (Debug)
-+(void) reset;
-+(void) clearMatchers;
-@end
+#import "InMemoryLogger.h"
+#import "STStoryTeller+Internal.h"
 
 @interface StoryTellerTests : XCTestCase
 @end
@@ -25,12 +21,11 @@
     int _helloAgainLogLine;
     const char *_helloAgainMethodName;
     InMemoryLogger *_inMemoryLogger;
-
 }
 
 -(void) setUp {
     _inMemoryLogger = [[InMemoryLogger alloc] init];
-    [STStoryTeller storyTeller].logger = _inMemoryLogger;
+    [STStoryTeller instance].logger = _inMemoryLogger;
 }
 
 -(void) tearDown {
@@ -39,8 +34,8 @@
 
 -(void) testActivatingKeyScope {
     STStartScope(@"abc");
-    XCTAssertTrue([[STStoryTeller storyTeller] isScopeActive:@"abc"]);
-    XCTAssertFalse([[STStoryTeller storyTeller] isScopeActive:@"def"]);
+    XCTAssertTrue([[STStoryTeller instance] isScopeActive:@"abc"]);
+    XCTAssertFalse([[STStoryTeller instance] isScopeActive:@"def"]);
 }
 
 -(void) testMessageRecordedWhenKeyLogging {
@@ -67,8 +62,8 @@
         blockMethodName = __PRETTY_FUNCTION__;
         STStartScope(key);
         logLineNumbers[idx] = @(__LINE__ + 1);
-        STLog(key, [NSString stringWithFormat:@"hello world %@", key]);
-        XCTAssertEqual(1, [STStoryTeller storyTeller].numberActiveScopes);
+        STLog(key, @"hello world %@", key);
+        XCTAssertEqual(1, [STStoryTeller instance].numberActiveScopes);
     }];
     
     XCTAssertEqual(02u, [_inMemoryLogger.log count]);
@@ -138,7 +133,7 @@
 }
 
 -(void) testStartLoggingWithNonExistantClass {
-    XCTAssertThrowsSpecificNamed([[STStoryTeller storyTeller] startLogging:@"[XXXX]"], NSException, @"StoryTellerParseException");
+    XCTAssertThrowsSpecificNamed([[STStoryTeller instance] startLogging:@"[XXXX]"], NSException, @"StoryTellerParseException");
 }
 
 #pragma mark - Internal

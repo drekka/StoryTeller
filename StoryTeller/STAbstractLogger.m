@@ -10,8 +10,6 @@
 #import "STAbstractLogger.h"
 #import <pthread/pthread.h>
 
-#define NBR_KEYS 8 // details + message.
-
 NSString * const STLoggerTemplateKeyThreadPicture = @"{{threadPicture}}";
 NSString * const STLoggerTemplateKeyThreadNumber = @"{{threadNumber}}";
 NSString * const STLoggerTemplateKeyThreadId = @"{{threadId}}";
