@@ -15,6 +15,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+void STStartLogging(NSString *expression) {
+    [[STStoryTeller instance] startLogging:expression];
+}
+
 @implementation STStoryTeller {
     NSMutableSet *_activeKeys;
     NSMutableSet<id<STMatcher>> *_logMatchers;
@@ -26,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 static __strong STStoryTeller *__storyTeller;
 
-+(nullable STStoryTeller *) storyTeller {
++(instancetype) instance {
     @synchronized (self) {
         if (!__storyTeller) {
             __storyTeller = [[STStoryTeller alloc] init];
@@ -89,7 +93,7 @@ static __strong STStoryTeller *__storyTeller;
 -(id) startScope:(__weak id) key {
     [_activeKeys addObject:key];
     return [[STDeallocHook alloc] initWithBlock:^{
-        [[STStoryTeller storyTeller] endScope:key];
+        [[STStoryTeller instance] endScope:key];
     }];
 }
 
@@ -108,6 +112,23 @@ static __strong STStoryTeller *__storyTeller;
         method:(const char *) methodName
     lineNumber:(int) lineNumber
        message:(NSString *) messageTemplate, ... {
+    va_list args;
+    va_start(args, messageTemplate);
+    [self record:key
+            file:fileName
+          method:methodName
+      lineNumber:lineNumber
+         message:messageTemplate
+            args:args];
+    va_end(args);
+}
+
+-(void) record:(id) key
+          file:(const char *) fileName
+        method:(const char *) methodName
+    lineNumber:(int) lineNumber
+       message:(NSString *) messageTemplate
+          args:(va_list) args {
     
     // Only continue if the key is being logged.
     if (![self shouldLogKey:key]) {
@@ -115,11 +136,8 @@ static __strong STStoryTeller *__storyTeller;
     }
     
     // Assemble the main message.
-    va_list args;
-    va_start(args, messageTemplate);
     NSString *msg = [[NSString alloc] initWithFormat:messageTemplate arguments:args];
-    va_end(args);
-    
+
     // And give it to the scribe.
     [self.logger writeMessage:msg
                      fromFile:fileName

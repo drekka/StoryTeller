@@ -24,7 +24,7 @@
 
     // Mock out story teller.
     _mockStoryTeller = OCMClassMock([STStoryTeller class]);
-    OCMStub([_mockStoryTeller storyTeller]).andReturn(_mockStoryTeller);
+    OCMStub([_mockStoryTeller instance]).andReturn(_mockStoryTeller);
 }
 
 -(void) tearDown {

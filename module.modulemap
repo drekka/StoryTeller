@@ -1,4 +1,5 @@
 module StoryTeller {
     umbrella header "Headers/StoryTeller.h"
+    //header "Headers/StoryTeller-Swift.h"
     requires objc_arc
 }

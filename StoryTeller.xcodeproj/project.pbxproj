@@ -22,6 +22,8 @@
 		6C8174391B3CEDDD00342066 /* STFilterMatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C8174371B3CEDDD00342066 /* STFilterMatcher.m */; };
 		6C81743B1B3D204F00342066 /* STCompareMatcherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C81743A1B3D204F00342066 /* STCompareMatcherTests.m */; };
 		6C8E922C1B3BC41C00E6B6C4 /* STLogExpressionParserDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C8E922A1B3BC41C00E6B6C4 /* STLogExpressionParserDelegate.m */; };
+		6C9A36A21DB4EFD600D12540 /* StoryTellerSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9A36A11DB4EFD600D12540 /* StoryTellerSwift.swift */; };
+		6C9A36A31DB4EFD600D12540 /* StoryTellerSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9A36A11DB4EFD600D12540 /* StoryTellerSwift.swift */; };
 		6C9B50F81B32AC770004E06D /* StoryTellerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50F71B32AC770004E06D /* StoryTellerTests.m */; };
 		6C9B50FB1B32ACB30004E06D /* InMemoryLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B50FA1B32ACB30004E06D /* InMemoryLogger.m */; };
 		6C9E1A631B44CABA00763905 /* MainClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9E1A621B44CABA00763905 /* MainClass.m */; };
@@ -68,6 +70,7 @@
 		6CD10E651D5D9BB6001D3507 /* StoryTeller.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C8AE1991B3A466200DF2B9F /* StoryTeller.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6CD10E661D5D9BF5001D3507 /* STInternalMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CBABD1F1D5B48A400E44EC4 /* STInternalMacros.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6CD938411B384AB5005B0B5D /* STConfigTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CD938401B384AB5005B0B5D /* STConfigTests.m */; };
+		6CDA2C1A1DB9018E005353FA /* STSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDA2C191DB9018E005353FA /* STSwiftTests.swift */; };
 		6CE899401D8FA74E00A1983F /* Cartfile.private in Resources */ = {isa = PBXBuildFile; fileRef = 6CE8993F1D8FA74E00A1983F /* Cartfile.private */; };
 		F469EAD01CEAEB6800D9DD47 /* STMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C8174341B3CED7F00342066 /* STMatcher.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		F469EAD11CEAEB6800D9DD47 /* STCompareMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C8174301B3CDBA300342066 /* STCompareMatcher.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -97,6 +100,8 @@
 
 /* Begin PBXFileReference section */
 		6C0747D51BE9F2720096BF85 /* PEGKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PEGKit.framework; path = Carthage/Build/iOS/PEGKit.framework; sourceTree = "<group>"; };
+		6C0B15C51DBCD25700424647 /* Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
+		6C0B15C61DBCD60200424647 /* STStoryTeller+Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "STStoryTeller+Internal.h"; sourceTree = "<group>"; };
 		6C158DE01B38206600119725 /* STConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STConfig.h; sourceTree = "<group>"; };
 		6C158DE11B38206600119725 /* STConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = STConfig.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		6C158DE51B3820F100119725 /* StoryTellerConfig.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = StoryTellerConfig.json; path = ../StoryTeller/StoryTellerConfig.json; sourceTree = "<group>"; };
@@ -118,6 +123,7 @@
 		6C8AE1991B3A466200DF2B9F /* StoryTeller.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = StoryTeller.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		6C8E92291B3BC41C00E6B6C4 /* STLogExpressionParserDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STLogExpressionParserDelegate.h; sourceTree = "<group>"; };
 		6C8E922A1B3BC41C00E6B6C4 /* STLogExpressionParserDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = STLogExpressionParserDelegate.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		6C9A36A11DB4EFD600D12540 /* StoryTellerSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryTellerSwift.swift; sourceTree = "<group>"; };
 		6C9B50F71B32AC770004E06D /* StoryTellerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = StoryTellerTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		6C9B50F91B32ACB30004E06D /* InMemoryLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = InMemoryLogger.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		6C9B50FA1B32ACB30004E06D /* InMemoryLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InMemoryLogger.m; sourceTree = "<group>"; };
@@ -139,6 +145,7 @@
 		6C9E1A7D1B44D0C100763905 /* ExpectsProtocolTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ExpectsProtocolTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		6CA7DF031B3A61D7002491FF /* STLogExpressionParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STLogExpressionParser.h; sourceTree = "<group>"; };
 		6CA7DF041B3A61D7002491FF /* STLogExpressionParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = STLogExpressionParser.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		6CBA678E1DBE363300993C6D /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		6CBABD1F1D5B48A400E44EC4 /* STInternalMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STInternalMacros.h; sourceTree = "<group>"; };
 		6CC458A71B4FEBD700FA0EA9 /* STMatcherFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = STMatcherFactory.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		6CC458A81B4FEBD700FA0EA9 /* STMatcherFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = STMatcherFactory.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -149,6 +156,7 @@
 		6CD18E001B32A5B8002C9806 /* STConsoleLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = STConsoleLogger.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		6CD18E011B32A5B8002C9806 /* STConsoleLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = STConsoleLogger.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		6CD938401B384AB5005B0B5D /* STConfigTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = STConfigTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		6CDA2C191DB9018E005353FA /* STSwiftTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STSwiftTests.swift; sourceTree = "<group>"; };
 		6CE5C3E71B329BD100F0A470 /* STStoryTeller.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = STStoryTeller.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		6CE5C3E91B329BD100F0A470 /* STStoryTeller.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = STStoryTeller.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		6CE5C3EF1B329BD100F0A470 /* StoryTellerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StoryTellerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -304,9 +312,18 @@
 			name = Loggers;
 			sourceTree = "<group>";
 		};
+		6CDA2C171DB9016B005353FA /* Swift */ = {
+			isa = PBXGroup;
+			children = (
+				6CDA2C191DB9018E005353FA /* STSwiftTests.swift */,
+			);
+			name = Swift;
+			sourceTree = "<group>";
+		};
 		6CE5C3DB1B329BD100F0A470 = {
 			isa = PBXGroup;
 			children = (
+				6CBA678E1DBE363300993C6D /* README.md */,
 				6CE8993F1D8FA74E00A1983F /* Cartfile.private */,
 				6C3F07EA1D33DF5000166A39 /* Cartfile */,
 				F469EAC31CEAE53E00D9DD47 /* Frameworks */,
@@ -332,12 +349,13 @@
 		6CE5C3E61B329BD100F0A470 /* StoryTeller */ = {
 			isa = PBXGroup;
 			children = (
-				6C158DE41B38207100119725 /* Internal */,
-				6CCFFA7F1B33EC1F00D2F371 /* Loggers */,
-				6CE5C3E71B329BD100F0A470 /* STStoryTeller.h */,
-				6CE5C3E91B329BD100F0A470 /* STStoryTeller.m */,
 				6C8AE1981B3A444F00DF2B9F /* STMacros.h */,
 				6C8AE1991B3A466200DF2B9F /* StoryTeller.h */,
+				6CE5C3E71B329BD100F0A470 /* STStoryTeller.h */,
+				6CE5C3E91B329BD100F0A470 /* STStoryTeller.m */,
+				6C9A36A11DB4EFD600D12540 /* StoryTellerSwift.swift */,
+				6C158DE41B38207100119725 /* Internal */,
+				6CCFFA7F1B33EC1F00D2F371 /* Loggers */,
 			);
 			path = StoryTeller;
 			sourceTree = "<group>";
@@ -345,6 +363,7 @@
 		6CE5C3F31B329BD100F0A470 /* StoryTellerTests */ = {
 			isa = PBXGroup;
 			children = (
+				6CDA2C171DB9016B005353FA /* Swift */,
 				6C9E1A681B44CB9D00763905 /* Expression parser tests */,
 				6C9E1A601B44CAA500763905 /* Test classes */,
 				6CC81B3F1B3C1C6F00E890CE /* Matchers */,
@@ -353,6 +372,8 @@
 				6CD938401B384AB5005B0B5D /* STConfigTests.m */,
 				6C158DE51B3820F100119725 /* StoryTellerConfig.json */,
 				6C9B50F71B32AC770004E06D /* StoryTellerTests.m */,
+				6C0B15C51DBCD25700424647 /* Bridging-Header.h */,
+				6C0B15C61DBCD60200424647 /* STStoryTeller+Internal.h */,
 			);
 			path = StoryTellerTests;
 			sourceTree = "<group>";
@@ -481,14 +502,17 @@
 				TargetAttributes = {
 					6C158E131B38269D00119725 = {
 						CreatedOnToolsVersion = 7.0;
+						LastSwiftMigration = 0810;
 						ProvisioningStyle = Automatic;
 					};
 					6CD10E431D5D9789001D3507 = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0810;
 						ProvisioningStyle = Automatic;
 					};
 					6CE5C3EE1B329BD100F0A470 = {
 						CreatedOnToolsVersion = 7.0;
+						LastSwiftMigration = 0810;
 					};
 				};
 			};
@@ -548,6 +572,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C9A36A21DB4EFD600D12540 /* StoryTellerSwift.swift in Sources */,
 				6C158E2B1B38277200119725 /* STConfig.m in Sources */,
 				6C8174331B3CDBA300342066 /* STCompareMatcher.m in Sources */,
 				6C158E2C1B38277200119725 /* STDeallocHook.m in Sources */,
@@ -565,6 +590,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C9A36A31DB4EFD600D12540 /* StoryTellerSwift.swift in Sources */,
 				6CD10E501D5D9B37001D3507 /* STLogExpressionParser.m in Sources */,
 				6CD10E511D5D9B37001D3507 /* STConsoleLogger.m in Sources */,
 				6CD10E4E1D5D9B37001D3507 /* STDeallocHook.m in Sources */,
@@ -585,6 +611,7 @@
 				6C9E1A631B44CABA00763905 /* MainClass.m in Sources */,
 				6C9E1A7E1B44D0C100763905 /* ExpectsProtocolTests.m in Sources */,
 				6C9E1A761B44CF3900763905 /* ExpectsNumberTests.m in Sources */,
+				6CDA2C1A1DB9018E005353FA /* STSwiftTests.swift in Sources */,
 				6C9B50F81B32AC770004E06D /* StoryTellerTests.m in Sources */,
 				6CD938411B384AB5005B0B5D /* STConfigTests.m in Sources */,
 				6C9E1A6A1B44CBC500763905 /* OptionsTests.m in Sources */,
@@ -617,6 +644,7 @@
 		6C158E261B38269D00119725 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
@@ -637,6 +665,9 @@
 				MODULEMAP_PRIVATE_FILE = module.private.modulemap;
 				PRODUCT_NAME = StoryTeller;
 				SKIP_INSTALL = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -645,6 +676,7 @@
 		6C158E271B38269D00119725 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
@@ -665,6 +697,8 @@
 				MODULEMAP_PRIVATE_FILE = module.private.modulemap;
 				PRODUCT_NAME = StoryTeller;
 				SKIP_INSTALL = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 3.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -673,6 +707,7 @@
 		6CD10E491D5D9789001D3507 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
@@ -690,6 +725,8 @@
 				PRODUCT_NAME = StoryTeller;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -699,6 +736,7 @@
 		6CD10E4A1D5D9789001D3507 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
@@ -716,6 +754,7 @@
 				PRODUCT_NAME = StoryTeller;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -730,7 +769,6 @@
 				CLANG_ANALYZER_SECURITY_FLOATLOOPCOUNTER = YES;
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_STRCPY = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
-				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_ASSIGN_ENUM = YES;
@@ -753,7 +791,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.7.5;
+				CURRENT_PROJECT_VERSION = 1.8.0;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DYLIB_COMPATIBILITY_VERSION = 1.7;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -773,7 +811,6 @@
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = YES;
 				GCC_WARN_PEDANTIC = NO;
 				GCC_WARN_SHADOW = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
@@ -784,11 +821,11 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "au.com.derekclarkson.${PRODUCT_NAME:rfc1034identifier}";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
+				SWIFT_TREAT_WARNINGS_AS_ERRORS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				WATCHOS_DEPLOYMENT_TARGET = 2.0;
@@ -803,7 +840,6 @@
 				CLANG_ANALYZER_SECURITY_FLOATLOOPCOUNTER = YES;
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_STRCPY = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
-				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_ASSIGN_ENUM = YES;
@@ -826,7 +862,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.7.5;
+				CURRENT_PROJECT_VERSION = 1.8.0;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DYLIB_COMPATIBILITY_VERSION = 1.7;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -840,7 +876,6 @@
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = YES;
 				GCC_WARN_PEDANTIC = NO;
 				GCC_WARN_SHADOW = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
@@ -851,10 +886,10 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "au.com.derekclarkson.${PRODUCT_NAME:rfc1034identifier}";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
+				SWIFT_TREAT_WARNINGS_AS_ERRORS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				VALIDATE_PRODUCT = YES;
@@ -865,6 +900,8 @@
 		6CE5C3FB1B329BD100F0A470 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -877,6 +914,9 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = au.com.derekclarkson.StoryTellerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "StoryTellerTests/Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				WATCHOS_DEPLOYMENT_TARGET = 2.0;
 			};
@@ -885,6 +925,8 @@
 		6CE5C3FC1B329BD100F0A470 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -897,6 +939,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = au.com.derekclarkson.StoryTellerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "StoryTellerTests/Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				WATCHOS_DEPLOYMENT_TARGET = 2.0;
 			};
