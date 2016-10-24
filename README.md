@@ -6,6 +6,10 @@ Story Teller is an advanced logging framework that takes an entirely different a
 
 See how it works on the main [Story Teller site](http://drekka.github.io/StoryTeller).
 
+# v1.7.6
+
+* Fixed issues where missing Foundation import in PEGKit generated code was causing compilation failues.
+
 # V1.7.5
 
 * Fixed bugs in test code.
