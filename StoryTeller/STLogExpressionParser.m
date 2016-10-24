@@ -1,6 +1,7 @@
 #import "STLogExpressionParser.h"
 #import <PEGKit/PEGKit.h>
     
+@import Foundation;
 #pragma GCC diagnostic ignored "-Wundeclared-selector"
 
 
