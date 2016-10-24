@@ -145,6 +145,7 @@
 		6C9E1A7D1B44D0C100763905 /* ExpectsProtocolTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ExpectsProtocolTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		6CA7DF031B3A61D7002491FF /* STLogExpressionParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STLogExpressionParser.h; sourceTree = "<group>"; };
 		6CA7DF041B3A61D7002491FF /* STLogExpressionParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = STLogExpressionParser.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		6CBA678E1DBE363300993C6D /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		6CBABD1F1D5B48A400E44EC4 /* STInternalMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STInternalMacros.h; sourceTree = "<group>"; };
 		6CC458A71B4FEBD700FA0EA9 /* STMatcherFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = STMatcherFactory.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		6CC458A81B4FEBD700FA0EA9 /* STMatcherFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = STMatcherFactory.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -322,6 +323,7 @@
 		6CE5C3DB1B329BD100F0A470 = {
 			isa = PBXGroup;
 			children = (
+				6CBA678E1DBE363300993C6D /* README.md */,
 				6CE8993F1D8FA74E00A1983F /* Cartfile.private */,
 				6C3F07EA1D33DF5000166A39 /* Cartfile */,
 				F469EAC31CEAE53E00D9DD47 /* Frameworks */,
@@ -789,7 +791,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.7.6;
+				CURRENT_PROJECT_VERSION = 1.8.0;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DYLIB_COMPATIBILITY_VERSION = 1.7;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -860,7 +862,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.7.6;
+				CURRENT_PROJECT_VERSION = 1.8.0;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DYLIB_COMPATIBILITY_VERSION = 1.7;
 				ENABLE_NS_ASSERTIONS = NO;

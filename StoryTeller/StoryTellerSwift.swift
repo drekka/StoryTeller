@@ -14,6 +14,9 @@ public func STLog(_ key:AnyObject, file:String = #file, method:String = #functio
     }
 }
 
-public func STStartScope(_ key:AnyObject) -> Any {
-    return STStoryTeller.instance().startScope(key)
+public func STStartScope(_ key:AnyObject, _ block:() -> Void) {
+    let x = STStoryTeller.instance().startScope(key)
+    block()
+    let _ = x
+//    STStoryTeller.instance().endScope(key)
 }

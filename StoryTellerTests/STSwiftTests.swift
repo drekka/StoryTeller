@@ -29,22 +29,19 @@ class STSwiftTests: XCTestCase {
 
     func testScopeActive() {
         STStartLogging("[StoryTellerTests.STSwiftTests]")
-        let _ = STStartScope(self)
-        print("1st log")
-        STLog("xyz" as NSString, "Hello")
-        validateLogLine(0, methodName: "testBaseLogging", lineNumber: #line - 1, message: "Hello")
+        STStartScope(self) {
+            STLog("xyz" as NSString, "Hello")
+        }
+        validateLogLine(0, methodName: "testBaseLogging", lineNumber: #line - 2, message: "Hello")
     }
 
     func testScopeNestedActive() {
         STStartLogging("[StoryTellerTests.STSwiftTests]")
-        if true {
-            let _ = STStartScope(self)
-            print("1st log")
+        STStartScope(self) {
             STLog("xyz" as NSString, "Hello")
         }
-        print("2st log")
         STLog("xyz" as NSString, "Hello 2")
-        validateLogLine(0, methodName: "testBaseLogging", lineNumber: #line - 4, message: "Hello")
+        validateLogLine(0, methodName: "testBaseLogging", lineNumber: #line - 3, message: "Hello")
         XCTAssertEqual(1, _inMemoryLogger.log.count)
     }
 

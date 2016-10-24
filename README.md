@@ -6,8 +6,9 @@ Story Teller is an advanced logging framework that takes an entirely different a
 
 See how it works on the main [Story Teller site](http://drekka.github.io/StoryTeller).
 
-# v1.7.6
+# v1.8.0
 
+* First cut of adding support for Swift. STLog(...), STStarScope(...) and STStartLogging(...) all working.
 * Fixed issues where missing Foundation import in PEGKit generated code was causing compilation failues.
 
 # V1.7.5
@@ -24,7 +25,7 @@ See how it works on the main [Story Teller site](http://drekka.github.io/StoryTe
 
 * Fixing bug where a weakly referenced key would crash the app if logging was done in a dealloc.
 
-# V1.7.2 #
+# V1.7.2
 
 * Added option to log the thread number.
 * Added option to draw a picture of the thread similar to a git branch view as the logging occurs. The ASCII based character image illustrates which messages are on the main thread and which are on background threads.
