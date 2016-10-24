@@ -94,6 +94,6 @@ NS_ASSUME_NONNULL_BEGIN
     printf("%s\n", text);
 }
 
-NS_ASSUME_NONNULL_END
-
 @end
+
+NS_ASSUME_NONNULL_END

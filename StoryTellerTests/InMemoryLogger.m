@@ -1,5 +1,4 @@
 //
-//  InMemoryScribe.m
 //  StoryTeller
 //
 //  Created by Derek Clarkson on 18/06/2015.

@@ -12,6 +12,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+void STStartLogging(NSString *expression);
+
 /**
  The main StoryTeller class.
  @discussion This class brings together all the configuration and processing for Story Teller. At the moment it's all in one class because it's not very big. Most of the functionality commonly needed is wrapped up in macros defined above.
@@ -28,14 +30,14 @@ NS_ASSUME_NONNULL_BEGIN
  @discussion All interactions with Story Teller should go through this method.
  @return The main STStoryTeller instance.
  */
-+(nullable STStoryTeller *) storyTeller;
++(instancetype) instance;
 
 /// @name Configuration
 
 /**
  The current active logger.
  
- @discussion By defaul this is an instance of STConsoleLogger. However, you can create and set a different class as long as it conforms to the STLogger protocol.
+ @discussion By default this is an instance of STConsoleLogger. However, you can create and set a different class as long as it conforms to the STLogger protocol.
  @see STLogger
  */
 @property (nonatomic, strong) id<STLogger> logger;
@@ -111,7 +113,26 @@ NS_ASSUME_NONNULL_BEGIN
           file:(const char *) fileName
         method:(const char *) methodName
     lineNumber:(int) lineNumber
-       message:(NSString *) messageTemplate, ...;
+       message:(NSString *) messageTemplate, ... NS_FORMAT_FUNCTION(5, 6);
+
+/**
+ The main method to be called to log a message in the current logger.
+
+ @discussion This method also handled the descision making around whether to pass the message onto the current logger or not. If going ahead, it assembles the final message and passes it to the logger. The key is weak to avoid issues around using this method in blocks and circular references to objects.
+
+ @param key the key to log the message under.
+ @param fileName the name of the file where the `STLog(...)` statement occurs.
+ @param methodName the name of the method where the `STLog(...)` statement occurs.
+ @param lineNumber the line number in the method where the `STLog(...)` statement occurs.
+ @param messageTemplate a standard NSString format message.
+ @param args a list of values for the message template.
+ */
+-(void) record:(id) key
+          file:(const char *) fileName
+        method:(const char *) methodName
+    lineNumber:(int) lineNumber
+       message:(NSString *) messageTemplate
+          args:(va_list) args;
 
 /**
  Useful helper method which executes a block of code if the key is active.
