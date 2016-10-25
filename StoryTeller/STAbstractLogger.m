@@ -130,7 +130,8 @@ static Class __protocolClass;
           lineNumber:(int) lineNumber
                  key:(id) key {
     
-    char *initBuffer = malloc(sizeof(char));
+    char *initBuffer = (char *) malloc(sizeof(""));
+    initBuffer = "";
     char **buffer = &initBuffer;
     [_lineFragments enumerateObjectsUsingBlock:^(id fragment, NSUInteger idx, BOOL *stop) {
         
@@ -235,10 +236,10 @@ static Class __protocolClass;
 
 -(void) appendBuffer:(char **) buffer string:(NSString *) text {
     char *oldBuffer = *buffer;
+    free(*buffer);
     if (-1 == asprintf(buffer, "%s%s", oldBuffer, text.UTF8String)) {
         NSLog(@"Failed to concatinate '%s' and '%s', insufficent memory!", oldBuffer, text.UTF8String);
     }
-    free(oldBuffer);
 }
 
 -(void) appendBuffer:(char **) buffer int:(int) aInt {
