@@ -6,6 +6,10 @@ Story Teller is an advanced logging framework that takes an entirely different a
 
 See how it works on the main [Story Teller site](http://drekka.github.io/StoryTeller).
 
+# v1.8.1
+
+* Cleaning up some C code around assembling log lines to fix a possible memory leak.
+
 # v1.8.0
 
 * First cut of adding support for Swift. STLog(...), STStarScope(...) and STStartLogging(...) all working.
