@@ -130,32 +130,31 @@ static Class __protocolClass;
           lineNumber:(int) lineNumber
                  key:(id) key {
     
-    char *initBuffer = (char *) malloc(sizeof(""));
-    initBuffer = "";
-    char **buffer = &initBuffer;
+    char *buffer = (char *) calloc(1, sizeof(char));
+    char **bufferPtr = &buffer;
     [_lineFragments enumerateObjectsUsingBlock:^(id fragment, NSUInteger idx, BOOL *stop) {
         
         if ([fragment isKindOfClass:[NSNumber class]]) {
             switch (((NSNumber *)fragment).intValue) {
                     
                 case DetailsDisplayThreadId: {
-                    [self appendBuffer:buffer chars:"<"];
-                    [self appendBuffer:buffer hex:(int) pthread_mach_thread_np(pthread_self())];
-                    [self appendBuffer:buffer chars:">"];
+                    [self appendBuffer:bufferPtr chars:"<"];
+                    [self appendBuffer:bufferPtr hex:(int) pthread_mach_thread_np(pthread_self())];
+                    [self appendBuffer:bufferPtr chars:">"];
                     break;
                 }
                     
                 case DetailsDisplayThreadNumber: {
-                    [self appendBuffer:buffer chars:"<"];
-                    [self appendBuffer:buffer int:(int) pthread_mach_thread_np(pthread_self())];
-                    [self appendBuffer:buffer chars:">"];
+                    [self appendBuffer:bufferPtr chars:"<"];
+                    [self appendBuffer:bufferPtr int:(int) pthread_mach_thread_np(pthread_self())];
+                    [self appendBuffer:bufferPtr chars:">"];
                     break;
                 }
                     
                 case DetailsDisplayThreadName: {
                     NSString *threadName = [NSThread currentThread].name;
                     if ([threadName length] > 0) {
-                        [self appendBuffer:buffer string:threadName];
+                        [self appendBuffer:bufferPtr string:threadName];
                     }
                     break;
                 }
@@ -163,17 +162,17 @@ static Class __protocolClass;
                 case DetailsDisplayThreadPicture: {
                     if ([NSThread isMainThread]) {
                         if (self->_lastThreadWasMain) {
-                            [self appendBuffer:buffer chars:"|  "];
+                            [self appendBuffer:bufferPtr chars:"|  "];
                         } else {
-                            [self appendBuffer:buffer chars:"|¯ "];
+                            [self appendBuffer:bufferPtr chars:"|¯ "];
                             self->_lastThreadWasMain = YES;
                         }
                     } else {
                         if (self->_lastThreadWasMain) {
-                            [self appendBuffer:buffer chars:"|¯]"];
+                            [self appendBuffer:bufferPtr chars:"|¯]"];
                             self->_lastThreadWasMain = NO;
                         } else {
-                            [self appendBuffer:buffer chars:"| ]"];
+                            [self appendBuffer:bufferPtr chars:"| ]"];
                         }
                     }
                     break;
@@ -181,65 +180,66 @@ static Class __protocolClass;
                     
                 case DetailsDisplayFile: {
                     NSString *lastPathComponent = [NSString stringWithCString:fileName encoding:NSUTF8StringEncoding].lastPathComponent;
-                    [self appendBuffer:buffer string:lastPathComponent];
+                    [self appendBuffer:bufferPtr string:lastPathComponent];
                     break;
                 }
                     
                 case DetailsDisplayFuntion: {
-                    [self appendBuffer:buffer chars:methodName];
+                    [self appendBuffer:bufferPtr chars:methodName];
                     break;
                 }
                     
                 case DetailsDisplayLine: {
-                    [self appendBuffer:buffer int:lineNumber];
+                    [self appendBuffer:bufferPtr int:lineNumber];
                     break;
                 }
                     
                 case DetailsDisplayTime: {
-                    [self appendBuffer:buffer string:[self->_dateFormatter stringFromDate:[NSDate date]]];
+                    [self appendBuffer:bufferPtr string:[self->_dateFormatter stringFromDate:[NSDate date]]];
                     break;
                 }
                     
                 case DetailsDisplayKey: {
                     if (object_isClass(key)) {
-                        [self appendBuffer:buffer chars:"c:["];
-                        [self appendBuffer:buffer string:NSStringFromClass(key)];
-                        [self appendBuffer:buffer chars:"]"];
+                        [self appendBuffer:bufferPtr chars:"c:["];
+                        [self appendBuffer:bufferPtr string:NSStringFromClass(key)];
+                        [self appendBuffer:bufferPtr chars:"]"];
                     } else if ([self keyIsProtocol:key]) {
-                        [self appendBuffer:buffer chars:"p:<"];
-                        [self appendBuffer:buffer string:NSStringFromProtocol(key)];
-                        [self appendBuffer:buffer chars:">"];
+                        [self appendBuffer:bufferPtr chars:"p:<"];
+                        [self appendBuffer:bufferPtr string:NSStringFromProtocol(key)];
+                        [self appendBuffer:bufferPtr chars:">"];
                     } else {
-                        [self appendBuffer:buffer chars:"k:'"];
-                        [self appendBuffer:buffer string:[key description]];
-                        [self appendBuffer:buffer chars:"'"];
+                        [self appendBuffer:bufferPtr chars:"k:'"];
+                        [self appendBuffer:bufferPtr string:[key description]];
+                        [self appendBuffer:bufferPtr chars:"'"];
                     }
                     break;
                 }
                     
                 default: { // Message
-                    [self appendBuffer:buffer string:message];
+                    [self appendBuffer:bufferPtr string:message];
                 }
             }
             
         } else {
             // Text fragment so just write it
-            [self appendBuffer:buffer string:fragment];
+            [self appendBuffer:bufferPtr string:fragment];
         }
     }];
     
     // Write a final line feed.
-    [self writeText:*buffer];
-    free(*buffer);
+    [self writeText:buffer];
+    free(buffer);
     
 }
 
--(void) appendBuffer:(char **) buffer string:(NSString *) text {
-    char *oldBuffer = *buffer;
-    free(*buffer);
-    if (-1 == asprintf(buffer, "%s%s", oldBuffer, text.UTF8String)) {
-        NSLog(@"Failed to concatinate '%s' and '%s', insufficent memory!", oldBuffer, text.UTF8String);
+-(void) appendBuffer:(char **) bufferPtr string:(NSString *) text {
+    char *newBuffer;
+    if (-1 == asprintf(&newBuffer, "%s%s", *bufferPtr, text.UTF8String)) {
+        NSLog(@"Failed to concatinate '%s' and '%s', insufficent memory!", *bufferPtr, text.UTF8String);
     }
+    free(*bufferPtr);
+    *bufferPtr = newBuffer;
 }
 
 -(void) appendBuffer:(char **) buffer int:(int) aInt {
