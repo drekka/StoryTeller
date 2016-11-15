@@ -17,7 +17,6 @@
 		6C3F07E91D33D2D100166A39 /* STMatcherFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C3F07E81D33D2D100166A39 /* STMatcherFactoryTests.m */; };
 		6C3F07EB1D33DF5000166A39 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 6C3F07EA1D33DF5000166A39 /* Cartfile */; };
 		6C7145631B4425BE00EBC055 /* StoryTellerConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 6C158DE51B3820F100119725 /* StoryTellerConfig.json */; };
-		6C7160881D65784000B355F4 /* StoryTeller.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C158E141B38269D00119725 /* StoryTeller.framework */; };
 		6C8174331B3CDBA300342066 /* STCompareMatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C8174311B3CDBA300342066 /* STCompareMatcher.m */; };
 		6C8174391B3CEDDD00342066 /* STFilterMatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C8174371B3CEDDD00342066 /* STFilterMatcher.m */; };
 		6C81743B1B3D204F00342066 /* STCompareMatcherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C81743A1B3D204F00342066 /* STCompareMatcherTests.m */; };
@@ -187,7 +186,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6C7160881D65784000B355F4 /* StoryTeller.framework in Frameworks */,
 				6CA4E2BA1D375FF4000C68C9 /* OCMock.framework in Frameworks */,
 				6C0747D61BE9F2720096BF85 /* PEGKit.framework in Frameworks */,
 			);
@@ -497,7 +495,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = ST;
-				LastUpgradeCheck = 0810;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "Derek Clarkson";
 				TargetAttributes = {
 					6C158E131B38269D00119725 = {
@@ -889,6 +887,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "au.com.derekclarkson.${PRODUCT_NAME:rfc1034identifier}";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TVOS_DEPLOYMENT_TARGET = 9.0;
