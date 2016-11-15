@@ -72,7 +72,7 @@ static __strong STStoryTeller *__storyTeller;
 -(void) startLogging:(NSString *) keyExpression {
     NSLog(@"Story Teller: Activating log: %@", keyExpression);
     id<STMatcher> matcher = [_expressionMatcherFactory parseExpression:keyExpression];
-    
+
     if (_logMatchers.count > 0) {
         if (matcher.exclusive) {
             @throw [NSException exceptionWithName:@"StoryTellerConfigException" reason:[NSString stringWithFormat:@"%@ cannot be used with other logging expressions", keyExpression] userInfo:nil];
@@ -80,8 +80,10 @@ static __strong STStoryTeller *__storyTeller;
             @throw [NSException exceptionWithName:@"StoryTellerConfigException" reason:[NSString stringWithFormat:@"Log expression %@ cannot be used with previous exclusive expressions", keyExpression] userInfo:nil];
         }
     }
-    
-    [_logMatchers addObject:matcher];
+
+    @synchronized (_logMatchers) {
+        [_logMatchers addObject:matcher];
+    }
 }
 
 #pragma mark - Activating
@@ -91,14 +93,18 @@ static __strong STStoryTeller *__storyTeller;
 }
 
 -(id) startScope:(__weak id) key {
-    [_activeKeys addObject:key];
+    @synchronized (_activeKeys) {
+        [_activeKeys addObject:key];
+    }
     return [[STDeallocHook alloc] initWithBlock:^{
         [[STStoryTeller instance] endScope:key];
     }];
 }
 
 -(void) endScope:(__weak id) key {
-    [_activeKeys removeObject:key];
+    @synchronized (_activeKeys) {
+        [_activeKeys removeObject:key];
+    }
 }
 
 -(BOOL) isScopeActive:(__weak id) key {
@@ -129,12 +135,12 @@ static __strong STStoryTeller *__storyTeller;
     lineNumber:(int) lineNumber
        message:(NSString *) messageTemplate
           args:(va_list) args {
-    
+
     // Only continue if the key is being logged.
     if (![self shouldLogKey:key]) {
         return;
     }
-    
+
     // Assemble the main message.
     NSString *msg = [[NSString alloc] initWithFormat:messageTemplate arguments:args];
 
@@ -153,26 +159,30 @@ static __strong STStoryTeller *__storyTeller;
 }
 
 -(BOOL) shouldLogKey:(id) key {
-    
+
     // Check the bypass and active keys.
     if ([self isKeyMatched:key]) {
         return YES;
     }
-    
+
     // If any of the active keys are logging then we also fire.
-    for (id scopeKey in _activeKeys) {
-        if ([self isKeyMatched:scopeKey]) {
-            return YES;
+    @synchronized (_activeKeys) {
+        for (id scopeKey in _activeKeys) {
+            if ([self isKeyMatched:scopeKey]) {
+                return YES;
+            }
         }
     }
-    
+
     return NO;
 }
 
 -(BOOL) isKeyMatched:(id) key {
-    for (id<STMatcher> matcher in _logMatchers) {
-        if ([matcher storyTeller:self matches:key]) {
-            return YES;
+    @synchronized (_logMatchers) {
+        for (id<STMatcher> matcher in _logMatchers) {
+            if ([matcher storyTeller:self matches:key]) {
+                return YES;
+            }
         }
     }
     return NO;
