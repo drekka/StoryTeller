@@ -6,6 +6,10 @@ Story Teller is an advanced logging framework that takes an entirely different a
 
 See how it works on the main [Story Teller site](http://drekka.github.io/StoryTeller).
 
+# v1.8.3
+
+* Adding support for spaces in package names of swift classes.
+
 # v1.8.2
 
 * Patching to fix error triggered by multithreaded access to the current logging keys.
