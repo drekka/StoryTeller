@@ -36,7 +36,7 @@
 -(void) testProtocolMatchesSwiftName {
 
     // Create a fake class.
-    Class newClass = objc_allocateClassPair([NSObject class], "NewClass", 0);
+    Class newClass = objc_allocateClassPair([NSObject class], "NewClassSwiftName", 0);
     objc_registerClassPair(newClass);
 
     // Create the swift protocol and add it to the class.
@@ -47,6 +47,23 @@
     id obj = [[newClass alloc] init];
 
     id<STMatcher> matcher = [_factory parseExpression:@"<MyProject.Protocol>"];
+    XCTAssertTrue([matcher storyTeller:_mockStoryTeller matches:obj]);
+}
+
+-(void) testProtocolMatchesSwiftNameWithSpaceInProjectName {
+
+    // Create a fake class.
+    Class newClass = objc_allocateClassPair([NSObject class], "NewClassSwiftNameWithSpace", 0);
+    objc_registerClassPair(newClass);
+
+    // Create the swift protocol and add it to the class.
+    Protocol *swiftLikeProtocol = objc_allocateProtocol("MyProject_Name.Protocol");
+    objc_registerProtocol(swiftLikeProtocol);
+    class_addProtocol(newClass, swiftLikeProtocol);
+
+    id obj = [[newClass alloc] init];
+
+    id<STMatcher> matcher = [_factory parseExpression:@"<MyProject_Name.Protocol>"];
     XCTAssertTrue([matcher storyTeller:_mockStoryTeller matches:obj]);
 }
 

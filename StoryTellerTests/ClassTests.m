@@ -53,6 +53,18 @@
     XCTAssertTrue([matcher storyTeller:_mockStoryTeller matches:obj]);
 }
 
+-(void) testClassMatchesSwiftNameWithSpacesInProjectName {
+
+    // Create a fake class.
+    Class newClass = objc_allocateClassPair([NSObject class], "MyProject_Name.MyClass", 0);
+    objc_registerClassPair(newClass);
+
+    id obj = [[newClass alloc] init];
+
+    id<STMatcher> matcher = [_factory parseExpression:@"[MyProject_Name.MyClass]"];
+    XCTAssertTrue([matcher storyTeller:_mockStoryTeller matches:obj]);
+}
+
 -(void) testClassIsUnknown {
     @try {
         [_factory parseExpression:@"[Abc]"];
