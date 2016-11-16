@@ -65,13 +65,17 @@
     XCTAssertTrue([matcher storyTeller:_mockStoryTeller matches:obj]);
 }
 
+-(void) testInvalidClassNameFromPointsMaster {
+    XCTAssertThrowsSpecificNamed([_factory parseExpression:@"Points_Master.Calculator"], NSException, @"StoryTellerParseException");
+}
+
 -(void) testClassIsUnknown {
     @try {
         [_factory parseExpression:@"[Abc]"];
         XCTFail(@"Exception not thrown");
     }
     @catch (NSException *e) {
-        XCTAssertEqualObjects(@"Unable to find a class called Abc\nLine : Unknown\n", e.description);
+        XCTAssertEqualObjects(@"Invalid expression: [Abc], error: Failed to match next input token", e.description);
     }
 }
 

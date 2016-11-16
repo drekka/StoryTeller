@@ -78,7 +78,7 @@
         XCTFail(@"Exception not thrown");
     }
     @catch (NSException *e) {
-        XCTAssertEqualObjects(@"Unable to find a protocol called Abc\nLine : Unknown\n", e.description);
+        XCTAssertEqualObjects(@"Invalid expression: <Abc>, error: Failed to match next input token", e.description);
     }
 }
 
