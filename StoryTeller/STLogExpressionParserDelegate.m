@@ -52,7 +52,9 @@ typedef NS_ENUM(NSUInteger, ValueType) {
     if (![parser parseString:expression error:&error]) {
         // Throw an exception.
         STDebugLog(@"!!!! Error %@", error);
-        @throw [NSException exceptionWithName:@"StoryTellerParseException" reason:error.localizedFailureReason userInfo:nil];
+        @throw [NSException exceptionWithName:@"StoryTellerParseException"
+                                       reason:[NSString stringWithFormat:@"Invalid expression: %@, error: %@", expression, error.localizedDescription]
+                                               userInfo:nil];
     }
 
     return _rootMatcher;
