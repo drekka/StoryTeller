@@ -6,6 +6,10 @@ Story Teller is an advanced logging framework that takes an entirely different a
 
 See how it works on the main [Story Teller site](http://drekka.github.io/StoryTeller).
 
+# v1.8.5
+
+* Improving the quality of error messages from parse errors.
+
 # v1.8.4
 
 * Removing  requirement for Address Sanitizer from the built library.
